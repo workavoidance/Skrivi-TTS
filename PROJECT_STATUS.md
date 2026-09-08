@@ -110,6 +110,13 @@ local opt-in tests because CI does not contain multi-GB weights or this hardware
 
 ## Known limits and next work
 
+The user requested a focused search for other Norwegian Piper trainings. Findings
+are in `docs/NORWEGIAN_PIPER_SEARCH.md`: NbAiLab's distinct NST fine-tune is documented
+but currently returns 401 for anonymous model access; its demo Space reports running
+(synthesis untested). A community female-voice training effort has no verified public
+checkpoint. Other inspected repositories mostly mirror or convert Talesyntese.
+No new model was installed and no additional female single-speaker download was verified.
+
 ### NVCC shortening investigation — September 8
 
 User reports shortened/clipped sounds **throughout sentences**, not just the final
