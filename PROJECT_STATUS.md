@@ -14,6 +14,23 @@
 
 ## Implemented
 
+### Latest listening feedback — September 8
+
+The user reports **Piper Talesyntese is "very very good, and fast"** in the maintained
+application. This supersedes treating all Piper voices as below the quality target.
+Earlier negative Piper/NVCC impressions must not be generalized to Talesyntese.
+Treat Talesyntese as a serious lightweight candidate and preserve its current native
+settings for further listening comparisons. No final winner or universal quality
+conclusion has been declared by the user.
+
+Latest saved Talesyntese run (`20260908-164452-piper-talesyntese-0fa929`) generated
+12.167 seconds of audio in 0.318 seconds, total wait 0.324 seconds, warm CPU session,
+native 22,050 Hz, speed 1.0, native noise defaults, playback completed. This is about
+38 times faster than playback. Another recent short run generated 2.183 seconds in
+0.070 seconds. Model weights are 63,201,294 bytes. These measurements substantiate
+speed; the positive quality judgment comes from the user. Do not change application
+defaults or inference settings solely as a side effect of recording this feedback.
+
 The user requested a maintained application rather than more disposable POCs.
 The existing v5 shootout workflow and tested inference code were reused and split
 into UI, persistent library, model catalog and persistent engine process. The old
