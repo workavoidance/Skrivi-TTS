@@ -1,0 +1,186 @@
+[
+  {
+    "model": "piper-nvcc",
+    "speaker": 3,
+    "seconds": 9.7059410430839,
+    "app_equals_direct_byte_for_byte": true,
+    "all_generated_frames_written": true,
+    "unmapped_phonemes": [],
+    "sample_rate": 22050,
+    "saturated_fraction": 1.4017643540669857e-05,
+    "chunks": [
+      {
+        "frames": 43776,
+        "scales": [
+          0.6669999957084656,
+          1.2999999523162842,
+          0.5
+        ],
+        "speaker_id": [
+          3
+        ],
+        "raw_tail_peak_20ms": 0.00016725527530070394,
+        "raw_tail_rms_20ms": 6.476307316916063e-05
+      },
+      {
+        "frames": 60672,
+        "scales": [
+          0.6669999957084656,
+          1.2999999523162842,
+          0.5
+        ],
+        "speaker_id": [
+          3
+        ],
+        "raw_tail_peak_20ms": 0.000180386719875969,
+        "raw_tail_rms_20ms": 6.57342970953323e-05
+      },
+      {
+        "frames": 57088,
+        "scales": [
+          0.6669999957084656,
+          1.2999999523162842,
+          0.5
+        ],
+        "speaker_id": [
+          3
+        ],
+        "raw_tail_peak_20ms": 0.0001798949670046568,
+        "raw_tail_rms_20ms": 6.118635064922273e-05
+      },
+      {
+        "frames": 52480,
+        "scales": [
+          0.6669999957084656,
+          1.2999999523162842,
+          0.5
+        ],
+        "speaker_id": [
+          3
+        ],
+        "raw_tail_peak_20ms": 0.00025054701836779714,
+        "raw_tail_rms_20ms": 7.715013634879142e-05
+      }
+    ]
+  },
+  {
+    "model": "piper-nvcc",
+    "speaker": 6,
+    "seconds": 10.031020408163265,
+    "app_equals_direct_byte_for_byte": true,
+    "all_generated_frames_written": true,
+    "unmapped_phonemes": [],
+    "sample_rate": 22050,
+    "saturated_fraction": 1.808449074074074e-05,
+    "chunks": [
+      {
+        "frames": 46592,
+        "scales": [
+          0.6669999957084656,
+          1.2999999523162842,
+          0.5
+        ],
+        "speaker_id": [
+          6
+        ],
+        "raw_tail_peak_20ms": 0.0001576090871822089,
+        "raw_tail_rms_20ms": 4.646817615139298e-05
+      },
+      {
+        "frames": 64512,
+        "scales": [
+          0.6669999957084656,
+          1.2999999523162842,
+          0.5
+        ],
+        "speaker_id": [
+          6
+        ],
+        "raw_tail_peak_20ms": 0.00012168091052444652,
+        "raw_tail_rms_20ms": 4.3445834307931364e-05
+      },
+      {
+        "frames": 58112,
+        "scales": [
+          0.6669999957084656,
+          1.2999999523162842,
+          0.5
+        ],
+        "speaker_id": [
+          6
+        ],
+        "raw_tail_peak_20ms": 0.00017701213073451072,
+        "raw_tail_rms_20ms": 5.4029929742682725e-05
+      },
+      {
+        "frames": 51968,
+        "scales": [
+          0.6669999957084656,
+          1.2999999523162842,
+          0.5
+        ],
+        "speaker_id": [
+          6
+        ],
+        "raw_tail_peak_20ms": 0.00013690235209651291,
+        "raw_tail_rms_20ms": 4.397885641083121e-05
+      }
+    ]
+  },
+  {
+    "model": "piper-talesyntese",
+    "speaker": 3,
+    "seconds": 8.17342403628118,
+    "app_equals_direct_byte_for_byte": true,
+    "all_generated_frames_written": true,
+    "unmapped_phonemes": [],
+    "sample_rate": 22050,
+    "saturated_fraction": 0.0,
+    "chunks": [
+      {
+        "frames": 32000,
+        "scales": [
+          0.6669999957084656,
+          1.0,
+          0.800000011920929
+        ],
+        "speaker_id": [],
+        "raw_tail_peak_20ms": 0.0008945601293817163,
+        "raw_tail_rms_20ms": 0.0004249619087204337
+      },
+      {
+        "frames": 55040,
+        "scales": [
+          0.6669999957084656,
+          1.0,
+          0.800000011920929
+        ],
+        "speaker_id": [],
+        "raw_tail_peak_20ms": 0.0014058934757485986,
+        "raw_tail_rms_20ms": 0.0006477559800259769
+      },
+      {
+        "frames": 51968,
+        "scales": [
+          0.6669999957084656,
+          1.0,
+          0.800000011920929
+        ],
+        "speaker_id": [],
+        "raw_tail_peak_20ms": 0.0009229974821209908,
+        "raw_tail_rms_20ms": 0.00044512638123705983
+      },
+      {
+        "frames": 41216,
+        "scales": [
+          0.6669999957084656,
+          1.0,
+          0.800000011920929
+        ],
+        "speaker_id": [],
+        "raw_tail_peak_20ms": 0.0012206995161250234,
+        "raw_tail_rms_20ms": 0.0005361846415325999
+      }
+    ]
+  }
+]

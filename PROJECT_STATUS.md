@@ -110,6 +110,49 @@ local opt-in tests because CI does not contain multi-GB weights or this hardware
 
 ## Known limits and next work
 
+### NVCC shortening investigation — September 8
+
+User reports shortened/clipped sounds **throughout sentences**, not just the final
+word. This is now investigated rather than assumed to be a generic voice preference.
+Recent settings were native speed 1.0 and native noise defaults, including MON ID 6.
+
+`tests/audit_piper_path.py` ran inside the installed frozen dependency host against
+the installed production adapter. It checked NVCC speakers 3 and 6, plus Talesyntese,
+using a fixed four-sentence Norwegian passage (no user input text). Model/config
+hashes match the catalog. Captured ONNX inputs show NVCC's actual native scales
+`[0.667, 1.3, 0.5]` and correct speaker IDs. The old erroneous length_scale=1.0
+override is absent. No unmapped phonemes were found for the test passage.
+
+The test replayed identical raw ONNX results through the original direct
+`PiperVoice.synthesize_wav(..., SynthesisConfig(speaker_id=...))` API. All three WAVs
+were byte-identical to the application adapter. Every model-generated frame was
+written at native 22,050 Hz. This isolates wrapper/frame handling from stochastic
+generation; it is not a claim that two independent neural inference runs match.
+NVCC's sentence tails decayed close to silence; amplitude saturation was under
+0.002% of samples and does not explain lost syllable duration. These checks do not
+establish perceptual correctness or rule out an upstream model/runtime issue.
+
+Evidence: `%LOCALAPPDATA%/SkriviTTS/verification/nvcc-audit/report.json` and paired
+`*-app.wav` / `*-direct.wav`; numerical report copied into docs/NVCC_AUDIT.json.
+Installed UI code also matches repository source and uses synchronous Windows
+playback with purge only on explicit Stop/close. Some recent user run records show
+interrupted playback, but another completed and the user describes intra-sentence
+shortening, so final-word cancellation is not an adequate explanation.
+
+Focused upstream investigation found a closely matching known-quality report:
+https://huggingface.co/rhasspy/piper-voices/discussions/88 . The model author reported
+an earlier garbled training result and dissatisfaction with its retrained version;
+a Norwegian listener reported mumbling/jumping and poorer quality than the earlier
+voice. This is evidence about NVCC, not proof of a particular phoneme-duration bug.
+The published model card says NVCC was trained from scratch; Talesyntese's card
+records fine-tuning from Lessac. Neither fact alone establishes causation.
+
+No app settings, models or runtime defaults were changed to conceal this symptom.
+Talesyntese remains the positively evaluated baseline. NVCC quality work should
+next compare an upstream sample/runtime on identical input if pursued, rather than
+adding arbitrary playback padding or time-stretching. An exact user-provided failing
+sentence would permit a targeted pronunciation/duration investigation.
+
 - CPU only; GPU is the next separate measured performance experiment, not a toggle
   with unverified behavior. Warm reuse eliminates repeated loads, not inference cost.
 - Four built-in models, with a registry/adapter structure for adding more. Arbitrary
