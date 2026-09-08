@@ -1,0 +1,74 @@
+# Architecture and continuity
+
+## Source lineage
+
+The Tkinter read/compare workflow comes from the original Norwegian TTS Model
+Shootout v5 and its September extension (`workavoidance/Skrivi`, `tts-handoff`,
+commits 637d239 and 6d83b34). Its source snapshot is retained in
+`docs/shootout-v5-extension.py`; it is historical, not a launcher.
+
+`native/Engine.cs`, `OwnedJob.cs`, `VoiceSettings.cs` and `Contracts.cs` are adapted
+from the delivered VoxCPM2 Reader 0.2 source at Skrivi commit f54532b. Changes add
+explicit voices/runtime locations, CPU thread configuration and a persistent
+JSON-line host. Its authentication, native WAV validation and Windows job ownership
+are retained. It does not launch the Reader tray shell or register hotkeys.
+
+`engines/chatterbox.py` comes from the verified ONNX benchmark, itself following
+ONNX export example revision b8b5f7f75436de240639e777dce2b7e26a305681. It retains
+tokenization, Q4 graph selection, native output, natural stop checks and defaults.
+The new settings control actual inference parameters. No PyTorch is used.
+
+## Boundaries
+
+- `app/core.py`: schema 1 library registry, atomic JSON persistence, checksum-verified
+  downloads/imports, settings validation. A future schema fails without resetting data.
+- `app/main.py`: desktop workflow, model management, presets, history, ratings and
+  full-WAV Windows playback. Worker threads communicate with Tk through a queue.
+- `app/client.py`: owns one persistent worker, waits without blocking Tk, cancels
+  only its worker process tree. Normal app close waits for cancellation cleanup.
+- `engines/worker.py`: adapters and persistent model session; JSON lines on stdin/stdout.
+  Text exists in memory/IPC only. Upstream diagnostic output is discarded.
+- `native/Host.cs`: keeps the reused Vox engine alive between requests. CPU only.
+- `worker_host.py`: frozen Python/dependency host loading engine code shipped with
+  the app. Engine code changes do not require replacing downloaded model files.
+- `models.json`: built-in registry of exact model revisions, URLs, bytes and SHA-256.
+
+To add a model using an existing adapter, add a pinned catalog entry and appropriate
+settings/validation. For a new architecture, add an isolated adapter and dependency
+profile, declare effective device and native rate, then verify full-WAV quality and
+performance. Do not guess compatibility from the model file extension.
+
+## Durable storage
+
+```
+%LOCALAPPDATA%/SkriviTTS/
+  library.json             model locations + exact revisions
+  settings.json            per-model settings, no input text
+  models/<model-id>/       verified, persistent weights and companions
+  voices/                  imported reference WAVs
+  presets/                 named settings
+  outputs/                 native WAV + settings/timing/rating JSON
+  runtimes/python-engine-v1/  frozen dependency host
+  runtimes/vox-0.8.32/      pinned CrispASR + notices
+  versions/<app-version>/   versioned application files
+```
+
+`SKRIVI_TTS_DATA` can override the library in source tests. The Windows installer
+always targets the normal LocalAppData location. It verifies the complete package
+before copying application/runtime files, never touches models/settings/audio, and
+updates shortcuts last. Older app versions remain available for rollback. Runtime
+profile names are versioned: dependency changes require a new profile, not deletion
+of the existing runtime. Automatic online updating and uninstall UI are not included.
+
+## Measurement
+
+Results include cold/warm state, exact settings/model revision, app version, CPU
+device, load, generation, audio duration, generation/audio ratio, total wait and RAM
+where available. Total wait ends at complete WAV readiness, before playback; physical
+speaker onset is not measured. Warm load is near zero. Changing settings deliberately
+reloads the model for a clear comparison boundary. RAM is a process high-water mark,
+not an independently sampled per-model peak; Vox additionally reports its child peak.
+
+Quality belongs to the listener. Ratings are user-entered and not inferred from
+waveform checks. Chatterbox's seed only controls supported runtime randomness;
+greedy token selection is retained. Native voice defaults remain the baseline.

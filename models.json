@@ -1,0 +1,150 @@
+[
+  {
+    "id": "voxcpm-q4",
+    "name": "VoxCPM2 Q4",
+    "engine": "voxcpm",
+    "revision": "d426b5da661d5f833b45663879b1a0b0573a5b8e",
+    "license": "Apache-2.0 (model); MIT runtime",
+    "description": "Public OpenBMB VoxCPM2. Native 48 kHz. Default or reference voice. CPU. Current adapter limit: 4,096 characters.",
+    "files": [
+      {
+        "path": "voxcpm2-q4_k.gguf",
+        "bytes": 1689498432,
+        "sha256": "502efe74f6a59c370b3abf5a3fcfd7c3955ca6c167b411c8aee3977e9e46c079",
+        "url": "https://huggingface.co/cstr/voxcpm2-GGUF/resolve/d426b5da661d5f833b45663879b1a0b0573a5b8e/voxcpm2-q4_k.gguf"
+      }
+    ]
+  },
+  {
+    "id": "chatterbox-q4",
+    "name": "Chatterbox Multilingual Q4 ONNX",
+    "engine": "chatterbox",
+    "revision": "452d3f434aa592098f1eedac9099f33642ab2da5",
+    "license": "MIT",
+    "description": "Q4 language model with FP32 companions. Native 24 kHz. Norwegian / English. CPU.",
+    "files": [
+      {
+        "path": "default_voice.wav",
+        "bytes": 714320,
+        "sha256": "3ebc531cdaba358a327099c1c4f0448026719957bcf4d8e9868767f227e02f4e",
+        "url": "https://huggingface.co/onnx-community/chatterbox-multilingual-ONNX/resolve/452d3f434aa592098f1eedac9099f33642ab2da5/default_voice.wav"
+      },
+      {
+        "path": "tokenizer.json",
+        "bytes": 71798,
+        "sha256": "29d48c4a178f6af3ad5130097c34744639e9294847b38a7b912c8c68027cb819",
+        "url": "https://huggingface.co/onnx-community/chatterbox-multilingual-ONNX/resolve/452d3f434aa592098f1eedac9099f33642ab2da5/tokenizer.json"
+      },
+      {
+        "path": "tokenizer_config.json",
+        "bytes": 244,
+        "sha256": "b35967f93e30313d05fc9d520721ca9f671aaa5b3edbb03059aed3ff68b4c4c0",
+        "url": "https://huggingface.co/onnx-community/chatterbox-multilingual-ONNX/resolve/452d3f434aa592098f1eedac9099f33642ab2da5/tokenizer_config.json"
+      },
+      {
+        "path": "generation_config.json",
+        "bytes": 93,
+        "sha256": "1b6fbb953861089ebe7da64df46eeef570d53f47a44b7cc1b4d543669fc9cd50",
+        "url": "https://huggingface.co/onnx-community/chatterbox-multilingual-ONNX/resolve/452d3f434aa592098f1eedac9099f33642ab2da5/generation_config.json"
+      },
+      {
+        "path": "README.md",
+        "bytes": 18077,
+        "sha256": "835c96a94689b59c27f527c059d2bd37567c48223cd8ce00bff5b341c02b99d6",
+        "url": "https://huggingface.co/onnx-community/chatterbox-multilingual-ONNX/resolve/452d3f434aa592098f1eedac9099f33642ab2da5/README.md"
+      },
+      {
+        "path": "onnx/speech_encoder.onnx",
+        "bytes": 1184608,
+        "sha256": "8f1c8a0f89b77bf9cd5dd8f2e034eb2c79dc00fe70d41196b28c257643b00ccb",
+        "url": "https://huggingface.co/onnx-community/chatterbox-multilingual-ONNX/resolve/452d3f434aa592098f1eedac9099f33642ab2da5/onnx/speech_encoder.onnx"
+      },
+      {
+        "path": "onnx/speech_encoder.onnx_data",
+        "bytes": 591274880,
+        "sha256": "92f8f290fc9720e169bc2412c507209e20b03f6564bc3243739e25c56f7dfb8f",
+        "url": "https://huggingface.co/onnx-community/chatterbox-multilingual-ONNX/resolve/452d3f434aa592098f1eedac9099f33642ab2da5/onnx/speech_encoder.onnx_data"
+      },
+      {
+        "path": "onnx/embed_tokens.onnx",
+        "bytes": 13286,
+        "sha256": "f785819ca4f6271262d5bb8971d62796c3a909e3b031982c113dbe83a4c3b854",
+        "url": "https://huggingface.co/onnx-community/chatterbox-multilingual-ONNX/resolve/452d3f434aa592098f1eedac9099f33642ab2da5/onnx/embed_tokens.onnx"
+      },
+      {
+        "path": "onnx/embed_tokens.onnx_data",
+        "bytes": 68390912,
+        "sha256": "2a15f7dd73b2ee47f6edf87740324011594b5a528ed6471ae55e327ed6cad68c",
+        "url": "https://huggingface.co/onnx-community/chatterbox-multilingual-ONNX/resolve/452d3f434aa592098f1eedac9099f33642ab2da5/onnx/embed_tokens.onnx_data"
+      },
+      {
+        "path": "onnx/conditional_decoder.onnx",
+        "bytes": 6350448,
+        "sha256": "1656d0d31332bae1854839959a3139300ebb67c178651dfa3f8c5fbfa5351351",
+        "url": "https://huggingface.co/onnx-community/chatterbox-multilingual-ONNX/resolve/452d3f434aa592098f1eedac9099f33642ab2da5/onnx/conditional_decoder.onnx"
+      },
+      {
+        "path": "onnx/conditional_decoder.onnx_data",
+        "bytes": 533970816,
+        "sha256": "51d58345a272747665ec9d5bb61e01835258a940e321a288582ac4c18cf01b5a",
+        "url": "https://huggingface.co/onnx-community/chatterbox-multilingual-ONNX/resolve/452d3f434aa592098f1eedac9099f33642ab2da5/onnx/conditional_decoder.onnx_data"
+      },
+      {
+        "path": "onnx/language_model_q4.onnx",
+        "bytes": 227911,
+        "sha256": "7f8cdca83b2493536cbf3acf421199808a3d68736f55f4eabd20ef8a99da4313",
+        "url": "https://huggingface.co/onnx-community/chatterbox-multilingual-ONNX/resolve/452d3f434aa592098f1eedac9099f33642ab2da5/onnx/language_model_q4.onnx"
+      },
+      {
+        "path": "onnx/language_model_q4.onnx_data",
+        "bytes": 353621248,
+        "sha256": "e79ab8784122a501718868b9631ff46e151c552d9b24e50f25d721f375e3526c",
+        "url": "https://huggingface.co/onnx-community/chatterbox-multilingual-ONNX/resolve/452d3f434aa592098f1eedac9099f33642ab2da5/onnx/language_model_q4.onnx_data"
+      }
+    ]
+  },
+  {
+    "id": "piper-nvcc",
+    "name": "Piper NVCC",
+    "engine": "piper",
+    "revision": "1162a9173d0ce503555aed757976b7a9912eae4c",
+    "license": "CC0 voice; GPL-3.0 runtime",
+    "description": "Native 22.05 kHz. Ten Norwegian speakers; 3 = KON, female Oslo. CPU.",
+    "files": [
+      {
+        "path": "no_NO-nvcc-medium.onnx",
+        "bytes": 76770227,
+        "sha256": "3f51702946d9544898440a1a66906155661a9d680ee103130ff68f73360b512e",
+        "url": "https://huggingface.co/rhasspy/piper-voices/resolve/1162a9173d0ce503555aed757976b7a9912eae4c/no/no_NO/nvcc/medium/no_NO-nvcc-medium.onnx"
+      },
+      {
+        "path": "no_NO-nvcc-medium.onnx.json",
+        "bytes": 5397,
+        "sha256": "98410e911e5a9076ac4677a79b08b20f98c54f550c4388e29978f6bafa32b83d",
+        "url": "https://huggingface.co/rhasspy/piper-voices/resolve/1162a9173d0ce503555aed757976b7a9912eae4c/no/no_NO/nvcc/medium/no_NO-nvcc-medium.onnx.json"
+      }
+    ]
+  },
+  {
+    "id": "piper-talesyntese",
+    "name": "Piper Talesyntese",
+    "engine": "piper",
+    "revision": "1162a9173d0ce503555aed757976b7a9912eae4c",
+    "license": "CC0 voice; GPL-3.0 runtime",
+    "description": "Native 22.05 kHz. Single Norwegian voice; speaker number is ignored. CPU.",
+    "files": [
+      {
+        "path": "no_NO-talesyntese-medium.onnx",
+        "bytes": 63201294,
+        "sha256": "b763aebe02e72c4628c4074c4b8b448f05ffe523b975bfcd58e2c5d531270c13",
+        "url": "https://huggingface.co/rhasspy/piper-voices/resolve/1162a9173d0ce503555aed757976b7a9912eae4c/no/no_NO/talesyntese/medium/no_NO-talesyntese-medium.onnx"
+      },
+      {
+        "path": "no_NO-talesyntese-medium.onnx.json",
+        "bytes": 4880,
+        "sha256": "b0eb0491fc8bf9843d2beac8acf8773b6cf59274316406b36ff579ae8a1909d5",
+        "url": "https://huggingface.co/rhasspy/piper-voices/resolve/1162a9173d0ce503555aed757976b7a9912eae4c/no/no_NO/talesyntese/medium/no_NO-talesyntese-medium.onnx.json"
+      }
+    ]
+  }
+]

@@ -1,0 +1,13 @@
+.build-env/
+build/
+dist/
+*.spec
+__pycache__/
+*.pyc
+local-*.json
+*.wav
+*.onnx
+*.gguf
+*.onnx_data
+*.exe
+*.dll

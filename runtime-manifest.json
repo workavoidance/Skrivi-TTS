@@ -1,0 +1,11 @@
+{
+  "name": "CrispASR",
+  "version": "v0.8.32",
+  "filename": "crispasr-windows-x86_64-cpu.zip",
+  "bytes": 8261759,
+  "sha256": "ac8b6caf4dd448d00c5050907275bce4d154747110c37943aa4f69ee7fac9541",
+  "url": "https://github.com/CrispStrobe/CrispASR/releases/download/v0.8.32/crispasr-windows-x86_64-cpu.zip",
+  "cpu_requirement": "x86-64 with AVX2",
+  "historical_upstream_validation": "Official release SHA-256 and ZIP integrity passed; executable not tested on Windows.",
+  "local_validation": "Reused runtime passed native Windows cold/warm VoxCPM2 generation and cancellation on Ryzen 7 7700, September 8, 2026."
+}
