@@ -1,0 +1,72 @@
+name: Publish verified Windows installer
+on:
+  workflow_dispatch:
+    inputs:
+      validation_run:
+        description: Successful Windows installer workflow run
+        required: true
+        default: '35456548862'
+      expected_source:
+        description: Exact installer source commit from the approved run
+        required: true
+        default: 'bf612d130646a42a59be46ae52efd7652700c46b'
+permissions:
+  actions: read
+  contents: write
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      VALIDATION_RUN: ${{ inputs.validation_run }}
+      EXPECTED_SOURCE: ${{ inputs.expected_source }}
+    steps:
+      - name: Check successful source run
+        run: |
+          gh api "repos/$GH_REPO/actions/runs/$VALIDATION_RUN" > run.json
+          python - <<'PY'
+          import json, os
+          run = json.load(open("run.json"))
+          assert run["conclusion"] == "success"
+          assert run["head_sha"] == os.environ["EXPECTED_SOURCE"]
+          assert run["head_repository"]["full_name"] == os.environ["GH_REPO"]
+          assert run["path"] == ".github/workflows/installer.yml"
+          PY
+      - uses: actions/download-artifact@v4
+        with:
+          name: Skrivi-TTS-Windows-installer
+          run-id: ${{ inputs.validation_run }}
+          github-token: ${{ github.token }}
+          path: installer
+      - uses: actions/download-artifact@v4
+        with:
+          name: installer-test-logs
+          run-id: ${{ inputs.validation_run }}
+          github-token: ${{ github.token }}
+          path: evidence
+      - name: Verify exact executable and test evidence
+        run: |
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          root = Path("installer")
+          exe = root / "Skrivi-TTS-0.2.1-windows-x64-setup.exe"
+          actual = hashlib.file_digest(exe.open("rb"), "sha256").hexdigest()
+          sums = (root / "INSTALLER-SHA256SUMS.txt").read_text().split()
+          provenance = json.loads((root / "INSTALLER-PROVENANCE.json").read_text(encoding="utf-8-sig"))
+          evidence = json.loads(Path("evidence/results.json").read_text(encoding="utf-8-sig"))
+          assert sums == [actual, exe.name]
+          assert provenance["installer_sha256"] == actual
+          assert provenance["installer_source_commit"] == os.environ["EXPECTED_SOURCE"]
+          assert provenance["app_version"] == "0.2.1"
+          assert provenance["source_archive_sha256"] == "076beea27234c6442c7f782948c2680422176eb8a172e1aef16b2f96c4e58050"
+          assert evidence["conflict_preserved"] and evidence["installed_startup"]
+          assert evidence["reinstall_preserved"] == evidence["uninstall_preserved"] > 0
+          assert evidence["voices"] == "Bokmaal and English passed"
+          print(f"Verified {exe.name}: {actual}")
+          PY
+      - name: Add setup assets without replacing existing downloads
+        run: gh release upload v0.2.1 installer/Skrivi-TTS-0.2.1-windows-x64-setup.exe installer/INSTALLER-SHA256SUMS.txt installer/INSTALLER-PROVENANCE.json
