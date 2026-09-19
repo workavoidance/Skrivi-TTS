@@ -27,3 +27,7 @@ redistribution restrictions concerned a different model, not either bundled mode
 Automatic approval review rejected the first public binary upload because it
 flagged the prior redistribution discussion and requested exact artifact approval.
 No release asset was uploaded by that rejected command. Sources remain public.
+
+After the exact upstream licenses and archive inventory were checked, approval
+review permitted the same upload. GitHub received both ZIPs with matching SHA-256
+values; release v0.2.1 is now public. The initial rejection is resolved.

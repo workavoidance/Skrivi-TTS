@@ -6,7 +6,8 @@
   User explicitly requested a public open-source GitHub project; it is now PUBLIC.
   Initial reader source commit 727eced; GitHub Actions passed. Source, tests, build recipes and releases
   belong here, not solely in a local machine folder.
-- App version: **0.2.1**, installed and verified; public binary release upload is pending.
+- App version: **0.2.1**, installed, verified and publicly released.
+  Download: https://github.com/workavoidance/Skrivi-TTS/releases/tag/v0.2.1.
 - Source: `C:/Users/jon/.codex/visualizations/2026/09/08/01a07fdc-16e7-7330-83a6-cbdec9f59c1d/skrivi-tts`.
   No build requires that exact path. README provides fresh-clone instructions.
 - Existing installed 0.1.0 and cached models remain available until installation
@@ -76,7 +77,12 @@ App source commit 8d1f24a; update packaging 7ec23ba. SHA-256 in build/SHA256SUMS
 The first public binary upload was rejected by automatic approval review, citing
 prior redistribution restrictions and exact artifact approval. No release created
 by that command. Exact bundled-model license checks: docs/RELEASE_LICENSE_REVIEW.md.
-Next: resolve the upload review and publish the verified artifacts.
+The licensing evidence resolved automatic approval review. Both ZIPs and checksums
+were uploaded, GitHub SHA-256 values matched local files, and v0.2.1 is published:
+https://github.com/workavoidance/Skrivi-TTS/releases/tag/v0.2.1.
+Next: follow docs/ROADMAP.md for explicit manual update checks and Skrivi-style
+Application settings, including automatic Windows UI language and manual override.
+Startup-at-sign-in is already present and remains off unless the user enables it.
 The user requested a manual Check for updates button, with no automatic network
 checks, and explicitly said not to rebuild solely for it. docs/ROADMAP.md records
 this for the next release. Current Project & updates opens GitHub when clicked.
