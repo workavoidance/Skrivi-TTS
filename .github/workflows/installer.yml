@@ -1,0 +1,36 @@
+name: Windows installer
+on:
+  push:
+    branches: [main]
+    paths: ['installer/**', 'scripts/build-installer.ps1', 'tests/check_installer.ps1', 'tests/check_installed_voices.py', '.github/workflows/installer.yml']
+  pull_request:
+    paths: ['installer/**', 'scripts/build-installer.ps1', 'tests/check_installer.ps1', 'tests/check_installed_voices.py', '.github/workflows/installer.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  installer:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install compiler
+        run: choco install innosetup --no-progress -y
+      - name: Build from verified release
+        shell: powershell
+        run: ./scripts/build-installer.ps1
+      - name: Verify installation, reinstall, voices and data-preserving uninstall
+        shell: powershell
+        run: ./tests/check_installer.ps1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Skrivi-TTS-Windows-installer
+          path: dist/installer/*
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: installer-test-logs
+          path: build/installer-tests/*

@@ -35,6 +35,32 @@
   identical cached models; differing existing model/runtime files cause a clear
   failure rather than overwrite. No installer network calls.
 
+## Conventional Windows setup executable
+
+The user requested a normal EXE installer alongside the existing ZIP, before
+publishing the Read Aloud website download. `installer/SkriviTTS.iss` and
+`scripts/build-installer.ps1` package the checksum-pinned published 0.2.1 bundle;
+they do not rebuild the app, change voices, or modify immutable engine profiles.
+Output: `dist/installer/Skrivi-TTS-0.2.1-windows-x64-setup.exe`, separate checksum
+and provenance files. Source ZIP SHA-256:
+`076beea27234c6442c7f782948c2680422176eb8a172e1aef16b2f96c4e58050`.
+
+Setup is per-user, bilingual English/Norwegian, includes both voices offline,
+rejects differing existing model/runtime files, and preserves startup opt-in.
+Uninstall tracks app files and shortcuts, but deliberately retains all models,
+runtimes, settings, presets and user audio. Installer integration tests only run
+on a disposable GitHub-hosted runner, never against the user's existing library.
+Windows installer workflow 35456548862 passed on 19 September 2026 (source
+bf612d1): conflict preservation, clean per-user install, installed startup,
+reinstall with unchanged model/runtime/user-file hashes and timestamps,
+Norwegian and English native-rate speech, and uninstall preserving persistent
+data. The tested EXE and its checksum/provenance are attached to that run;
+publish those exact bytes as an additional v0.2.1 release asset, without replacing
+the original ZIPs or moving the existing release tag.
+
+The speech-to-text repository was renamed to `workavoidance/Skrivi-STT` at the
+user's request; old GitHub URLs redirect. Do not reuse the old `Skrivi` repo name.
+
 ## Offline screen-region OCR research — 19 September 2026
 
 User requested research, not implementation, and explicitly requires fully offline
