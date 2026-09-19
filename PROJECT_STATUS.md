@@ -181,3 +181,24 @@ then implement and verify a GPU adapter on the RTX 4060. Preserve this CPU/full-
 baseline. Do not return to MOSS dependency debugging, broad model surveys or Piper
 polish without a concrete new reason. Prior experiments and rationale are retained
 in `docs/PREVIOUS_PROJECT_STATUS.md` and `docs/ARCHITECTURE.md`.
+
+
+## Nynorsk accuracy screen — 19 September 2026
+
+Completed a two-passage local screen of Talesyntese, VoxCPM2 Q4 and Chatterbox Q4,
+using installed weights and unchanged native settings. Five WAVs were produced;
+Chatterbox failed to reach a natural stop on the word-focused passage. Offline
+Whisper medium (existing cache) recovered all Talesyntese numeric values, but
+flagged suspect phrases in both Talesyntese and Vox; Chatterbox's numbers transcript
+was badly mismatched. These are ASR disagreements, not certified TTS pronunciation
+errors. Whisper normalizes some Nynorsk to Bokmal, so no accuracy percentage or
+Nynorsk-support certification is claimed. Human listening remains necessary.
+
+Details, exact synthetic texts, settings, model revisions and evidence:
+`docs/NYNORSK_SCREENING.md`, `docs/NYNORSK_SCREENING.json`.
+Local listening page and native WAVs: `build/nynorsk-2026-09-19/listen.html`.
+Repeatable opt-in runners: `tests/nynorsk_accuracy.py`, `tests/nynorsk_transcribe.py`,
+`tests/nynorsk_report.py`. ASR dependencies are isolated under build, with a saved
+version list. No application code, user presets, model assets or installed runtime
+was changed. Next: listen to Talesyntese's suspected phrases before calling it
+accurate Nynorsk; retain the existing positive Bokmal quality verdict separately.

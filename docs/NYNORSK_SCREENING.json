@@ -1,0 +1,346 @@
+{
+  "synthesis": [
+    {
+      "load_seconds": 0.8825568999745883,
+      "generation_seconds": 0.5742466999799944,
+      "audio_seconds": 10.228390022675738,
+      "sample_rate": 22050,
+      "warm": false,
+      "settings": {
+        "speaker": 3,
+        "speed": 1.0,
+        "noise_scale": "",
+        "noise_w_scale": ""
+      },
+      "model_id": "piper-talesyntese",
+      "model": "Piper Talesyntese",
+      "revision": "1162a9173d0ce503555aed757976b7a9912eae4c",
+      "device": "CPU",
+      "real_time_factor": 0.05614243284690194,
+      "worker_peak_ram_bytes": 241119232,
+      "output": "C:\\Users\\jon\\.codex\\visualizations\\2026\\09\\08\\01a07fdc-16e7-7330-83a6-cbdec9f59c1d\\skrivi-tts\\build\\nynorsk-2026-09-19\\piper-talesyntese-words.wav",
+      "case": "words",
+      "expected_text": "Eg veit ikkje kva ho meiner. Dei kjem heim i morgon. Me ønskjer å høyre røysta di. Kvifor finn de ikkje nøkkelen? Nokon må hjelpe borna våre. Sjølv om det regnar, går eg ein tur.",
+      "wav_sha256": "318c6d2a6f47483ed5a3d386d9621fceac537e941986776cdd1b2ddbbdad864f"
+    },
+    {
+      "load_seconds": 6.00004568696022e-07,
+      "generation_seconds": 0.27793819998623803,
+      "audio_seconds": 10.077460317460318,
+      "sample_rate": 22050,
+      "warm": true,
+      "settings": {
+        "speaker": 3,
+        "speed": 1.0,
+        "noise_scale": "",
+        "noise_w_scale": ""
+      },
+      "model_id": "piper-talesyntese",
+      "model": "Piper Talesyntese",
+      "revision": "1162a9173d0ce503555aed757976b7a9912eae4c",
+      "device": "CPU",
+      "real_time_factor": 0.02758018302534809,
+      "worker_peak_ram_bytes": 276611072,
+      "output": "C:\\Users\\jon\\.codex\\visualizations\\2026\\09\\08\\01a07fdc-16e7-7330-83a6-cbdec9f59c1d\\skrivi-tts\\build\\nynorsk-2026-09-19\\piper-talesyntese-numbers.wav",
+      "case": "numbers",
+      "expected_text": "Møtet byrjar klokka 14.30 den 21. september. Billetten kostar 349 kroner. Me har kjøpt 12 eple og 3 bøker. Toget går frå spor 4.",
+      "wav_sha256": "b35704b206eca0e92bc2cffa6c79908a4c4d1a4358951bdc6985fa8f0c08faea"
+    },
+    {
+      "ok": true,
+      "load_seconds": 2.0223667000344285,
+      "generation_seconds": 23.3959047,
+      "audio_seconds": 10.28,
+      "sample_rate": 48000,
+      "peak_ram_bytes": 2574139392,
+      "warm": false,
+      "settings": {
+        "seed": 42,
+        "steps": 10,
+        "guidance": 2.0,
+        "threads": 8,
+        "reference": "",
+        "consent": false
+      },
+      "model_id": "voxcpm-q4",
+      "model": "VoxCPM2 Q4",
+      "revision": "d426b5da661d5f833b45663879b1a0b0573a5b8e",
+      "device": "CPU",
+      "real_time_factor": 2.2758662159533074,
+      "worker_peak_ram_bytes": 276639744,
+      "output": "C:\\Users\\jon\\.codex\\visualizations\\2026\\09\\08\\01a07fdc-16e7-7330-83a6-cbdec9f59c1d\\skrivi-tts\\build\\nynorsk-2026-09-19\\voxcpm-q4-words.wav",
+      "case": "words",
+      "expected_text": "Eg veit ikkje kva ho meiner. Dei kjem heim i morgon. Me ønskjer å høyre røysta di. Kvifor finn de ikkje nøkkelen? Nokon må hjelpe borna våre. Sjølv om det regnar, går eg ein tur.",
+      "wav_sha256": "9f8a9d7cbd7640c1c4feefe8d04336bb81b6480c0236e8f4988dd4a39e3fed1f"
+    },
+    {
+      "ok": true,
+      "load_seconds": 0.001110599993818795,
+      "generation_seconds": 28.221124399999997,
+      "audio_seconds": 12.8,
+      "sample_rate": 48000,
+      "peak_ram_bytes": 2637721600,
+      "warm": true,
+      "settings": {
+        "seed": 42,
+        "steps": 10,
+        "guidance": 2.0,
+        "threads": 8,
+        "reference": "",
+        "consent": false
+      },
+      "model_id": "voxcpm-q4",
+      "model": "VoxCPM2 Q4",
+      "revision": "d426b5da661d5f833b45663879b1a0b0573a5b8e",
+      "device": "CPU",
+      "real_time_factor": 2.2047753437499997,
+      "worker_peak_ram_bytes": 276639744,
+      "output": "C:\\Users\\jon\\.codex\\visualizations\\2026\\09\\08\\01a07fdc-16e7-7330-83a6-cbdec9f59c1d\\skrivi-tts\\build\\nynorsk-2026-09-19\\voxcpm-q4-numbers.wav",
+      "case": "numbers",
+      "expected_text": "Møtet byrjar klokka 14.30 den 21. september. Billetten kostar 349 kroner. Me har kjøpt 12 eple og 3 bøker. Toget går frå spor 4.",
+      "wav_sha256": "016f0f28efb2bed87e3a1e4caf205990e41c866b9b42afb7f840ea6b8f57d1cd"
+    },
+    {
+      "model_id": "chatterbox-q4",
+      "case": "words",
+      "error": "No natural stop token; refusing to save truncated speech",
+      "note": "Full 2048-token budget exhausted. Test cleanup then timed out; failure recovered from captured process output."
+    },
+    {
+      "load_seconds": 61.76693849998992,
+      "generation_seconds": 21.969608199957293,
+      "audio_seconds": 12.04,
+      "sample_rate": 24000,
+      "speech_tokens": 301,
+      "natural_stop": true,
+      "token_generation_seconds": 5.606473400024697,
+      "wave_decoder_seconds": 16.353575100016315,
+      "warm": false,
+      "settings": {
+        "seed": 2607,
+        "threads": 8,
+        "language": "no",
+        "exaggeration": 0.5,
+        "repetition_penalty": 1.2,
+        "max_tokens": 2048,
+        "reference": "",
+        "consent": false
+      },
+      "model_id": "chatterbox-q4",
+      "model": "Chatterbox Multilingual Q4 ONNX",
+      "revision": "452d3f434aa592098f1eedac9099f33642ab2da5",
+      "device": "CPU",
+      "real_time_factor": 1.8247182890329978,
+      "worker_peak_ram_bytes": 2413309952,
+      "output": "C:\\Users\\jon\\.codex\\visualizations\\2026\\09\\08\\01a07fdc-16e7-7330-83a6-cbdec9f59c1d\\skrivi-tts\\build\\nynorsk-2026-09-19\\chatterbox-q4-numbers.wav",
+      "case": "numbers",
+      "expected_text": "Møtet byrjar klokka 14.30 den 21. september. Billetten kostar 349 kroner. Me har kjøpt 12 eple og 3 bøker. Toget går frå spor 4.",
+      "wav_sha256": "ae995f3dcce147cdfd60bcdd2fb180880c4e4fb0e53798b3d1aafd668e6fb318"
+    }
+  ],
+  "asr": {
+    "asr_model": "C:\\Users\\jon\\AppData\\Local\\Skrivi\\models\\installed\\medium",
+    "model_sha256": "9b45e1009dcc4ab601eff815b61d80e60ce3fd8c74c1a14f4a282258286b51ae",
+    "packages": {
+      "faster-whisper": "1.2.1",
+      "ctranslate2": "4.8.2",
+      "av": "18.1.0"
+    },
+    "settings": {
+      "language": "no",
+      "task": "transcribe",
+      "compute_type": "int8",
+      "device": "cpu",
+      "beam_size": 5,
+      "temperature": 0,
+      "condition_on_previous_text": false,
+      "vad_filter": false,
+      "initial_prompt": null
+    },
+    "limitation": "ASR can normalize Nynorsk to Bokmal or repair mispronunciation. Disagreements are candidates for human listening, not confirmed TTS errors.",
+    "results": [
+      {
+        "file": "piper-talesyntese-numbers.wav",
+        "text": "Møte bylge er klokka 14.30 den 21. september. Billetten koster 349 kroner, med å kjøp 12 æpple og tre bøker. Togget går fra spor 4.",
+        "seconds": 4.619271599978674,
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 3.92,
+            "text": " Møte bylge er klokka 14.30 den 21. september.",
+            "avg_logprob": -0.36461075798409887
+          },
+          {
+            "start": 4.14,
+            "end": 8.6,
+            "text": " Billetten koster 349 kroner, med å kjøp 12 æpple og tre bøker.",
+            "avg_logprob": -0.36461075798409887
+          },
+          {
+            "start": 8.78,
+            "end": 9.84,
+            "text": " Togget går fra spor 4.",
+            "avg_logprob": -0.36461075798409887
+          }
+        ]
+      },
+      {
+        "file": "piper-talesyntese-words.wav",
+        "text": "Jeg vet ikke hva hun mener. Dei kjem heim i morgon. Me ønskjer å høyre røystadig. Pry forfinner ikkje nøklen. Nokon må hjelpe borna våre, sjølv om det regnar bør ei eit tur.",
+        "seconds": 5.784669600019697,
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 1.54,
+            "text": " Jeg vet ikke hva hun mener.",
+            "avg_logprob": -0.39694443345069885
+          },
+          {
+            "start": 1.72,
+            "end": 2.86,
+            "text": " Dei kjem heim i morgon.",
+            "avg_logprob": -0.39694443345069885
+          },
+          {
+            "start": 3.08,
+            "end": 4.6,
+            "text": " Me ønskjer å høyre røystadig.",
+            "avg_logprob": -0.39694443345069885
+          },
+          {
+            "start": 4.78,
+            "end": 5.9,
+            "text": " Pry forfinner ikkje nøklen.",
+            "avg_logprob": -0.39694443345069885
+          },
+          {
+            "start": 6.8,
+            "end": 8.16,
+            "text": " Nokon må hjelpe borna våre,",
+            "avg_logprob": -0.39694443345069885
+          },
+          {
+            "start": 8.34,
+            "end": 10.0,
+            "text": " sjølv om det regnar bør ei eit tur.",
+            "avg_logprob": -0.39694443345069885
+          }
+        ]
+      },
+      {
+        "file": "voxcpm-q4-numbers.wav",
+        "text": "Møte byrje er klokka 14.30 den 21. SEPTEMBER Billetten kostet 340 diker kroner. Vi har kjøpt 12 eple og 3 bøker. Togget går fra spor 4.",
+        "seconds": 4.795891100016888,
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 2.18,
+            "text": " Møte byrje er klokka 14.30 den 21.",
+            "avg_logprob": -0.349794662710446
+          },
+          {
+            "start": 3.42,
+            "end": 4.06,
+            "text": " SEPTEMBER",
+            "avg_logprob": -0.349794662710446
+          },
+          {
+            "start": 4.06,
+            "end": 7.32,
+            "text": " Billetten kostet 340 diker kroner.",
+            "avg_logprob": -0.349794662710446
+          },
+          {
+            "start": 7.36,
+            "end": 11.0,
+            "text": " Vi har kjøpt 12 eple og 3 bøker.",
+            "avg_logprob": -0.349794662710446
+          },
+          {
+            "start": 11.16,
+            "end": 12.58,
+            "text": " Togget går fra spor 4.",
+            "avg_logprob": -0.349794662710446
+          }
+        ]
+      },
+      {
+        "file": "voxcpm-q4-words.wav",
+        "text": "Jeg vet ikke hva hun mener. Det kommer hjem i morgen. Vi ønsker å høre høyre røystadig. Kvifor finner ikke nøklen. Noe om å hjelpe borna våre. Selv om det regner går jeg etter en tur.",
+        "seconds": 5.493988400034141,
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 2.0,
+            "text": " Jeg vet ikke hva hun mener.",
+            "avg_logprob": -0.29503949650798933
+          },
+          {
+            "start": 2.2,
+            "end": 3.1,
+            "text": " Det kommer hjem i morgen.",
+            "avg_logprob": -0.29503949650798933
+          },
+          {
+            "start": 3.64,
+            "end": 5.1,
+            "text": " Vi ønsker å høre høyre røystadig.",
+            "avg_logprob": -0.29503949650798933
+          },
+          {
+            "start": 5.34,
+            "end": 6.5,
+            "text": " Kvifor finner ikke nøklen.",
+            "avg_logprob": -0.29503949650798933
+          },
+          {
+            "start": 6.84,
+            "end": 8.2,
+            "text": " Noe om å hjelpe borna våre.",
+            "avg_logprob": -0.29503949650798933
+          },
+          {
+            "start": 8.44,
+            "end": 10.1,
+            "text": " Selv om det regner går jeg etter en tur.",
+            "avg_logprob": -0.29503949650798933
+          }
+        ]
+      },
+      {
+        "file": "chatterbox-q4-numbers.wav",
+        "text": "Møte begynner å klokke og varte sen mele siden den nye september. Biletten koster sen mele siden mele siden kroner. Vi har kjøpt ut vettelig eple og trobøker. Tåget gjør frosporarbeid.",
+        "seconds": 5.669044999987818,
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 4.16,
+            "text": " Møte begynner å klokke og varte sen mele siden den nye september.",
+            "avg_logprob": -0.4823859493906905
+          },
+          {
+            "start": 4.32,
+            "end": 7.06,
+            "text": " Biletten koster sen mele siden mele siden kroner.",
+            "avg_logprob": -0.4823859493906905
+          },
+          {
+            "start": 7.22,
+            "end": 9.68,
+            "text": " Vi har kjøpt ut vettelig eple og trobøker.",
+            "avg_logprob": -0.4823859493906905
+          },
+          {
+            "start": 10.0,
+            "end": 11.58,
+            "text": " Tåget gjør frosporarbeid.",
+            "avg_logprob": -0.4823859493906905
+          }
+        ]
+      }
+    ]
+  },
+  "methodology": "Two synthetic Nynorsk passages; no text normalization or output processing. Installed 0.1.0 engine code verified identical. No target-text ASR prompt. Word accuracy and pronunciation remain unconfirmed pending listening.",
+  "timing_caveat": "Diagnostic single runs, not controlled benchmarks. Dependency setup and, near the end of the failed Chatterbox word run, ASR overlapped that run. Completed Piper/Vox synthesis preceded ASR.",
+  "audio_folder": "C:\\Users\\jon\\.codex\\visualizations\\2026\\09\\08\\01a07fdc-16e7-7330-83a6-cbdec9f59c1d\\skrivi-tts\\build\\nynorsk-2026-09-19"
+}
