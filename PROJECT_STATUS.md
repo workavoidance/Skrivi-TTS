@@ -50,7 +50,13 @@ rejects differing existing model/runtime files, and preserves startup opt-in.
 Uninstall tracks app files and shortcuts, but deliberately retains all models,
 runtimes, settings, presets and user audio. Installer integration tests only run
 on a disposable GitHub-hosted runner, never against the user's existing library.
-Verification and publication are pending the Windows installer workflow.
+Windows installer workflow 35456548862 passed on 19 September 2026 (source
+bf612d1): conflict preservation, clean per-user install, installed startup,
+reinstall with unchanged model/runtime/user-file hashes and timestamps,
+Norwegian and English native-rate speech, and uninstall preserving persistent
+data. The tested EXE and its checksum/provenance are attached to that run;
+publish those exact bytes as an additional v0.2.1 release asset, without replacing
+the original ZIPs or moving the existing release tag.
 
 The speech-to-text repository was renamed to `workavoidance/Skrivi-STT` at the
 user's request; old GitHub URLs redirect. Do not reuse the old `Skrivi` repo name.
