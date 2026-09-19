@@ -407,6 +407,12 @@ class Reader(QDialog):
 
 
 def main():
+    if '--check-startup' in sys.argv:
+        app=QApplication([])
+        widget=QTextEdit();widget.setPlainText('A packaged reader startup check.')
+        assert not speech_icon().isNull()
+        assert choose_language('The rain had stopped by the time we reached the station.')[0]=='en'
+        return
     if '--register-bundled' in sys.argv:
         library=Library()
         for model in catalog():

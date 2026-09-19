@@ -30,7 +30,11 @@ try {
         Copy-Item -LiteralPath (Join-Path $PSScriptRoot $item.Name) -Destination $destinationFile
     }
     $installedApp = Join-Path $versionRoot 'SkriviTTS.exe'
-    $registration = Start-Process -FilePath $installedApp -ArgumentList '--register-bundled' -WindowStyle Hidden -PassThru -Wait
+    $registration = Start-Process -FilePath $installedApp -ArgumentList '--register-bundled' -WindowStyle Hidden -PassThru
+    if (!$registration.WaitForExit(120000)) {
+        Stop-Process -Id $registration.Id -ErrorAction SilentlyContinue
+        throw 'Model registration timed out. Existing shortcuts are unchanged.'
+    }
     if ($registration.ExitCode -ne 0) { throw 'Could not register the bundled models. Existing shortcuts are unchanged.' }
     # Preserve the startup choice while updating its versioned path.
     $startupKey = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run'

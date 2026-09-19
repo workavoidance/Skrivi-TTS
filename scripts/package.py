@@ -15,6 +15,7 @@ parser.add_argument('--vox-runtime', type=Path, required=True)
 parser.add_argument('--model-library', type=Path, default=Path(os.environ['LOCALAPPDATA'])/'SkriviTTS/models')
 args = parser.parse_args()
 root = Path(__file__).resolve().parents[1]
+subprocess.run([str(root/'dist/SkriviTTS/SkriviTTS.exe'),'--check-startup'],check=True,timeout=30)
 package = root / 'build' / ('Skrivi-TTS-' + VERSION)
 if package.exists():
     raise SystemExit('Package already exists. Choose a new version or inspect the existing build first.')

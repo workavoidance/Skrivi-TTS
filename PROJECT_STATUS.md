@@ -3,8 +3,8 @@
 ## Current authority (supersedes historical sections below)
 
 - Repository: https://github.com/workavoidance/Skrivi-TTS, separate from Skrivi STT.
-  User explicitly requested a public open-source GitHub project; publication is
-  being completed with this reader update. Source, tests, build recipes and releases
+  User explicitly requested a public open-source GitHub project; it is now PUBLIC.
+  Initial reader source commit 727eced; GitHub Actions passed. Source, tests, build recipes and releases
   belong here, not solely in a local machine folder.
 - App version: **0.2.0**, currently being packaged and verified before release.
 - Source: `C:/Users/jon/.codex/visualizations/2026/09/08/01a07fdc-16e7-7330-83a6-cbdec9f59c1d/skrivi-tts`.
@@ -54,6 +54,15 @@
 - Rendered all three reader tabs for visual review. Fixed narrow wrapped heading.
 - Publication check scanned 53 historical Git blobs: no credential-pattern findings,
   no tracked file over 2 MB. Weights and user audio stay outside Git.
+
+A packaged-startup failure was caught during installation: PyInstaller took ICU
+from an unrelated Poppler directory on the machine PATH, causing QtCore import to
+fail. Diagnostic removal of those two DLLs made registration pass. The GUI build
+now isolates PATH to Windows/system/venv directories, and both build and package
+scripts run --check-startup on the actual frozen executable. First failed install
+preserved all 24 existing model/settings/voice/preset files and did not change shortcuts.
+The reader's computer-use UI runner is unavailable in this tool session; controlled
+Windows capture/playback tests passed, but do not claim manual installed-UI coverage.
 
 Next: complete offline installation/reinstall preservation checks, verify the installed
 reader, publish source and downloadable release, then record exact commit/artifact.

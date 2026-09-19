@@ -9,6 +9,13 @@ if ($LASTEXITCODE -ne 0) { throw 'Native build failed' }
 $framework = "$env:WINDIR\Microsoft.NET\Framework64\v4.0.30319"
 & "$framework\csc.exe" /nologo /target:exe /platform:x64 "/r:$framework\WPF\UIAutomationClient.dll" "/r:$framework\WPF\UIAutomationTypes.dll" "/r:$framework\WPF\WindowsBase.dll" /out:native\Selection.exe native\Selection.cs
 if ($LASTEXITCODE -ne 0) { throw 'Selection helper build failed' }
-& $pythonBuild -m PyInstaller --noconfirm --onedir --windowed --name SkriviTTS --icon assets/skrivi-tts.ico --collect-all langdetect --paths app app/main.py
+# Resolve Windows SDK/system DLLs, never unrelated tools from an ambient PATH.
+$originalBuildPath = $env:PATH
+$env:PATH = "$env:WINDIR\System32;$env:WINDIR;$env:WINDIR\System32\Wbem;$(Split-Path $pythonBuild)"
+try {
+& $pythonBuild -m PyInstaller --clean --noconfirm --onedir --windowed --name SkriviTTS --icon assets/skrivi-tts.ico --collect-all langdetect --paths app app/main.py
 if ($LASTEXITCODE -ne 0) { throw 'Application build failed' }
+} finally { $env:PATH = $originalBuildPath }
+$check = Start-Process -FilePath 'dist/SkriviTTS/SkriviTTS.exe' -ArgumentList '--check-startup' -WindowStyle Hidden -PassThru -Wait
+if ($check.ExitCode -ne 0) { throw 'Packaged reader startup check failed' }
 Write-Host 'Compiled desktop app and reusable engine runtime. Run scripts/package.py with the existing CrispASR runtime directory.'
