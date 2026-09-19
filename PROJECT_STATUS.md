@@ -12,7 +12,14 @@ Source: app/screen_region.py, ocr_host.py, scripts/build-ocr.ps1 and
 scripts/package-ocr-update.py. Dependencies pinned in requirements-ocr.lock;
 weights pinned in docs/OCR_MODEL_MANIFEST.json. Persistent model/runtime IDs:
 ocr-tessdata-fast-v1, tesseract-5.5.2-v1. Speech assets are unchanged.
-Packaging/installation verification is the next step. Keep the 0.2.1 fallback.
+Installed 0.3.0 alongside 0.2.1; installed GUI startup and OCR passed. All 25
+pre-existing model/settings/user-data files retained identical contents. Evidence:
+docs/OCR_INSTALL_CHECKS.json. Old 0.2.1 session was left running; user should Quit
+from tray and reopen to activate 0.3.0. Do not terminate their session blindly.
+OCR update package: build/Skrivi-TTS-0.3.0-OCR-update.zip, 63,969,657 bytes,
+SHA-256 4efdc9256bb025e2c7664c7be304e680b44ef20573b4a38108775887e26f93ad.
+Built application source commit 9d67200. No speech weights are included/redownloaded.
+Keep the 0.2.1 fallback. Prior Smart App Control issue is not resolved by OCR.
 
 ## Previous release authority
 

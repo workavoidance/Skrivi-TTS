@@ -23,7 +23,8 @@ for scale in (1,1.25,1.5,2):
  overlay.deleteLater()
 print('Crop mapping passed at 100/125/150/200 percent, including negative monitor origin.')
 results=[]
-for path in sorted((ROOT/'build/ocr-screening').glob('*.png')):
+for sample in json.loads((ROOT/'docs/OCR_SCREENING.json').read_text(encoding='utf-8'))['results']:
+ path=ROOT/'build/ocr-screening'/(sample['id']+'.png')
  start=time.perf_counter()
  r=subprocess.run([str(ROOT/'dist/OCRWorker/OCRWorker.exe'),str(ROOT/'build/ocr-assets')],input=path.read_bytes(),capture_output=True,timeout=30,creationflags=subprocess.CREATE_NO_WINDOW)
  assert r.returncode==0,r.stdout
