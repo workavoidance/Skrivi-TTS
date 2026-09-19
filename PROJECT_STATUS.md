@@ -35,6 +35,26 @@
   identical cached models; differing existing model/runtime files cause a clear
   failure rather than overwrite. No installer network calls.
 
+## Conventional Windows setup executable
+
+The user requested a normal EXE installer alongside the existing ZIP, before
+publishing the Read Aloud website download. `installer/SkriviTTS.iss` and
+`scripts/build-installer.ps1` package the checksum-pinned published 0.2.1 bundle;
+they do not rebuild the app, change voices, or modify immutable engine profiles.
+Output: `dist/installer/Skrivi-TTS-0.2.1-windows-x64-setup.exe`, separate checksum
+and provenance files. Source ZIP SHA-256:
+`076beea27234c6442c7f782948c2680422176eb8a172e1aef16b2f96c4e58050`.
+
+Setup is per-user, bilingual English/Norwegian, includes both voices offline,
+rejects differing existing model/runtime files, and preserves startup opt-in.
+Uninstall tracks app files and shortcuts, but deliberately retains all models,
+runtimes, settings, presets and user audio. Installer integration tests only run
+on a disposable GitHub-hosted runner, never against the user's existing library.
+Verification and publication are pending the Windows installer workflow.
+
+The speech-to-text repository was renamed to `workavoidance/Skrivi-STT` at the
+user's request; old GitHub URLs redirect. Do not reuse the old `Skrivi` repo name.
+
 ## Verification during reader development
 
 - Eleven unit tests pass: preserved models/settings/presets, bad weights, cancellation,
