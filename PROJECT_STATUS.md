@@ -64,8 +64,11 @@ preserved all 24 existing model/settings/voice/preset files and did not change s
 The reader's computer-use UI runner is unavailable in this tool session; controlled
 Windows capture/playback tests passed, but do not claim manual installed-UI coverage.
 
-Next: complete offline installation/reinstall preservation checks, verify the installed
-reader, publish source and downloadable release, then record exact commit/artifact.
+Corrected 0.2.1 installation passed; automatic routing, both installed workers, full
+playback and generation cancellation passed through the reader controller. An
+app-only update recipe now excludes all models/runtimes and checks prerequisites.
+Next: complete reinstall preservation checks and publish downloadable releases,
+then record exact commit/artifact.
 Future: app-only updates retaining runtime/models, OCR input, wider application
 selection compatibility and accessibility testing. Do not restart broad model research.
 

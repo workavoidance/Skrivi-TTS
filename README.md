@@ -39,6 +39,11 @@ Settings. The earlier comparison UI, presets and history are preserved in
 
 ## Updates and privacy
 
+For the first installation, choose the **full Windows ZIP**. After the 0.2.1 full
+installation, choose **App-Update-Windows-x64.zip** for code-only releases using
+the same runtimes. The update archive contains no model weights or engine runtimes.
+It checks for the required runtimes and asks for the full package if they are missing.
+
 Models, presets, reference voices and settings live in `%LOCALAPPDATA%\SkriviTTS`,
 outside app versions. Reinstalling skips identical model/runtime files and never
 redownloads models. Existing mismatched files are preserved and reported rather
@@ -68,6 +73,7 @@ python -m venv build/english-env
 .\scripts\build.ps1
 .\.build-env\Scripts\python.exe tests/check_reader_engines.py
 .\.build-env\Scripts\python.exe scripts/package.py --vox-runtime build/vox-0.8.32
+.\.build-env\Scripts\python.exe scripts/package-update.py build/Skrivi-TTS-0.2.1
 ```
 
 `prepare-build.py` retrieves the checksum-pinned 0.1 engine runtime from GitHub;
