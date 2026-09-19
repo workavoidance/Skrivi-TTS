@@ -9,7 +9,7 @@ import urllib.request
 import uuid
 import sys
 
-VERSION = '0.2.0'
+VERSION = '0.2.1'
 KOKORO_VOICES = {'af_heart': 'Heart — American female', 'am_michael': 'Michael — American male', 'bf_emma': 'Emma — British female'}
 ROOT = Path(sys.executable).parent if getattr(sys, 'frozen', False) else Path(__file__).resolve().parent.parent
 DATA = Path(os.environ.get('SKRIVI_TTS_DATA', str(Path(os.environ.get('LOCALAPPDATA', Path.home())) / 'SkriviTTS')))

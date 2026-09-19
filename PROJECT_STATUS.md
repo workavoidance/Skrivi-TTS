@@ -6,7 +6,7 @@
   User explicitly requested a public open-source GitHub project; it is now PUBLIC.
   Initial reader source commit 727eced; GitHub Actions passed. Source, tests, build recipes and releases
   belong here, not solely in a local machine folder.
-- App version: **0.2.0**, currently being packaged and verified before release.
+- App version: **0.2.1**, currently being packaged and verified before release.
 - Source: `C:/Users/jon/.codex/visualizations/2026/09/08/01a07fdc-16e7-7330-83a6-cbdec9f59c1d/skrivi-tts`.
   No build requires that exact path. README provides fresh-clone instructions.
 - Existing installed 0.1.0 and cached models remain available until installation
@@ -57,8 +57,8 @@
 
 A packaged-startup failure was caught during installation: PyInstaller took ICU
 from an unrelated Poppler directory on the machine PATH, causing QtCore import to
-fail. Diagnostic removal of those two DLLs made registration pass. The GUI build
-now isolates PATH to Windows/system/venv directories, and both build and package
+fail. Diagnostic removal of those two DLLs made registration pass. The corrected build uses a fresh 0.2.1 app directory so no failed 0.2.0 DLLs
+can remain on its search path. The GUI build now isolates PATH to Windows/system/venv directories, and both build and package
 scripts run --check-startup on the actual frozen executable. First failed install
 preserved all 24 existing model/settings/voice/preset files and did not change shortcuts.
 The reader's computer-use UI runner is unavailable in this tool session; controlled
