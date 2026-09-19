@@ -51,6 +51,13 @@ Next OCR work, when requested: consented/synthetic reference crops; English/Bokm
 Nynorsk accuracy, actual CPU cold/warm latency, mixed-DPI capture, offline operation
 and packaged deployment. No screen capture, model installation or rebuild performed.
 
+OCR licensing follow-up: Apache-2.0 code/model statements checked for RapidOCR and
+Tesseract; RapidOCR's linked MODEL_LICENSES.md currently returns 404. Exact shipped
+artifact provenance and dependency notices are not yet cleared. User paused the
+benchmark setup for this review; no OCR performance/accuracy results exist yet.
+See the licensing follow-up in the research report. English Smart App Control report
+also remains unresolved; do not confuse an open-source license with code signing.
+
 ## Verification during reader development
 
 - Eleven unit tests pass: preserved models/settings/presets, bad weights, cancellation,

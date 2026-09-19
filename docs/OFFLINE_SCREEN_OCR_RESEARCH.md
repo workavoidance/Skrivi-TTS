@@ -211,3 +211,43 @@ OCR runtime was added to the application. No implementation is promised by 0.2.1
 Upstream source revisions and reported licenses are recorded in
 [OCR_RESEARCH_SOURCES.json](OCR_RESEARCH_SOURCES.json); they are research snapshots,
 not a shipping dependency lock or complete redistribution audit.
+
+## Licensing follow-up and research readiness
+
+The user paused benchmark setup to request explicit trade-offs and licensing detail.
+Research is sufficient to shortlist candidates, not to certify a distributable bundle
+or claim a measured accuracy winner. No OCR benchmark has completed.
+
+- RapidOCR and PaddleOCR code: Apache-2.0. RapidOCR's README explicitly applies
+  Apache-2.0 to the applicable upstream weights and converted artifacts too.
+  However, the linked root MODEL_LICENSES.md returned 404 on 19 September 2026,
+  including following the README hyperlink. Exact artifact provenance/hashes/notices
+  remain a release gate; do not present the repository license alone as full clearance.
+- Tesseract engine and official tessdata_fast repository: Apache-2.0. The precise
+  packaged Windows build still needs review of Leptonica, image libraries and wrapper
+  notices. The 7.7 MB English/Norwegian figure covers weights, not the full runtime.
+- ONNX Runtime: MIT at https://github.com/microsoft/onnxruntime/blob/main/LICENSE.
+  Its distribution's third-party notices and exact dependencies still apply.
+- Apache-2.0 permits use, modification and redistribution, including free or paid
+  distribution. Include the license, preserve required attribution/NOTICE content,
+  and identify changed upstream files. It does not require relicensing our whole
+  application under Apache-2.0. Permissions are subject to the actual license terms;
+  repository licensing does not automatically cover unrelated model downloads.
+- Windows OCR is an OS capability, not an open-source model bundle. Invoke the
+  supported OS API; do not assume permission to repackage Windows language assets.
+  Package-identity support and clean-machine provisioning remain separate questions.
+- Existing PowerToys/Text Grab UI code is MIT if reused with its notices. Their
+  project licenses do not relicense Microsoft's underlying OCR components.
+
+A breadth check also considered EasyOCR (https://github.com/JaidedAI/EasyOCR): its
+code is Apache-2.0 and it supports local CPU execution, bounding boxes and confidence.
+Its documented Windows setup requires PyTorch/torchvision and chosen weights can
+be downloaded automatically. This adds another runtime family to our application;
+keep it as a reserve candidate if the primary shortlist underperforms. No exact
+EasyOCR weight bundle has been cleared or benchmarked here.
+
+Before publishing OCR binaries: pin every shipped model/runtime file, retain source
+and license evidence plus hashes, assemble third-party notices, verify offline cold
+launch, and test signed/packaged execution independently of the development host.
+The reported English Smart App Control issue is a separate unresolved trust/signing
+problem; open-source licensing does not itself establish Windows execution trust.
