@@ -1,0 +1,40 @@
+[
+  {
+    "model": "kokoro-v1.0-onnx",
+    "path": "kokoro-v1.0.onnx",
+    "url": "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.1/kokoro-v1.0.onnx",
+    "sha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+    "bytes": 325505369
+  },
+  {
+    "model": "kokoro-v1.0-onnx",
+    "path": "voices-v1.0.bin",
+    "url": "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.1/voices-v1.0.bin",
+    "sha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+    "bytes": 28214398
+  },
+  {
+    "model": "piper-ljspeech-high",
+    "path": "MODEL_CARD",
+    "url": "https://huggingface.co/rhasspy/piper-voices/resolve/1162a9173d0ce503555aed757976b7a9912eae4c/en/en_US/ljspeech/high/MODEL_CARD",
+    "sha256": "289f7421072d689a3d91f6c632f486af46f9b8b04417536104a4ea667b8a394b",
+    "bytes": 513,
+    "git_blob": "ddd2c7524cadf38f78a9b268ad957079e9815383"
+  },
+  {
+    "model": "piper-ljspeech-high",
+    "path": "en_US-ljspeech-high.onnx",
+    "url": "https://huggingface.co/rhasspy/piper-voices/resolve/1162a9173d0ce503555aed757976b7a9912eae4c/en/en_US/ljspeech/high/en_US-ljspeech-high.onnx",
+    "sha256": "5d4f08ba6a2a48c44592eed3ce56bf85e9de3dd4e20df90541ae68a8310c029a",
+    "bytes": 114199011,
+    "git_blob": "ddf9a9d0840772ff0777b2ac5eb72f195ab163a4"
+  },
+  {
+    "model": "piper-ljspeech-high",
+    "path": "en_US-ljspeech-high.onnx.json",
+    "url": "https://huggingface.co/rhasspy/piper-voices/resolve/1162a9173d0ce503555aed757976b7a9912eae4c/en/en_US/ljspeech/high/en_US-ljspeech-high.onnx.json",
+    "sha256": "7e1f4634af596d83cca997fb7a931ba80b70f8a316a2655ee69c55365e0ace14",
+    "bytes": 4970,
+    "git_blob": "e4c9cbdf41a9c5fadd5eb7633513435342184918"
+  }
+]

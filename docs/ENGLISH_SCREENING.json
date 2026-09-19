@@ -1,0 +1,626 @@
+{
+  "synthesis": [
+    {
+      "load_seconds": 1.1004163000034168,
+      "generation_seconds": 1.2566823999513872,
+      "audio_seconds": 10.24,
+      "sample_rate": 22050,
+      "warm": false,
+      "settings": {
+        "speaker": 3,
+        "speed": 1.0,
+        "noise_scale": "",
+        "noise_w_scale": ""
+      },
+      "model_id": "piper-ljspeech-high",
+      "model": "Piper LJSpeech",
+      "revision": "1162a9173d0ce503555aed757976b7a9912eae4c",
+      "device": "CPU",
+      "real_time_factor": 0.12272289062025266,
+      "worker_peak_ram_bytes": 314003456,
+      "output": "C:\\Users\\jon\\.codex\\visualizations\\2026\\09\\08\\01a07fdc-16e7-7330-83a6-cbdec9f59c1d\\skrivi-tts\\build\\english-2026-09-19\\piper-ljspeech-high-reading.wav",
+      "case": "reading",
+      "text": "The rain had stopped by the time we reached the station. Sarah looked at the empty platform and smiled. We had missed the last train, but neither of us was in a hurry to go home.",
+      "total_wait_seconds": 2.706900399993174,
+      "wav_sha256": "36a25ba6c5652135324937ad14a433ce515fddd96669a858d9087367b518f2fd",
+      "automatic_transcript": "The rain had stopped by the time we reached the station. Sarah looked at the empty platform and smiled. We had missed the last train, but neither of us was in a hurry to go home.",
+      "reading_exact_transcript_match": true,
+      "reading_token_count": 36,
+      "reading_differences": []
+    },
+    {
+      "load_seconds": 7.00005330145359e-07,
+      "generation_seconds": 1.989405500004068,
+      "audio_seconds": 16.799637188208617,
+      "sample_rate": 22050,
+      "warm": true,
+      "settings": {
+        "speaker": 3,
+        "speed": 1.0,
+        "noise_scale": "",
+        "noise_w_scale": ""
+      },
+      "model_id": "piper-ljspeech-high",
+      "model": "Piper LJSpeech",
+      "revision": "1162a9173d0ce503555aed757976b7a9912eae4c",
+      "device": "CPU",
+      "real_time_factor": 0.11841955142938433,
+      "worker_peak_ram_bytes": 358424576,
+      "output": "C:\\Users\\jon\\.codex\\visualizations\\2026\\09\\08\\01a07fdc-16e7-7330-83a6-cbdec9f59c1d\\skrivi-tts\\build\\english-2026-09-19\\piper-ljspeech-high-details.wav",
+      "case": "details",
+      "text": "Dr. Smith paid $12.50 for three books on September 21, 2026. The meeting starts at 9:30 a.m. in room 204. Please email support@example.com, and don't forget your ID.",
+      "total_wait_seconds": 1.9981663000071421,
+      "wav_sha256": "d038131d28025916cd08a0b06eb01121508ebd987899c696b3ef31de7251d583",
+      "automatic_transcript": "Dr. Smith paid $112.50 for three books on September 21, 2026. The meeting starts at 9.30 a.m. in room 204. Please email support at example.com and don't forget your ID."
+    },
+    {
+      "ok": true,
+      "load_seconds": 1.6499670999844902,
+      "generation_seconds": 24.2922627,
+      "audio_seconds": 11.12,
+      "sample_rate": 48000,
+      "peak_ram_bytes": 2715205632,
+      "warm": false,
+      "settings": {
+        "seed": 42,
+        "steps": 10,
+        "guidance": 2.0,
+        "threads": 8,
+        "reference": "",
+        "consent": false
+      },
+      "model_id": "voxcpm-q4",
+      "model": "VoxCPM2 Q4",
+      "revision": "d426b5da661d5f833b45663879b1a0b0573a5b8e",
+      "device": "CPU",
+      "real_time_factor": 2.184555998201439,
+      "worker_peak_ram_bytes": 358449152,
+      "output": "C:\\Users\\jon\\.codex\\visualizations\\2026\\09\\08\\01a07fdc-16e7-7330-83a6-cbdec9f59c1d\\skrivi-tts\\build\\english-2026-09-19\\voxcpm-q4-reading.wav",
+      "case": "reading",
+      "text": "The rain had stopped by the time we reached the station. Sarah looked at the empty platform and smiled. We had missed the last train, but neither of us was in a hurry to go home.",
+      "total_wait_seconds": 25.97824219998438,
+      "wav_sha256": "aafda55e27a96b2b9f232ab90cd1d973a1a2975de70a4a49b10aac586729156f",
+      "automatic_transcript": "The rain had stopped by the time we reached the station. Sarah looked at the empty platform and smiled. We had missed the last train, but neither of us was in a hurry to go home.",
+      "reading_exact_transcript_match": true,
+      "reading_token_count": 36,
+      "reading_differences": []
+    },
+    {
+      "ok": true,
+      "load_seconds": 0.0011705999655724497,
+      "generation_seconds": 29.424308,
+      "audio_seconds": 14.08,
+      "sample_rate": 48000,
+      "peak_ram_bytes": 2717077504,
+      "warm": true,
+      "settings": {
+        "seed": 42,
+        "steps": 10,
+        "guidance": 2.0,
+        "threads": 8,
+        "reference": "",
+        "consent": false
+      },
+      "model_id": "voxcpm-q4",
+      "model": "VoxCPM2 Q4",
+      "revision": "d426b5da661d5f833b45663879b1a0b0573a5b8e",
+      "device": "CPU",
+      "real_time_factor": 2.089794602272727,
+      "worker_peak_ram_bytes": 358449152,
+      "output": "C:\\Users\\jon\\.codex\\visualizations\\2026\\09\\08\\01a07fdc-16e7-7330-83a6-cbdec9f59c1d\\skrivi-tts\\build\\english-2026-09-19\\voxcpm-q4-details.wav",
+      "case": "details",
+      "text": "Dr. Smith paid $12.50 for three books on September 21, 2026. The meeting starts at 9:30 a.m. in room 204. Please email support@example.com, and don't forget your ID.",
+      "total_wait_seconds": 29.42606030002935,
+      "wav_sha256": "214e0985b82aefe999921a7845f2ca4c849796cee96188710ca9193d1b3f7cf9",
+      "automatic_transcript": "Dr. Smith paid 12 VASPs to read three books on September 21st, 2026. The meeting starts at 930 a.m. In room 204. Please email support at example.com. And don't forget your ID."
+    },
+    {
+      "load_seconds": 68.81932599999709,
+      "generation_seconds": 17.27153830003226,
+      "audio_seconds": 9.64,
+      "sample_rate": 24000,
+      "speech_tokens": 241,
+      "natural_stop": true,
+      "token_generation_seconds": 4.4951422000303864,
+      "wave_decoder_seconds": 12.772171499964315,
+      "warm": false,
+      "settings": {
+        "seed": 2607,
+        "threads": 8,
+        "language": "en",
+        "exaggeration": 0.5,
+        "repetition_penalty": 1.2,
+        "max_tokens": 2048,
+        "reference": "",
+        "consent": false
+      },
+      "model_id": "chatterbox-q4",
+      "model": "Chatterbox Multilingual Q4 ONNX",
+      "revision": "452d3f434aa592098f1eedac9099f33642ab2da5",
+      "device": "CPU",
+      "real_time_factor": 1.7916533506257533,
+      "worker_peak_ram_bytes": 2350604288,
+      "output": "C:\\Users\\jon\\.codex\\visualizations\\2026\\09\\08\\01a07fdc-16e7-7330-83a6-cbdec9f59c1d\\skrivi-tts\\build\\english-2026-09-19\\chatterbox-q4-reading.wav",
+      "case": "reading",
+      "text": "The rain had stopped by the time we reached the station. Sarah looked at the empty platform and smiled. We had missed the last train, but neither of us was in a hurry to go home.",
+      "total_wait_seconds": 86.10532969998894,
+      "wav_sha256": "868010177d40b9e63dd13872adaf3b18ff005bf50aafc2edec2acda130d49958",
+      "automatic_transcript": "The rain had stopped by the time we reached the station. Sarah looked at the empty platform and smiled. We had missed the last train, but neither of us was in a hurry to go home.",
+      "reading_exact_transcript_match": true,
+      "reading_token_count": 36,
+      "reading_differences": []
+    },
+    {
+      "model_id": "chatterbox-q4",
+      "model": "Chatterbox Multilingual Q4 ONNX",
+      "case": "details",
+      "text": "Dr. Smith paid $12.50 for three books on September 21, 2026. The meeting starts at 9:30 a.m. in room 204. Please email support@example.com, and don't forget your ID.",
+      "error": "No natural stop token; refusing to save truncated speech",
+      "total_wait_seconds": 73.72996720002266
+    },
+    {
+      "model_id": "kokoro-af_heart",
+      "model": "Kokoro Heart, American female",
+      "case": "reading",
+      "text": "The rain had stopped by the time we reached the station. Sarah looked at the empty platform and smiled. We had missed the last train, but neither of us was in a hurry to go home.",
+      "phonemes": "ðə ɹˈAn hæd stˈɑpt bI ðə tˈIm wi ɹˈiʧt ðə stˈAʃən. sˈɛɹə lˈʊkt æt ði ˈɛmpti plˈætfˌɔɹm ænd smˈIld. wˌi hæd mˈɪst ðə lˈæst tɹˈAn, bˌʌt nˈiðəɹ ʌv ˌʌs wʌz ɪn ɐ hˈɜɹi tə ɡˌO hˈOm.",
+      "generation_seconds": 1.7718564000097103,
+      "load_seconds": 1.028142699971795,
+      "output": "C:\\Users\\jon\\.codex\\visualizations\\2026\\09\\08\\01a07fdc-16e7-7330-83a6-cbdec9f59c1d\\skrivi-tts\\build\\english-2026-09-19\\kokoro-af_heart-reading.wav",
+      "device": "CPU",
+      "threads": 8,
+      "voice": "af_heart",
+      "speed": 1.0,
+      "format": "FP32 ONNX",
+      "frontend": "Misaki 0.9.4 en.G2P with espeak fallback",
+      "trim": false,
+      "speed_dtype_fix": "float32 per ONNX schema",
+      "wav_sha256": "f29c2e93f6d1397891e87f72e6b1668fd27d00fc08a799a49e70eae6f2aabd69",
+      "sample_rate": 24000,
+      "audio_seconds": 11.0,
+      "automatic_transcript": "The rain had stopped by the time we reached the station. Sarah looked at the empty platform and smiled. We had missed the last train, but neither of us was in a hurry to go home.",
+      "reading_exact_transcript_match": true,
+      "reading_token_count": 36,
+      "reading_differences": []
+    },
+    {
+      "model_id": "kokoro-af_heart",
+      "model": "Kokoro Heart, American female",
+      "case": "details",
+      "text": "Dr. Smith paid $12.50 for three books on September 21, 2026. The meeting starts at 9:30 a.m. in room 204. Please email support@example.com, and don't forget your ID.",
+      "phonemes": "dˈɑktəɹ smˈɪθ pˈAd twˈɛlv dˈɑləɹz ænd fˈɪfti sˈɛnts fɔɹ θɹˈi bˈʊks ˌɔn sɛptˈɛmbəɹ twˈɛnti wˈʌn, twˈɛnti twˈɛnti sˈɪks. ðə mˈiTɪŋ stˈɑɹts æt nˈIn:θˈɜɹTi ˌAˈɛm ɪn ɹˈum tˈu hˈʌndɹəd fˈɔɹ. plˈiz ˈimˌAl səpˈɔɹt æt ɪɡzˈæmpəl dˌɑt kˈɑm, ænd dˈOnt fəɹɡˈɛt jʊɹ ˌIdˈi.",
+      "generation_seconds": 2.6699869000003673,
+      "load_seconds": 1.028142699971795,
+      "output": "C:\\Users\\jon\\.codex\\visualizations\\2026\\09\\08\\01a07fdc-16e7-7330-83a6-cbdec9f59c1d\\skrivi-tts\\build\\english-2026-09-19\\kokoro-af_heart-details.wav",
+      "device": "CPU",
+      "threads": 8,
+      "voice": "af_heart",
+      "speed": 1.0,
+      "format": "FP32 ONNX",
+      "frontend": "Misaki 0.9.4 en.G2P with espeak fallback",
+      "trim": false,
+      "speed_dtype_fix": "float32 per ONNX schema",
+      "wav_sha256": "0a57a4fc878699c76462dc73fc338f4f41362b1cfded3d554729eb204a717841",
+      "sample_rate": 24000,
+      "audio_seconds": 16.175,
+      "automatic_transcript": "Dr. Smith paid $12.50 for three books on September 21, 2026. The meeting starts at 9, 30 a.m. in room 204. Please email support at example.com, and don't forget your ID."
+    },
+    {
+      "model_id": "kokoro-am_michael",
+      "model": "Kokoro Michael, American male",
+      "case": "reading",
+      "text": "The rain had stopped by the time we reached the station. Sarah looked at the empty platform and smiled. We had missed the last train, but neither of us was in a hurry to go home.",
+      "phonemes": "ðə ɹˈAn hæd stˈɑpt bI ðə tˈIm wi ɹˈiʧt ðə stˈAʃən. sˈɛɹə lˈʊkt æt ði ˈɛmpti plˈætfˌɔɹm ænd smˈIld. wˌi hæd mˈɪst ðə lˈæst tɹˈAn, bˌʌt nˈiðəɹ ʌv ˌʌs wʌz ɪn ɐ hˈɜɹi tə ɡˌO hˈOm.",
+      "generation_seconds": 2.0150730999885127,
+      "load_seconds": 1.028142699971795,
+      "output": "C:\\Users\\jon\\.codex\\visualizations\\2026\\09\\08\\01a07fdc-16e7-7330-83a6-cbdec9f59c1d\\skrivi-tts\\build\\english-2026-09-19\\kokoro-am_michael-reading.wav",
+      "device": "CPU",
+      "threads": 8,
+      "voice": "am_michael",
+      "speed": 1.0,
+      "format": "FP32 ONNX",
+      "frontend": "Misaki 0.9.4 en.G2P with espeak fallback",
+      "trim": false,
+      "speed_dtype_fix": "float32 per ONNX schema",
+      "wav_sha256": "24738339f76b503849bfdc827ad84a6f32fc8497ce32d9c1d4084e84f0feafde",
+      "sample_rate": 24000,
+      "audio_seconds": 12.175,
+      "automatic_transcript": "The rain had stopped by the time we reached the station. Sarah looked at the empty platform and smiled. We had missed the last train, but neither of us was in a hurry to go home.",
+      "reading_exact_transcript_match": true,
+      "reading_token_count": 36,
+      "reading_differences": []
+    },
+    {
+      "model_id": "kokoro-am_michael",
+      "model": "Kokoro Michael, American male",
+      "case": "details",
+      "text": "Dr. Smith paid $12.50 for three books on September 21, 2026. The meeting starts at 9:30 a.m. in room 204. Please email support@example.com, and don't forget your ID.",
+      "phonemes": "dˈɑktəɹ smˈɪθ pˈAd twˈɛlv dˈɑləɹz ænd fˈɪfti sˈɛnts fɔɹ θɹˈi bˈʊks ˌɔn sɛptˈɛmbəɹ twˈɛnti wˈʌn, twˈɛnti twˈɛnti sˈɪks. ðə mˈiTɪŋ stˈɑɹts æt nˈIn:θˈɜɹTi ˌAˈɛm ɪn ɹˈum tˈu hˈʌndɹəd fˈɔɹ. plˈiz ˈimˌAl səpˈɔɹt æt ɪɡzˈæmpəl dˌɑt kˈɑm, ænd dˈOnt fəɹɡˈɛt jʊɹ ˌIdˈi.",
+      "generation_seconds": 2.861799600010272,
+      "load_seconds": 1.028142699971795,
+      "output": "C:\\Users\\jon\\.codex\\visualizations\\2026\\09\\08\\01a07fdc-16e7-7330-83a6-cbdec9f59c1d\\skrivi-tts\\build\\english-2026-09-19\\kokoro-am_michael-details.wav",
+      "device": "CPU",
+      "threads": 8,
+      "voice": "am_michael",
+      "speed": 1.0,
+      "format": "FP32 ONNX",
+      "frontend": "Misaki 0.9.4 en.G2P with espeak fallback",
+      "trim": false,
+      "speed_dtype_fix": "float32 per ONNX schema",
+      "wav_sha256": "f89dd3d8e7078ce22f58184ad09279c329f4cadd391a5ed4129da6deec95a01b",
+      "sample_rate": 24000,
+      "audio_seconds": 17.75,
+      "automatic_transcript": "Dr. Smith paid $12.50 for three books on September 21, 2026. The meeting starts at 9, 30 a.m. in Room 204. Please email support at example.com and don't forget your ID."
+    },
+    {
+      "model_id": "kokoro-bf_emma",
+      "model": "Kokoro Emma, British female",
+      "case": "reading",
+      "text": "The rain had stopped by the time we reached the station. Sarah looked at the empty platform and smiled. We had missed the last train, but neither of us was in a hurry to go home.",
+      "phonemes": "ðə ɹˈAn had stˈɒpt bI ðə tˈIm wiː ɹˈiːʧt ðə stˈAʃᵊn. sˈɛːɹə lˈʊkt at ði ˈɛmpti plˈatfɔːm and smˈIld. wˌiː had mˈɪst ðə lˈɑːst tɹˈAn, bˌʌt nˈIðə ɒv ˌʌs wɒz ɪn ɐ hˈʌɹi tə ɡˌQ hˈQm.",
+      "generation_seconds": 1.6233975000213832,
+      "load_seconds": 1.028142699971795,
+      "output": "C:\\Users\\jon\\.codex\\visualizations\\2026\\09\\08\\01a07fdc-16e7-7330-83a6-cbdec9f59c1d\\skrivi-tts\\build\\english-2026-09-19\\kokoro-bf_emma-reading.wav",
+      "device": "CPU",
+      "threads": 8,
+      "voice": "bf_emma",
+      "speed": 1.0,
+      "format": "FP32 ONNX",
+      "frontend": "Misaki 0.9.4 en.G2P with espeak fallback",
+      "trim": false,
+      "speed_dtype_fix": "float32 per ONNX schema",
+      "wav_sha256": "eeaaeb432408c900f7921fa5047a3841efd97061e2438e8f109c50ca0f04048b",
+      "sample_rate": 24000,
+      "audio_seconds": 10.075,
+      "automatic_transcript": "The rain had stopped by the time we reached the station. Sarah looked at the empty platform and smiled. We had missed the last train, but neither of us was in a hurry to go home.",
+      "reading_exact_transcript_match": true,
+      "reading_token_count": 36,
+      "reading_differences": []
+    },
+    {
+      "model_id": "kokoro-bf_emma",
+      "model": "Kokoro Emma, British female",
+      "case": "details",
+      "text": "Dr. Smith paid $12.50 for three books on September 21, 2026. The meeting starts at 9:30 a.m. in room 204. Please email support@example.com, and don't forget your ID.",
+      "phonemes": "dˈɒktə smˈɪθ pˈAd twˈɛlv dˈɒləz and fˈɪfti sˈɛnts fɔː θɹˈiː bˈʊks ˌɒn sɛptˈɛmbə twˈɛnti wˈʌn, twˈɛnti twˈɛnti sˈɪks. ðə mˈiːtɪŋ stˈɑːts at nˈIn:θˈɜːti ˌAˈɛm ɪn ɹˈuːm tˈuː hˈʌndɹəd fˈɔː. plˈiːz ˈiːmAl səpˈɔːt at ɪɡzˈɑːmpᵊl dˌɒt kˈɒm, and dˈQnt fəɡˈɛt jɔː ˌIdˈiː.",
+      "generation_seconds": 2.4016221000347286,
+      "load_seconds": 1.028142699971795,
+      "output": "C:\\Users\\jon\\.codex\\visualizations\\2026\\09\\08\\01a07fdc-16e7-7330-83a6-cbdec9f59c1d\\skrivi-tts\\build\\english-2026-09-19\\kokoro-bf_emma-details.wav",
+      "device": "CPU",
+      "threads": 8,
+      "voice": "bf_emma",
+      "speed": 1.0,
+      "format": "FP32 ONNX",
+      "frontend": "Misaki 0.9.4 en.G2P with espeak fallback",
+      "trim": false,
+      "speed_dtype_fix": "float32 per ONNX schema",
+      "wav_sha256": "8a1d68f90a7d3829aaa06d0ca24eb8164c4e0325004872e70c84d28fb118d121",
+      "sample_rate": 24000,
+      "audio_seconds": 14.825,
+      "automatic_transcript": "Dr Smith paid $12.50 for three books on September 21, 2026. The meeting starts at 9.30am in Room 204. Please email support at example.com and don't forget your ID."
+    }
+  ],
+  "asr": {
+    "asr_model": "C:\\Users\\jon\\AppData\\Local\\Skrivi\\models\\installed\\medium",
+    "model_sha256": "9b45e1009dcc4ab601eff815b61d80e60ce3fd8c74c1a14f4a282258286b51ae",
+    "packages": {
+      "faster-whisper": "1.2.1",
+      "ctranslate2": "4.8.2",
+      "av": "18.1.0"
+    },
+    "settings": {
+      "language": "en",
+      "task": "transcribe",
+      "compute_type": "int8",
+      "device": "cpu",
+      "beam_size": 5,
+      "temperature": 0,
+      "condition_on_previous_text": false,
+      "vad_filter": false,
+      "initial_prompt": null
+    },
+    "limitation": "ASR can normalize spelling, numbers and punctuation or repair mispronunciation. Disagreements are candidates for human listening, not confirmed TTS errors.",
+    "results": [
+      {
+        "file": "chatterbox-q4-reading.wav",
+        "text": "The rain had stopped by the time we reached the station. Sarah looked at the empty platform and smiled. We had missed the last train, but neither of us was in a hurry to go home.",
+        "seconds": 3.9780161999515258,
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 2.54,
+            "text": " The rain had stopped by the time we reached the station.",
+            "avg_logprob": -0.1317727749652051
+          },
+          {
+            "start": 3.06,
+            "end": 5.16,
+            "text": " Sarah looked at the empty platform and smiled.",
+            "avg_logprob": -0.1317727749652051
+          },
+          {
+            "start": 5.7,
+            "end": 9.28,
+            "text": " We had missed the last train, but neither of us was in a hurry to go home.",
+            "avg_logprob": -0.1317727749652051
+          }
+        ]
+      },
+      {
+        "file": "kokoro-af_heart-details.wav",
+        "text": "Dr. Smith paid $12.50 for three books on September 21, 2026. The meeting starts at 9, 30 a.m. in room 204. Please email support at example.com, and don't forget your ID.",
+        "seconds": 6.783851199958008,
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 6.34,
+            "text": " Dr. Smith paid $12.50 for three books on September 21, 2026.",
+            "avg_logprob": -0.26063147944919135
+          },
+          {
+            "start": 6.98,
+            "end": 10.92,
+            "text": " The meeting starts at 9, 30 a.m. in room 204.",
+            "avg_logprob": -0.26063147944919135
+          },
+          {
+            "start": 11.66,
+            "end": 14.1,
+            "text": " Please email support at example.com,",
+            "avg_logprob": -0.26063147944919135
+          },
+          {
+            "start": 14.36,
+            "end": 15.56,
+            "text": " and don't forget your ID.",
+            "avg_logprob": -0.26063147944919135
+          }
+        ]
+      },
+      {
+        "file": "kokoro-af_heart-reading.wav",
+        "text": "The rain had stopped by the time we reached the station. Sarah looked at the empty platform and smiled. We had missed the last train, but neither of us was in a hurry to go home.",
+        "seconds": 3.9018341000191867,
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 3.06,
+            "text": " The rain had stopped by the time we reached the station.",
+            "avg_logprob": -0.1886514368209433
+          },
+          {
+            "start": 3.8,
+            "end": 6.12,
+            "text": " Sarah looked at the empty platform and smiled.",
+            "avg_logprob": -0.1886514368209433
+          },
+          {
+            "start": 6.62,
+            "end": 10.5,
+            "text": " We had missed the last train, but neither of us was in a hurry to go home.",
+            "avg_logprob": -0.1886514368209433
+          }
+        ]
+      },
+      {
+        "file": "kokoro-am_michael-details.wav",
+        "text": "Dr. Smith paid $12.50 for three books on September 21, 2026. The meeting starts at 9, 30 a.m. in Room 204. Please email support at example.com and don't forget your ID.",
+        "seconds": 4.189994900021702,
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 6.92,
+            "text": " Dr. Smith paid $12.50 for three books on September 21, 2026.",
+            "avg_logprob": -0.17592988827011802
+          },
+          {
+            "start": 7.62,
+            "end": 11.96,
+            "text": " The meeting starts at 9, 30 a.m. in Room 204.",
+            "avg_logprob": -0.17592988827011802
+          },
+          {
+            "start": 12.6,
+            "end": 17.02,
+            "text": " Please email support at example.com and don't forget your ID.",
+            "avg_logprob": -0.17592988827011802
+          }
+        ]
+      },
+      {
+        "file": "kokoro-am_michael-reading.wav",
+        "text": "The rain had stopped by the time we reached the station. Sarah looked at the empty platform and smiled. We had missed the last train, but neither of us was in a hurry to go home.",
+        "seconds": 3.908196999982465,
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 3.42,
+            "text": " The rain had stopped by the time we reached the station.",
+            "avg_logprob": -0.15338364814190156
+          },
+          {
+            "start": 4.12,
+            "end": 6.62,
+            "text": " Sarah looked at the empty platform and smiled.",
+            "avg_logprob": -0.15338364814190156
+          },
+          {
+            "start": 7.08,
+            "end": 11.58,
+            "text": " We had missed the last train, but neither of us was in a hurry to go home.",
+            "avg_logprob": -0.15338364814190156
+          }
+        ]
+      },
+      {
+        "file": "kokoro-bf_emma-details.wav",
+        "text": "Dr Smith paid $12.50 for three books on September 21, 2026. The meeting starts at 9.30am in Room 204. Please email support at example.com and don't forget your ID.",
+        "seconds": 3.985967199958395,
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 5.5,
+            "text": " Dr Smith paid $12.50 for three books on September 21, 2026.",
+            "avg_logprob": -0.1901368592299667
+          },
+          {
+            "start": 6.22,
+            "end": 9.98,
+            "text": " The meeting starts at 9.30am in Room 204.",
+            "avg_logprob": -0.1901368592299667
+          },
+          {
+            "start": 10.5,
+            "end": 14.06,
+            "text": " Please email support at example.com and don't forget your ID.",
+            "avg_logprob": -0.1901368592299667
+          }
+        ]
+      },
+      {
+        "file": "kokoro-bf_emma-reading.wav",
+        "text": "The rain had stopped by the time we reached the station. Sarah looked at the empty platform and smiled. We had missed the last train, but neither of us was in a hurry to go home.",
+        "seconds": 3.7083447999903,
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 2.62,
+            "text": " The rain had stopped by the time we reached the station.",
+            "avg_logprob": -0.14500552606075368
+          },
+          {
+            "start": 3.38,
+            "end": 5.48,
+            "text": " Sarah looked at the empty platform and smiled.",
+            "avg_logprob": -0.14500552606075368
+          },
+          {
+            "start": 5.88,
+            "end": 9.34,
+            "text": " We had missed the last train, but neither of us was in a hurry to go home.",
+            "avg_logprob": -0.14500552606075368
+          }
+        ]
+      },
+      {
+        "file": "piper-ljspeech-high-details.wav",
+        "text": "Dr. Smith paid $112.50 for three books on September 21, 2026. The meeting starts at 9.30 a.m. in room 204. Please email support at example.com and don't forget your ID.",
+        "seconds": 4.226344900031108,
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 7.52,
+            "text": " Dr. Smith paid $112.50 for three books on September 21, 2026.",
+            "avg_logprob": -0.22458580322563648
+          },
+          {
+            "start": 7.76,
+            "end": 12.06,
+            "text": " The meeting starts at 9.30 a.m. in room 204.",
+            "avg_logprob": -0.22458580322563648
+          },
+          {
+            "start": 12.24,
+            "end": 16.58,
+            "text": " Please email support at example.com and don't forget your ID.",
+            "avg_logprob": -0.22458580322563648
+          }
+        ]
+      },
+      {
+        "file": "piper-ljspeech-high-reading.wav",
+        "text": "The rain had stopped by the time we reached the station. Sarah looked at the empty platform and smiled. We had missed the last train, but neither of us was in a hurry to go home.",
+        "seconds": 3.808142499998212,
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 2.7,
+            "text": " The rain had stopped by the time we reached the station.",
+            "avg_logprob": -0.1551966715832146
+          },
+          {
+            "start": 3.08,
+            "end": 5.44,
+            "text": " Sarah looked at the empty platform and smiled.",
+            "avg_logprob": -0.1551966715832146
+          },
+          {
+            "start": 5.6,
+            "end": 7.44,
+            "text": " We had missed the last train,",
+            "avg_logprob": -0.1551966715832146
+          },
+          {
+            "start": 7.86,
+            "end": 10.1,
+            "text": " but neither of us was in a hurry to go home.",
+            "avg_logprob": -0.1551966715832146
+          }
+        ]
+      },
+      {
+        "file": "voxcpm-q4-details.wav",
+        "text": "Dr. Smith paid 12 VASPs to read three books on September 21st, 2026. The meeting starts at 930 a.m. In room 204. Please email support at example.com. And don't forget your ID.",
+        "seconds": 4.360934699943755,
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 5.76,
+            "text": " Dr. Smith paid 12 VASPs to read three books on September 21st, 2026.",
+            "avg_logprob": -0.33582376652076595
+          },
+          {
+            "start": 6.22,
+            "end": 7.94,
+            "text": " The meeting starts at 930 a.m.",
+            "avg_logprob": -0.33582376652076595
+          },
+          {
+            "start": 8.3,
+            "end": 9.54,
+            "text": " In room 204.",
+            "avg_logprob": -0.33582376652076595
+          },
+          {
+            "start": 10.04,
+            "end": 12.32,
+            "text": " Please email support at example.com.",
+            "avg_logprob": -0.33582376652076595
+          },
+          {
+            "start": 12.76,
+            "end": 13.84,
+            "text": " And don't forget your ID.",
+            "avg_logprob": -0.33582376652076595
+          }
+        ]
+      },
+      {
+        "file": "voxcpm-q4-reading.wav",
+        "text": "The rain had stopped by the time we reached the station. Sarah looked at the empty platform and smiled. We had missed the last train, but neither of us was in a hurry to go home.",
+        "seconds": 3.880158499989193,
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 2.66,
+            "text": " The rain had stopped by the time we reached the station.",
+            "avg_logprob": -0.19991304265691878
+          },
+          {
+            "start": 3.74,
+            "end": 5.84,
+            "text": " Sarah looked at the empty platform and smiled.",
+            "avg_logprob": -0.19991304265691878
+          },
+          {
+            "start": 6.36,
+            "end": 10.98,
+            "text": " We had missed the last train, but neither of us was in a hurry to go home.",
+            "avg_logprob": -0.19991304265691878
+          }
+        ]
+      }
+    ]
+  },
+  "limitation": "Single runs; ASR agreement is not acoustic correctness, naturalness, or a benchmark-wide accuracy score."
+}

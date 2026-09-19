@@ -202,3 +202,25 @@ Repeatable opt-in runners: `tests/nynorsk_accuracy.py`, `tests/nynorsk_transcrib
 version list. No application code, user presets, model assets or installed runtime
 was changed. Next: listen to Talesyntese's suspected phrases before calling it
 accurate Nynorsk; retain the existing positive Bokmal quality verdict separately.
+
+
+## English comparison — 19 September 2026
+
+Tested Kokoro v1.0 FP32 ONNX (Heart US female, Michael US male, Emma UK female),
+Piper LJSpeech, and existing VoxCPM2/Chatterbox on identical English story and
+numeric/email passages. Eleven WAVs produced from twelve attempts. All six voice
+configurations matched the story in offline Whisper transcripts. Kokoro also
+preserved intended numeric/email details, taking 1.6–2.9 s for 10–18 s of audio.
+Piper and Vox had suspected money-amount errors in ASR. Chatterbox failed to stop
+on the detail passage. See docs/ENGLISH_SCREENING.md and ENGLISH_SCREENING.json.
+
+Recommendation: Kokoro is the strongest next English integration candidate based
+on this limited word-recovery/speed test; subjective voice quality remains for
+user listening. Local comparison: build/english-2026-09-19/listen.html.
+New weights cached once under the permanent library's models/kokoro-v1.0-onnx and
+models/piper-ljspeech-high; checksum manifest in docs/ENGLISH_MODEL_MANIFEST.json.
+They are NOT yet app dropdown entries. Existing app, presets and runtime unchanged.
+Kokoro test dependencies are isolated in build/english-env; installed package lock
+and a required speed-input dtype correction are documented. Repeatable test/cache
+scripts are checked in. Next: user chooses an English voice, then integrate Kokoro
+and package an app update without downloading weights again.
