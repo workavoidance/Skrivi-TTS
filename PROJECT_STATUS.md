@@ -61,6 +61,22 @@ the original ZIPs or moving the existing release tag.
 The speech-to-text repository was renamed to `workavoidance/Skrivi-STT` at the
 user's request; old GitHub URLs redirect. Do not reuse the old `Skrivi` repo name.
 
+## Offline screen-region OCR research — 19 September 2026
+
+User requested research, not implementation, and explicitly requires fully offline
+capture, OCR and speech. Findings: `docs/OFFLINE_SCREEN_OCR_RESEARCH.md`; upstream
+snapshots: `docs/OCR_RESEARCH_SOURCES.json`. Existing app remains 0.2.1, unchanged.
+PowerToys/Text Grab establish region OCR; Capture2Text/NVDA establish OCR-to-speech.
+Preferred product direction: bundled CPU OCR feeding the existing reader, persistent
+assets, no hidden downloads or cloud fallback. Compare RapidOCR/PaddleOCR against
+Windows OCR and compact Tesseract before selecting a default. Installed Windows OCR
+languages are en-GB, en-US and nb; this is inventory only, not an accuracy test.
+Windows.Media.Ocr has a documented package-identity support caveat. New Windows AI
+OCR requires a Copilot+ NPU; the recorded Ryzen 7700/RTX4060 PC is not a match.
+Next OCR work, when requested: consented/synthetic reference crops; English/Bokmål/
+Nynorsk accuracy, actual CPU cold/warm latency, mixed-DPI capture, offline operation
+and packaged deployment. No screen capture, model installation or rebuild performed.
+
 ## Verification during reader development
 
 - Eleven unit tests pass: preserved models/settings/presets, bad weights, cancellation,

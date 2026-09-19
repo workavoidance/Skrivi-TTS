@@ -1,0 +1,38 @@
+[
+  {
+    "repo": "microsoft/PowerToys",
+    "branch": "main",
+    "commit": "cb25632f5b61eb2e57a3b0b52053409403ae9e98",
+    "license": "MIT"
+  },
+  {
+    "repo": "TheJoeFin/Text-Grab",
+    "branch": "main",
+    "commit": "a8d4c2b060ffa8efa102c22f80c31ee65c11ce82",
+    "license": "MIT"
+  },
+  {
+    "repo": "RapidAI/RapidOCR",
+    "branch": "main",
+    "commit": "64b1c680be9992b7500aecd89a484d161443612a",
+    "license": "Apache-2.0"
+  },
+  {
+    "repo": "PaddlePaddle/PaddleOCR",
+    "branch": "main",
+    "commit": "dab3fe35379033fdcb2d0e9572fac0b36c9a9ebf",
+    "license": "Apache-2.0"
+  },
+  {
+    "repo": "tesseract-ocr/tesseract",
+    "branch": "main",
+    "commit": "8ae68101439b3f7df123499a784e8896c805179d",
+    "license": "Apache-2.0"
+  },
+  {
+    "repo": "tesseract-ocr/tessdata_fast",
+    "branch": "main",
+    "commit": "87416418657359cb625c412a48b6e1d6d41c29bd",
+    "license": "Apache-2.0"
+  }
+]

@@ -31,3 +31,13 @@ User requested the same application controls as Skrivi STT:
 
 These are follow-up controls; interface translation is not implemented in 0.2.1.
 The installed reader stays on the verified build while this next release is prepared.
+
+## Screen-region reading — researched, not implemented
+
+See [offline OCR research](OFFLINE_SCREEN_OCR_RESEARCH.md). Fully offline operation
+is mandatory: user-triggered region capture, local OCR and existing local speech;
+no cloud fallback, content logging or hidden asset downloads. Prefer a bundled CPU
+engine with persistent models. Evaluate RapidOCR/PaddleOCR against installed Windows
+OCR and Tesseract before choosing. Add a separate region shortcut/tray action and
+retain immediate reading and cancellation. Do not rebuild or implement from this
+research request alone.
