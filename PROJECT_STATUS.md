@@ -6,7 +6,7 @@
   User explicitly requested a public open-source GitHub project; it is now PUBLIC.
   Initial reader source commit 727eced; GitHub Actions passed. Source, tests, build recipes and releases
   belong here, not solely in a local machine folder.
-- App version: **0.2.1**, currently being packaged and verified before release.
+- App version: **0.2.1**, installed and verified; public binary release upload is pending.
 - Source: `C:/Users/jon/.codex/visualizations/2026/09/08/01a07fdc-16e7-7330-83a6-cbdec9f59c1d/skrivi-tts`.
   No build requires that exact path. README provides fresh-clone instructions.
 - Existing installed 0.1.0 and cached models remain available until installation
@@ -67,8 +67,19 @@ Windows capture/playback tests passed, but do not claim manual installed-UI cove
 Corrected 0.2.1 installation passed; automatic routing, both installed workers, full
 playback and generation cancellation passed through the reader controller. An
 app-only update recipe now excludes all models/runtimes and checks prerequisites.
-Next: complete reinstall preservation checks and publish downloadable releases,
-then record exact commit/artifact.
+Full install and app-only reinstall passed: all 24 pre-existing model/settings/
+voice/preset files retained hashes and timestamps. Installed startup and second
+launch passed. GitHub Actions 35454635582 passed unit tests and a clean Windows
+frozen build/startup check, independently of this machine.
+Full archive: 639,517,195 bytes; app-only: 40,116,442 bytes, no weights/runtimes.
+App source commit 8d1f24a; update packaging 7ec23ba. SHA-256 in build/SHA256SUMS.txt.
+The first public binary upload was rejected by automatic approval review, citing
+prior redistribution restrictions and exact artifact approval. No release created
+by that command. Exact bundled-model license checks: docs/RELEASE_LICENSE_REVIEW.md.
+Next: resolve the upload review and publish the verified artifacts.
+The user requested a manual Check for updates button, with no automatic network
+checks, and explicitly said not to rebuild solely for it. docs/ROADMAP.md records
+this for the next release. Current Project & updates opens GitHub when clicked.
 Future: app-only updates retaining runtime/models, OCR input, wider application
 selection compatibility and accessibility testing. Do not restart broad model research.
 
