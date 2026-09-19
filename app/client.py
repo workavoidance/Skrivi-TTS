@@ -11,6 +11,7 @@ from core import ROOT, DATA
 class Client:
     def __init__(self):
         self.process = None
+        self.runtime_profile = None
         self.responses = queue.Queue()
 
     def stop(self):
@@ -21,11 +22,15 @@ class Client:
                            creationflags=subprocess.CREATE_NO_WINDOW, timeout=15)
             process.wait(timeout=15)
 
-    def start(self):
+    def start(self, engine=None):
+        profile = 'kokoro-engine-v1' if engine == 'kokoro' else 'python-engine-v1'
         if self.process and self.process.poll() is None:
-            return
+            if self.runtime_profile == profile:
+                return
+            self.stop()
+        self.runtime_profile = profile
         self.responses = queue.Queue()
-        runtime = DATA / 'runtimes' / 'python-engine-v1' / 'SkriviWorker.exe'
+        runtime = DATA / 'runtimes' / profile / ('KokoroWorker.exe' if engine == 'kokoro' else 'SkriviWorker.exe')
         if runtime.exists():
             command = [str(runtime), str(ROOT / 'engines' / 'worker.py')]
         elif not getattr(sys, 'frozen', False):
@@ -48,7 +53,7 @@ class Client:
         threading.Thread(target=read, daemon=True).start()
 
     def generate(self, request, cancel):
-        self.start()
+        self.start(request['model']['engine'])
         self.process.stdin.write(json.dumps(request) + '\n')
         self.process.stdin.flush()
         started = time.monotonic()

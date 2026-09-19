@@ -75,6 +75,9 @@ class Session:
                     if engine_settings.get('reference'):
                         engine_settings['reference'] = str(Path(request['voices']) / engine_settings['reference'])
                     self.engine = chatterbox.Engine(settings['threads'], engine_settings)
+                elif model['engine'] == 'kokoro':
+                    from kokoro_engine import Engine
+                    self.engine = Engine(assets, settings)
                 elif model['engine'] == 'piper':
                     from piper import PiperVoice
                     self.engine = PiperVoice.load(assets / model['files'][0]['path'], use_cuda=False)
@@ -82,7 +85,12 @@ class Session:
                     raise ValueError('Unknown engine adapter: ' + model['engine'])
             load_seconds = time.perf_counter() - load
             started = time.perf_counter()
-            if model['engine'] == 'chatterbox':
+            if model['engine'] == 'kokoro':
+                import soundfile as sf
+                wav, rate = self.engine.synthesize(request['text'])
+                sf.write(output, wav, rate, subtype='PCM_16')
+                extra = {}
+            elif model['engine'] == 'chatterbox':
                 import soundfile as sf
                 wav, extra = self.engine.synthesize(request['text'], settings['max_tokens'])
                 sf.write(output, wav, 24000, subtype='PCM_16')

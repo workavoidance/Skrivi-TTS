@@ -1,0 +1,84 @@
+[
+  {
+    "load_seconds": 1.7687315999646671,
+    "generation_seconds": 0.5188461000216193,
+    "audio_seconds": 3.275,
+    "sample_rate": 24000,
+    "warm": false,
+    "settings": {
+      "voice": "af_heart",
+      "speed": 1.0,
+      "threads": 8
+    },
+    "model_id": "kokoro-v1.0-onnx",
+    "model": "Kokoro English",
+    "revision": "kokoro-v1.0-model-files-v1.1",
+    "device": "CPU",
+    "real_time_factor": 0.1584262900829372,
+    "worker_peak_ram_bytes": 670281728,
+    "output": "kokoro-v1.0-onnx-0.wav",
+    "total_wait_seconds": 3.2874557999894023
+  },
+  {
+    "load_seconds": 9.00006853044033e-07,
+    "generation_seconds": 0.5061732000322081,
+    "audio_seconds": 3.275,
+    "sample_rate": 24000,
+    "warm": true,
+    "settings": {
+      "voice": "af_heart",
+      "speed": 1.0,
+      "threads": 8
+    },
+    "model_id": "kokoro-v1.0-onnx",
+    "model": "Kokoro English",
+    "revision": "kokoro-v1.0-model-files-v1.1",
+    "device": "CPU",
+    "real_time_factor": 0.1545567022999109,
+    "worker_peak_ram_bytes": 712372224,
+    "output": "kokoro-v1.0-onnx-1.wav",
+    "total_wait_seconds": 0.5117218000232242
+  },
+  {
+    "load_seconds": 0.891458900005091,
+    "generation_seconds": 0.12739159999182448,
+    "audio_seconds": 2.693514739229025,
+    "sample_rate": 22050,
+    "warm": false,
+    "settings": {
+      "speaker": 3,
+      "speed": 1.0,
+      "noise_scale": "",
+      "noise_w_scale": ""
+    },
+    "model_id": "piper-talesyntese",
+    "model": "Piper Talesyntese",
+    "revision": "1162a9173d0ce503555aed757976b7a9912eae4c",
+    "device": "CPU",
+    "real_time_factor": 0.04729567584556387,
+    "worker_peak_ram_bytes": 215314432,
+    "output": "piper-talesyntese-0.wav",
+    "total_wait_seconds": 1.4079129999736324
+  },
+  {
+    "load_seconds": 5.999463610351086e-07,
+    "generation_seconds": 0.07542290003038943,
+    "audio_seconds": 2.681904761904762,
+    "sample_rate": 22050,
+    "warm": true,
+    "settings": {
+      "speaker": 3,
+      "speed": 1.0,
+      "noise_scale": "",
+      "noise_w_scale": ""
+    },
+    "model_id": "piper-talesyntese",
+    "model": "Piper Talesyntese",
+    "revision": "1162a9173d0ce503555aed757976b7a9912eae4c",
+    "device": "CPU",
+    "real_time_factor": 0.02812288530962674,
+    "worker_peak_ram_bytes": 268726272,
+    "output": "piper-talesyntese-1.wav",
+    "total_wait_seconds": 0.08137819997500628
+  }
+]

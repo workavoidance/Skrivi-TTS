@@ -1,3 +1,39 @@
+# Reader 0.2 architecture update
+
+The current front end is app/main.py (PySide6), not Tk. The prior compare/preset/history
+front end is retained in app/shootout.py. Models and original inference adapters are
+reused. Theme is adapted from Skrivi STT main commit 05ed960; apps have separate
+processes, shortcuts, settings and tray icons.
+
+app/reader_core.py owns whole-passage language routing and reader preferences.
+app/windows_reader.py owns global shortcuts, clipboard-copy input and native WAV
+playback. native/Selection.cs reads accessible selected text without recording it.
+Input origin remains separate from synthesis so a future OCR provider can submit
+text through the same boundary. OCR is not implemented.
+
+The Qt main thread only handles widgets and Windows clipboard access. Generation,
+accessibility helper and model installation run on background threads. Signals
+return results; a capture generation number invalidates stale selection results.
+A selected-text request does not open or focus the reader before capture. Audio
+plays to native device completion or explicit cancellation, not an estimated timer.
+
+engines/kokoro_engine.py uses the approved Misaki frontend and untrimmed 24 kHz
+Kokoro FP32 output. kokoro_host.py freezes its dependencies independently from
+python-engine-v1, preserving the original Piper/Chatterbox environment. Client
+switches worker processes when the dependency profile changes.
+
+reader-settings.json stores reader controls, not input. Temporary native WAVs live
+in an owned Windows temporary directory, removed on normal exit; Save audio makes
+an explicit permanent copy. Original settings.json, presets and outputs are retained.
+The full installer bundles only Talesyntese/Kokoro models, verifies hashes, skips
+matching caches, and refuses to overwrite differing models or immutable runtimes.
+It registers both models before switching shortcuts. Other model downloads are explicit.
+
+See README and docs/SOURCES.md for public build inputs and dependency licenses.
+The historical notes below describe the original comparison application.
+
+---
+
 # Architecture and continuity
 
 ## Source lineage

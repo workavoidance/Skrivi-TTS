@@ -9,7 +9,8 @@ import urllib.request
 import uuid
 import sys
 
-VERSION = '0.1.0'
+VERSION = '0.2.0'
+KOKORO_VOICES = {'af_heart': 'Heart — American female', 'am_michael': 'Michael — American male', 'bf_emma': 'Emma — British female'}
 ROOT = Path(sys.executable).parent if getattr(sys, 'frozen', False) else Path(__file__).resolve().parent.parent
 DATA = Path(os.environ.get('SKRIVI_TTS_DATA', str(Path(os.environ.get('LOCALAPPDATA', Path.home())) / 'SkriviTTS')))
 
@@ -103,6 +104,7 @@ class Library:
 
 def defaults(engine):
     return {
+        'kokoro': {'voice': 'af_heart', 'speed': 1.0, 'threads': 8},
         'voxcpm': {'seed': 42, 'steps': 10, 'guidance': 2.0, 'threads': 8, 'reference': '', 'consent': False},
         'chatterbox': {'seed': 2607, 'threads': 8, 'language': 'no', 'exaggeration': 0.5,
                        'repetition_penalty': 1.2, 'max_tokens': 2048, 'reference': '', 'consent': False},
@@ -116,6 +118,7 @@ def validate(engine, values):
         'voxcpm': {'seed': (1, 999999, int), 'steps': (4, 20, int), 'guidance': (1, 4, float), 'threads': (1, 16, int)},
         'chatterbox': {'seed': (1, 999999, int), 'threads': (1, 16, int), 'exaggeration': (0, 2, float),
                        'repetition_penalty': (1, 2, float), 'max_tokens': (128, 8192, int)},
+        'kokoro': {'speed': (0.5, 2, float), 'threads': (1, 16, int)},
         'piper': {'speaker': (0, 9, int), 'speed': (0.5, 2, float)},
     }[engine]
     for key, (low, high, kind) in ranges.items():
@@ -128,6 +131,8 @@ def validate(engine, values):
             result[key] = float(result[key])
             if not 0 <= result[key] <= 2:
                 raise ValueError(f'{key} must be between 0 and 2, or blank for native default')
+    if engine == 'kokoro' and result['voice'] not in KOKORO_VOICES:
+        raise ValueError('Choose Heart, Michael or Emma for the English voice.')
     if engine == 'chatterbox' and result['language'] not in ('no', 'en'):
         raise ValueError('Choose no or en for language')
     if result.get('reference') and not result.get('consent'):

@@ -1,89 +1,91 @@
 # Skrivi TTS
 
-A Windows application for local text-to-speech and repeatable model comparisons.
-It continues the existing Norwegian TTS shootout and VoxCPM2 Reader work, in a
-separate repository from Skrivi's speech-to-text application.
+An open-source Windows reader that turns text into speech on your computer.
+A separate application from [Skrivi dictation](https://github.com/workavoidance/Skrivi),
+with a familiar interface and its own orange speaker tray icon.
 
-## Install or update
+## Install and read
 
 Download the Windows ZIP from [Releases](https://github.com/workavoidance/Skrivi-TTS/releases),
-extract it, and double-click **INSTALL.bat**. No administrator account or separately
-installed Python is required. Start **Skrivi TTS** from the Start menu or desktop.
+extract it, and double-click **INSTALL.bat**. Start **Skrivi TTS** from the Start menu
+or desktop. No administrator account or separately installed Python is needed.
+The 0.2 bundle includes the two default models (about 417 MB of weights), plus
+application and engine dependencies. First installation works offline after downloading the ZIP.
 
-Models, presets, reference voices, settings and generated audio live permanently in
-`%LOCALAPPDATA%\SkriviTTS`. App versions are separate under `versions`. Installing
-another version does not delete the library or download models again. The engine
-runtime is cached separately under `runtimes` and unchanged files are reused.
-The installer itself makes no network requests. Model downloads happen only when
-you choose **Download selected** inside the app.
+- Type or paste text, then choose **Read aloud** (or Ctrl+Enter).
+- Select text in another application and press **Ctrl+Alt+Space** to read immediately.
+  Press the shortcut again to stop. Alternative shortcuts are available in Settings.
+- **Automatic** selects English or Norwegian for the whole passage. Mixed text is
+  read with one voice. Choose a language in the reader or tray menu to override it.
+  Very short or uncertain text uses the configured fallback, Norwegian by default.
+- Close the window to keep the tray app running. Choose **Quit Skrivi TTS** to exit.
+- Save a finished reading as a WAV if wanted. Text is not saved; temporary readings
+  are removed when the app quits normally.
 
-## Read and compare
-
-Choose a model, enter text, adjust its settings, and click **Generate & listen**.
-The complete WAV plays through Windows at its original sample rate. Models stay
-loaded while you use the same settings; the history distinguishes cold and warm
-runs. Changing model/settings reloads the engine. **Stop / unload model** cancels
-generation or playback and releases model memory.
-
-Save named presets, replay past results, rate listening quality from 1 to 5, and
-restore a past run's settings. Each audio file has a JSON record of the model
-revision, settings, application version, CPU device, timings and rating. Input text
-is not logged or persisted. Audio and reference voices necessarily contain speech;
-keep the local library somewhere appropriate for your recordings.
-
-The Model library tab can download a pinned model, import existing files into the
-permanent library, or verify checksums. Imports copy once and preserve the originals.
-No synthesis request uploads text or audio. VoxCPM2 uses authenticated loopback
-communication with its locally owned runtime.
-
-## Version 0.1.0 engines
-
-| Model | Controls | Native output |
+| Included voice | Native output | Model weights |
 | --- | --- | --- |
-| Public VoxCPM2 Q4 | Seed, diffusion steps, guidance, CPU threads, optional reference WAV | 48 kHz |
-| Chatterbox Multilingual Q4 ONNX | Seed, CPU threads, Norwegian/English, exaggeration, repetition penalty, token safety limit, optional reference WAV | 24 kHz |
-| Piper NVCC | Ten speakers, speed relative to native cadence, noise scale and width | 22.05 kHz |
-| Piper Talesyntese | Native-relative speed, noise scale and width | 22.05 kHz |
+| Piper Talesyntese, Norwegian Bokmaal male | 22.05 kHz | 63 MB |
+| Kokoro Heart, American English female | 24 kHz | 354 MB including voice vectors |
 
-All current adapters use **CPU**. GPU support will be added only after an actual
-compatible runtime has been measured. The adapter registry is designed for more
-models; these four are the implemented engines, not a promise that arbitrary model
-formats can be loaded. Controls tune inference; this app does not train model weights.
+Heart is the English voice approved in the listening comparison. Michael (American
+male) and Emma (British female) share the same Kokoro download. Original speed and
+untrimmed native speech are the defaults. Language detection is a convenience,
+not a guarantee; these are Bokmaal and English voices, not a claimed Nynorsk model.
 
-VoxCPM2 defaults to seed 42, 10 steps, guidance 2 and native speed. It retains the
-existing adapter's 4,096-character limit; longer-text handling remains planned.
-Chatterbox uses greedy decoding and refuses to save audio if the token safety limit
-is reached without a natural ending. First load can take around 40 seconds on the
-tested PC; warm readings avoid that repeated load. A seed does not guarantee a
-particular gender or identical results across runtime versions.
+**Voices & models** retains optional Piper NVCC, VoxCPM2 and Chatterbox downloads.
+These use the existing tested CPU adapters. Optional models can be selected in
+Settings. The earlier comparison UI, presets and history are preserved in
+`app/shootout.py` and version 0.1.0; the reader does not delete their stored data.
 
-Reference WAVs must be mono PCM16, 2–20 seconds, under 2 MB. Vox accepts 16–48 kHz;
-Chatterbox requires native 24 kHz. No automatic resampling is applied. Use your own
-voice or one you have permission to use, and identify shared output as AI-generated.
+## Updates and privacy
 
-## Development
+Models, presets, reference voices and settings live in `%LOCALAPPDATA%\SkriviTTS`,
+outside app versions. Reinstalling skips identical model/runtime files and never
+redownloads models. Existing mismatched files are preserved and reported rather
+than silently replaced. No synthesis request uploads text or audio. No telemetry,
+cloud synthesis, microphone capture or automatic model downloads are implemented.
 
-Windows x64 with Python 3.12 and .NET Framework 4.8:
+Selection capture uses Windows accessibility, with a copy/restore clipboard fallback
+for applications that do not expose selection. Applications with protected content
+or different privilege levels may require pasting text into the reader. Image text
+and screen-area OCR are planned, not implemented. Startup at sign-in is opt-in.
+
+All adapters currently run on CPU. Windows x64 is required; optional VoxCPM2 also
+requires AVX2. The application is unsigned, so Windows may show a reputation warning.
+
+## Build from GitHub
+
+Windows x64, Python 3.12, .NET Framework 4.8. From a clone of this repository:
 
 ```powershell
 python -m venv .build-env
 .\.build-env\Scripts\python.exe -m pip install -r requirements-build.lock
 .\.build-env\Scripts\python.exe -m unittest discover -s tests -p 'test_*.py'
+.\.build-env\Scripts\python.exe scripts/prepare-build.py --models
+python -m venv build/english-env
+.\build\english-env\Scripts\python.exe -m pip install -r requirements-kokoro.lock
+.\scripts\build-kokoro.ps1
 .\scripts\build.ps1
-.\.build-env\Scripts\python.exe scripts/package.py --vox-runtime C:\path\to\pinned-crispasr-runtime
+.\.build-env\Scripts\python.exe tests/check_reader_engines.py
+.\.build-env\Scripts\python.exe scripts/package.py --vox-runtime build/vox-0.8.32
 ```
 
-The package script takes the already available CrispASR v0.8.32 runtime directory
-(binary, OpenBLAS and notices). It never downloads model weights. Runtime/source
-provenance and the recovery instructions are in `docs/ARCHITECTURE.md` and
-`THIRD_PARTY_NOTICES.md`. For ordinary code changes, reuse the published dependency
-runtime; update its profile ID when changing bundled dependencies.
+`prepare-build.py` retrieves the checksum-pinned 0.1 engine runtime from GitHub;
+`--models` explicitly allows preparing missing default models. Existing caches are
+reused. Packaging reads the verified model cache and needs no private/local-only
+source. Do not change an immutable runtime profile without assigning a new profile
+ID. Later app-only updates should reuse the published runtime rather than rebuild it.
+The full Kokoro environment includes build-only Torch dependencies; the distributed
+English worker excludes Torch and runs the FP32 ONNX model.
 
-`tests/check_engines.py` is an opt-in real-model test against the installed library.
-`scripts/import_existing.py` performs a one-time import from the previous local
-shootout/Reader caches, with no network calls. Launch from source with
-`.\.build-env\Scripts\python.exe app/main.py` after installing the native runtime.
+GitHub Actions runs model-preservation and language-routing tests on pushes and PRs.
+Real-model tests are opt-in and require weights. Recorded tests, settings, hardware
+and prior listening results are under `docs/`; start at **PROJECT_STATUS.md** before
+continuing development. Do not restart the old research from conversation memory.
 
-See **PROJECT_STATUS.md** before continuing work. The prior inventory is retained
-in `docs/PREVIOUS_PROJECT_STATUS.md`; do not restart old model research or replace
-the engine implementations merely because a new conversation lacks context.
+## Licenses
+
+Application source and icon: MIT. Bundled Talesyntese weights: CC0. Kokoro weights:
+Apache-2.0. Speech runtimes include GPL components; Qt uses LGPL. These retain their
+own terms. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and
+[corresponding sources and build instructions](docs/SOURCES.md).

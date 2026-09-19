@@ -1,3 +1,69 @@
+# Skrivi TTS - reader release work, 19 September 2026
+
+## Current authority (supersedes historical sections below)
+
+- Repository: https://github.com/workavoidance/Skrivi-TTS, separate from Skrivi STT.
+  User explicitly requested a public open-source GitHub project; publication is
+  being completed with this reader update. Source, tests, build recipes and releases
+  belong here, not solely in a local machine folder.
+- App version: **0.2.0**, currently being packaged and verified before release.
+- Source: `C:/Users/jon/.codex/visualizations/2026/09/08/01a07fdc-16e7-7330-83a6-cbdec9f59c1d/skrivi-tts`.
+  No build requires that exact path. README provides fresh-clone instructions.
+- Existing installed 0.1.0 and cached models remain available until installation
+  verification completes. Persistent data: `%LOCALAPPDATA%/SkriviTTS`.
+- User approved **Kokoro Heart (American female)**: "That English one is perfect.
+  Let's use that." This supersedes the pending-listening recommendation below.
+- Default bundled voices: Talesyntese Bokmaal male and Kokoro Heart, 417 MB weights.
+  Kokoro FP32, Misaki 0.9.4, American G2P, speed 1.0, 8 CPU threads, trim=False,
+  float32 speed-input correction. No resampling, compression or silence trimming.
+- UI is now a PySide6 reader with Skrivi styling (upstream main 05ed960), separate
+  orange speaker tray icon, text box, model library and settings. Historical Tk
+  comparison UI retained in app/shootout.py; all old user data is preserved.
+- Selection shortcut Ctrl+Alt+Space starts immediately; press again to stop.
+  Windows accessibility capture falls back to copying/restoring clipboard formats.
+  Automatic chooses one English/Bokmaal model for the entire passage; manual tray/UI
+  override and uncertain-text fallback. No per-word voice switching.
+- OCR/image input is future work; do not add it to this release.
+- Dependency profiles: existing python-engine-v1 reused byte-for-byte; new
+  kokoro-engine-v1 is separate. Rebuilding/changing a published runtime requires a
+  new profile ID. Model files stay outside app versions.
+- Frozen Kokoro build recipe: scripts/build-kokoro.ps1 and requirements-kokoro.lock.
+  GUI/Piper build dependencies: requirements-build.lock. prepare-build.py retrieves
+  the checksum-pinned old runtime from GitHub for a fresh clone, without private files.
+- Package includes both verified voices and license/source notices. Installer skips
+  identical cached models; differing existing model/runtime files cause a clear
+  failure rather than overwrite. No installer network calls.
+
+## Verification during reader development
+
+- Eleven unit tests pass: preserved models/settings/presets, bad weights, cancellation,
+  future schema, inference bounds, language routing, manual override and fallback.
+- Frozen Kokoro CPU cold/warm native WAV smoke tests pass: short sentence generates
+  3.275 seconds of audio in 0.519 / 0.506 seconds; total wait 3.287 / 0.512 seconds.
+- Frozen Talesyntese CPU cold/warm tests pass: about 2.69 seconds of audio in
+  0.127 / 0.075 seconds; total wait 1.408 / 0.081 seconds, native 22,050 Hz.
+- tests/check_reader_engines.py is the opt-in runner. Evidence in
+  docs/READER_ENGINE_CHECKS.json; local generated WAVs under build/reader-verification.
+- Exact accepted English story length remains 11 seconds. Same weights/settings/
+  frontend are preserved; waveform bytes differ between inference runs, so do not
+  claim byte-identical output or use WAV hashes as a voice-quality guarantee.
+- Windows selected-text capture, clipboard fallback/restoration, stale-capture
+  cancellation passed against a controlled sample-text window.
+- Native Windows audio completion and cancellation passed with a silent test WAV:
+  full 1-second playback returned after 1.25 seconds; cancellation returned in 0.22 s.
+- Rendered all three reader tabs for visual review. Fixed narrow wrapped heading.
+- Publication check scanned 53 historical Git blobs: no credential-pattern findings,
+  no tracked file over 2 MB. Weights and user audio stay outside Git.
+
+Next: complete offline installation/reinstall preservation checks, verify the installed
+reader, publish source and downloadable release, then record exact commit/artifact.
+Future: app-only updates retaining runtime/models, OCR input, wider application
+selection compatibility and accessibility testing. Do not restart broad model research.
+
+---
+
+# Historical project record (0.1.0 and screening experiments)
+
 # Skrivi TTS — working application, 8 September 2026
 
 ## Durable home
