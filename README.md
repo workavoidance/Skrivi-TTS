@@ -4,6 +4,19 @@ An open-source Windows reader that turns text into speech on your computer.
 A separate application from [Skrivi dictation](https://github.com/workavoidance/Skrivi-STT),
 with a familiar interface and its own orange speaker tray icon.
 
+## Screen-region reading test update (0.3.0)
+
+The OCR update adds **Read screen region** in the reader and tray, or
+**Ctrl+Alt+Shift+Space**. Put the pointer on the desired monitor, press the shortcut,
+and drag around one paragraph or column. Release to read; Escape cancels selection.
+Recognised text appears in the reader for review. Everything runs offline.
+
+Install the full 0.2.1 package first, then extract the 0.3.0 OCR update and run
+INSTALL.bat. Quit the existing tray app and reopen after updating. Speech models
+are reused; the two OCR language files add about 7.7 MB plus the OCR runtime.
+The previous app version is retained. This is a test update, with results and
+limitations in [OCR_SCREENING.md](docs/OCR_SCREENING.md).
+
 ## Install and read
 
 Download **Skrivi-TTS-0.2.1-windows-x64-setup.exe** from

@@ -13,13 +13,14 @@ import uuid
 import winsound
 
 from PySide6.QtCore import QMimeData,QObject,QTimer,Qt,Signal,QSignalBlocker
-from PySide6.QtGui import QAction,QActionGroup,QKeySequence,QShortcut
+from PySide6.QtGui import QAction,QActionGroup,QKeySequence,QShortcut,QCursor
 from PySide6.QtWidgets import (QApplication,QCheckBox,QComboBox,QDialog,QDoubleSpinBox,
  QFileDialog,QFormLayout,QFrame,QHBoxLayout,QLabel,QMenu,QMessageBox,QProgressBar,
  QPushButton,QTabWidget,QTextEdit,QTreeWidget,QTreeWidgetItem,QVBoxLayout,QWidget,QSystemTrayIcon)
 from core import DATA,ROOT,VERSION,KOKORO_VOICES,Library,catalog,defaults,read_json,write_json
 from client import Client
 from reader_core import load_preferences,choose_language,model_for_language
+from screen_region import RegionOverlay
 from branding import speech_icon
 from theme import application_stylesheet
 from windows_reader import Hotkeys,HOTKEYS,user32,modifiers_released,copy_selection,set_startup,WavePlayer
@@ -32,6 +33,7 @@ class Events(QObject):
     failure=Signal(str)
     finished=Signal(object)
     selection=Signal(str,object)
+    ocr=Signal(int,str,str)
     models=Signal()
     library_done=Signal()
 
@@ -55,6 +57,7 @@ class Reader(QDialog):
         self.library=Library();self.models=catalog();self.preferences=load_preferences()
         self.client=Client();self.cancel=threading.Event();self.busy=False;self.capturing=False
         self.player=WavePlayer();self.capture_generation=0
+        self.region_overlay=None;self.ocr_cancel=threading.Event()
         self.worker=None;self.library_busy=False;self.library_cancel=threading.Event();self.exiting=False
         self.last_audio=None;self.last_result=None
         self.temp=tempfile.TemporaryDirectory(prefix='skrivi-tts-reader-')
@@ -62,12 +65,18 @@ class Reader(QDialog):
         self.events.status.connect(self.set_status);self.events.failure.connect(self.show_error)
         self.events.finished.connect(self.completed);self.events.selection.connect(self.selection_received)
         self.events.models.connect(self.refresh_models);self.events.library_done.connect(self.library_finished)
+        self.events.ocr.connect(self.ocr_received)
         self.build();self.build_tray()
         self.hotkeys=Hotkeys(self.hotkey_pressed)
         if not preview:
             app.installNativeEventFilter(self.hotkeys)
             try:self.hotkeys.register(self.preferences['hotkey'])
             except Exception as error:QTimer.singleShot(0,lambda e=str(error):self.show_error(e))
+        self.region_hotkeys=Hotkeys(self.region_hotkey_pressed,0x5312)
+        if not preview:
+            app.installNativeEventFilter(self.region_hotkeys)
+            try:self.region_hotkeys.register('Ctrl+Alt+Shift+Space')
+            except Exception:QTimer.singleShot(0,lambda:self.show_error('Screen-region shortcut unavailable. Use Read screen region in the tray.'))
         self.restore_preferences();self.refresh_models();self.update_route()
         self.tray.show() if not preview else None
         QShortcut(QKeySequence('Ctrl+Return'),self,activated=self.read_editor)
@@ -107,6 +116,7 @@ class Reader(QDialog):
         self.save_button=QPushButton('Save audio…');self.save_button.clicked.connect(self.save_audio);self.save_button.setEnabled(False)
         for button in (self.read_button,self.stop_button,self.sample_button):buttons.addWidget(button)
         buttons.addStretch();buttons.addWidget(self.save_button);layout.addLayout(buttons)
+        self.region_button=QPushButton('Read screen region');self.region_button.clicked.connect(self.capture_region);layout.addWidget(self.region_button)
         self.shortcut_hint=label('','secondary');layout.addWidget(self.shortcut_hint)
         layout.addWidget(label('Closing this window keeps Skrivi TTS in the tray. Text is not saved.','secondary'))
         layout=QVBoxLayout(voices);layout.setContentsMargins(0,16,0,0);layout.setSpacing(12)
@@ -133,7 +143,7 @@ class Reader(QDialog):
         box,contents=card(settings);layout.addWidget(box)
         contents.addWidget(label('Read from any application','sectionTitle'))
         form=QFormLayout();contents.addLayout(form)
-        self.shortcut=QComboBox();self.shortcut.addItems(HOTKEYS);form.addRow('Selected-text shortcut',self.shortcut)
+        self.shortcut=QComboBox();self.shortcut.addItems([key for key in HOTKEYS if key!='Ctrl+Alt+Shift+Space']);form.addRow('Selected-text shortcut',self.shortcut)
         self.shortcut.currentTextChanged.connect(self.change_shortcut)
         self.fallback=QComboBox();self.fallback.addItem('Norwegian Bokmål','no');self.fallback.addItem('English','en');form.addRow('When detection is uncertain',self.fallback)
         self.fallback.currentIndexChanged.connect(self.save_preferences)
@@ -160,6 +170,7 @@ class Reader(QDialog):
         self.tray_status=self.menu.addAction('Ready');self.tray_status.setEnabled(False)
         self.menu.addSeparator();self.menu.addAction('Open reader',self.open_reader)
         self.tray_read=self.menu.addAction('Read selected text',self.capture_selection)
+        self.menu.addAction('Read screen region · Ctrl+Alt+Shift+Space',self.capture_region)
         self.tray_stop=self.menu.addAction('Stop reading',self.stop);self.tray_stop.setEnabled(False)
         language=self.menu.addMenu('Reading language');group=QActionGroup(self.menu);group.setExclusive(True);self.language_actions={}
         for key,name in LANGUAGES.items():
@@ -203,7 +214,7 @@ class Reader(QDialog):
             self.show_error(str(error))
 
     def update_hint(self):
-        self.shortcut_hint.setText('Selected text: '+self.preferences['hotkey']+' · Here: Ctrl + Enter · Stop: press the shortcut again')
+        self.shortcut_hint.setText('Selected text: '+self.preferences['hotkey']+' · Screen region: Ctrl+Alt+Shift+Space')
 
     def change_startup(self,checked):
         try:
@@ -229,7 +240,7 @@ class Reader(QDialog):
     def read_editor(self):self.start_reading(self.text.toPlainText(),'Text box')
 
     def start_reading(self,text,source):
-        if self.busy or self.exiting:return
+        if self.busy or self.capturing or self.exiting:return
         text=text.strip()
         if not text:self.show_error('Select some text, or type it into the reader first.');return
         if len(text)>30000:self.show_error('Please select a shorter passage (up to 30,000 characters).');return
@@ -272,7 +283,9 @@ class Reader(QDialog):
         if self.exiting:self.finish_quit()
 
     def stop(self):
-        self.cancel.set();self.player.stop();self.capture_generation+=1;self.capturing=False
+        self.cancel.set();self.ocr_cancel.set();self.player.stop();self.capture_generation+=1;self.capturing=False
+        if self.region_overlay:self.region_overlay.abort();self.region_overlay=None
+        if not self.busy:self.progress.hide();self.stop_button.setEnabled(False);self.tray_stop.setEnabled(False);self.read_button.setEnabled(True)
         if self.busy:self.set_status('Stopping…')
 
     def set_status(self,text):
@@ -295,6 +308,62 @@ class Reader(QDialog):
         else:
             if self.isActiveWindow():self.read_editor()
             else:self.capture_selection()
+
+    def region_hotkey_pressed(self):
+        if self.busy or self.capturing:self.stop()
+        else:self.capture_region()
+
+    def capture_region(self):
+        if self.busy or self.capturing or self.exiting:return
+        runtime=DATA/'runtimes/tesseract-5.5.2-v1/OCRWorker.exe'
+        assets=DATA/'models/ocr-tessdata-fast-v1'
+        if not runtime.is_file() or not all((assets/(lang+'.traineddata')).is_file() for lang in ('nor','eng')):
+            self.show_error('Screen reading needs the OCR update package. No files will be downloaded automatically.');return
+        self.capturing=True;self.capture_generation+=1;epoch=self.capture_generation
+        self.ocr_cancel=threading.Event();cancel=self.ocr_cancel
+        screen=self.app.screenAt(QCursor.pos()) or self.app.primaryScreen()
+        self.hide();self.stop_button.setEnabled(True);self.tray_stop.setEnabled(True);self.read_button.setEnabled(False)
+        self.set_status('Select a paragraph or column. Escape cancels.')
+        def select():
+            if self.exiting or epoch!=self.capture_generation:return
+            try:
+                overlay=RegionOverlay(screen);self.region_overlay=overlay
+                overlay.cancelled.connect(self.stop)
+                overlay.selected.connect(lambda data:self.recognise_region(data,epoch,runtime,assets,cancel))
+                overlay.show();overlay.raise_();overlay.activateWindow()
+            except Exception as error:self.stop();self.show_error(str(error))
+        QTimer.singleShot(250,select)
+
+    def recognise_region(self,data,epoch,runtime,assets,cancel):
+        self.region_overlay=None
+        self.progress.show();self.set_status('Recognising text on this device…')
+        def work():
+            process=None
+            try:
+                process=subprocess.Popen([str(runtime),str(assets)],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.DEVNULL,creationflags=subprocess.CREATE_NO_WINDOW)
+                deadline=time.monotonic()+30;first=True
+                while True:
+                    if cancel.is_set():raise InterruptedError()
+                    if time.monotonic()>deadline:raise RuntimeError('Recognition took too long. Try a smaller region.')
+                    try:
+                        output,_=process.communicate(data if first else None,timeout=.1);break
+                    except subprocess.TimeoutExpired:first=False
+                result=json.loads(output.decode('utf-8'))
+                if process.returncode or 'error' in result:raise RuntimeError(result.get('error','OCR worker failed.'))
+                if not cancel.is_set():self.events.ocr.emit(epoch,result['text'],'')
+            except InterruptedError:pass
+            except Exception as error:
+                if not cancel.is_set():self.events.ocr.emit(epoch,'',str(error))
+            finally:
+                if process and process.poll() is None:process.kill();process.wait()
+        threading.Thread(target=work,daemon=True).start()
+
+    def ocr_received(self,epoch,text,error):
+        if self.exiting or epoch!=self.capture_generation:return
+        self.capturing=False;self.progress.hide();self.read_button.setEnabled(True);self.stop_button.setEnabled(False);self.tray_stop.setEnabled(False)
+        if error:self.show_error(error);return
+        if not text.strip():self.show_error('No text found. Zoom in and select a paragraph or column.');return
+        self.text.setPlainText(text);self.start_reading(text,'Screen region')
 
     def capture_selection(self):
         if self.busy or self.capturing or self.exiting:return
@@ -340,7 +409,7 @@ class Reader(QDialog):
                 self.capturing=False
                 if self.exiting or epoch!=self.capture_generation:return
                 if copied.strip():self.start_reading(copied,'Selection')
-                else:self.show_error('No selected text was available. Try copying it into the reader. Images are not supported yet.')
+                else:self.show_error('No selected text was available. Try copying it into the reader. For an image, use Read screen region.')
             QTimer.singleShot(60,collect)
         QTimer.singleShot(60,copy_when_released)
 
@@ -394,7 +463,7 @@ class Reader(QDialog):
         if name:shutil.copyfile(self.last_audio,name)
 
     def quit(self):
-        self.exiting=True;self.library_cancel.set();self.stop();self.hide();self.tray.hide();self.hotkeys.close()
+        self.exiting=True;self.library_cancel.set();self.stop();self.hide();self.tray.hide();self.hotkeys.close();self.region_hotkeys.close()
         if not self.busy:self.finish_quit()
 
     def finish_quit(self):

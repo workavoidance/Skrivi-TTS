@@ -1,0 +1,14 @@
+[
+  {
+    "file": "eng.traineddata",
+    "url": "https://raw.githubusercontent.com/tesseract-ocr/tessdata_fast/87416418657359cb625c412a48b6e1d6d41c29bd/eng.traineddata",
+    "bytes": 4113088,
+    "sha256": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2"
+  },
+  {
+    "file": "nor.traineddata",
+    "url": "https://raw.githubusercontent.com/tesseract-ocr/tessdata_fast/87416418657359cb625c412a48b6e1d6d41c29bd/nor.traineddata",
+    "bytes": 3610079,
+    "sha256": "0451eb4f8049ae78196806bf878a389a2f40f1386fe038568cf4441226ba6ef2"
+  }
+]

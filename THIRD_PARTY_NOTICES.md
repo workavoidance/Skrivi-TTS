@@ -47,3 +47,20 @@ requirements-kokoro.lock records the isolated English build environment. Torch i
 an installation dependency of the frontend but is excluded from the distributed
 runtime; English inference uses ONNX Runtime CPU. Runtime license collections may
 include notices for build dependencies not shipped in the executable.
+
+## Screen-region OCR (0.3.0)
+
+Tesseract 5.5.2 and official tessdata_fast English/Norwegian weights: Apache-2.0.
+Model origins and hashes: docs/OCR_MODEL_MANIFEST.json. Wrapper tesserocr 2.10.0:
+MIT, copyright Fayez Zouheiry; Windows wheel from simonflueckiger/tesserocr-windows_build.
+The exact wheel URL/hash is pinned in requirements-ocr.lock. Leptonica 1.87.0 uses
+its BSD-style licence. Runtime reports giflib 5.2.2, IJG JPEG 10, libpng 1.6.54,
+libtiff 4.7.1, zlib 1.3.2, libwebp 1.6.0, OpenJPEG 2.5.4. Corresponding notices
+are in licenses/ocr and licenses/*LICENSE.txt. This software is based in part on
+the work of the Independent JPEG Group. Pillow and Python notices are included
+with the packaged third-party licences. PyInstaller's bootloader exception permits
+redistribution of the frozen application under its own licence.
+
+No OCR model is downloaded by the running application. OCR data lives outside app
+versions and is retained through updates. Screen captures and recognised text are
+not written to logs, image files, the clipboard or network services by OCR.

@@ -1,3 +1,12 @@
+# OCR input in 0.3.0
+
+app/screen_region.py freezes the pointer monitor before drawing its overlay; crop
+coordinates map Qt logical units to physical pixels. OCR bytes use stdin/stdout of
+an isolated frozen ocr_host.py process, with cancellation and timeout. No image is
+written to disk. app/main.py rejects stale results through capture_generation and
+passes recognised text to the existing synthesis path. Model/runtime assets are
+persistent, outside app versions. See docs/OCR_SCREENING.md for scope and evidence.
+
 # Reader 0.2 architecture update
 
 The current front end is app/main.py (PySide6), not Tk. The prior compare/preset/history

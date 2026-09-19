@@ -1,6 +1,20 @@
 # Skrivi TTS - reader release work, 19 September 2026
 
-## Current authority (supersedes historical sections below)
+## OCR update 0.3.0 (supersedes OCR future-work notes below)
+
+User authorised testing Tesseract and integrating if suitable. Source and frozen
+worker tests passed: 22/24 development crops exact with nor+eng, 12/12 separate
+held-out crops exact. Details and limits: docs/OCR_SCREENING.md and JSON evidence.
+Region overlay, separate Ctrl+Alt+Shift+Space, immediate reading, cancellation and
+editable recognition text implemented. One monitor per selection, one paragraph/
+column recommended. No private screen capture or real HDR/multi-monitor test.
+Source: app/screen_region.py, ocr_host.py, scripts/build-ocr.ps1 and
+scripts/package-ocr-update.py. Dependencies pinned in requirements-ocr.lock;
+weights pinned in docs/OCR_MODEL_MANIFEST.json. Persistent model/runtime IDs:
+ocr-tessdata-fast-v1, tesseract-5.5.2-v1. Speech assets are unchanged.
+Packaging/installation verification is the next step. Keep the 0.2.1 fallback.
+
+## Previous release authority
 
 - Repository: https://github.com/workavoidance/Skrivi-TTS, separate from Skrivi STT.
   User explicitly requested a public open-source GitHub project; it is now PUBLIC.

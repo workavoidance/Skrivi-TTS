@@ -1,0 +1,98 @@
+[
+  {
+    "language": "en",
+    "mode": "clean",
+    "expected": "Your appointment is on Friday at 10:45. Bring the reference number 804219.",
+    "actual": "Your appointment is on Friday at 10:45. Bring the reference number 804219.",
+    "exact": true,
+    "seconds": 0.18008669995469972
+  },
+  {
+    "language": "en",
+    "mode": "jpeg",
+    "expected": "Your appointment is on Friday at 10:45. Bring the reference number 804219.",
+    "actual": "Your appointment is on Friday at 10:45. Bring the reference number 804219.",
+    "exact": true,
+    "seconds": 0.18311669997638091
+  },
+  {
+    "language": "en",
+    "mode": "dark",
+    "expected": "Your appointment is on Friday at 10:45. Bring the reference number 804219.",
+    "actual": "Your appointment is on Friday at 10:45. Bring the reference number 804219.",
+    "exact": true,
+    "seconds": 0.1774351000203751
+  },
+  {
+    "language": "nb",
+    "mode": "clean",
+    "expected": "Bjørn og Åse møtest ved biblioteket. Prisen er 249,90 kroner, inkludert avgifter.",
+    "actual": "Bjørn og Åse møtest ved biblioteket. Prisen er 249,90 kroner, inkludert avgifter.",
+    "exact": true,
+    "seconds": 0.17858170002000406
+  },
+  {
+    "language": "nb",
+    "mode": "jpeg",
+    "expected": "Bjørn og Åse møtest ved biblioteket. Prisen er 249,90 kroner, inkludert avgifter.",
+    "actual": "Bjørn og Åse møtest ved biblioteket. Prisen er 249,90 kroner, inkludert avgifter.",
+    "exact": true,
+    "seconds": 0.18179659999441355
+  },
+  {
+    "language": "nb",
+    "mode": "dark",
+    "expected": "Bjørn og Åse møtest ved biblioteket. Prisen er 249,90 kroner, inkludert avgifter.",
+    "actual": "Bjørn og Åse møtest ved biblioteket. Prisen er 249,90 kroner, inkludert avgifter.",
+    "exact": true,
+    "seconds": 0.18086319998838007
+  },
+  {
+    "language": "nn",
+    "mode": "clean",
+    "expected": "Me ønskjer å høyre kva du meiner. Du treng ikkje sende søknaden før måndag.",
+    "actual": "Me ønskjer å høyre kva du meiner. Du treng ikkje sende søknaden før måndag.",
+    "exact": true,
+    "seconds": 0.17875179997645319
+  },
+  {
+    "language": "nn",
+    "mode": "jpeg",
+    "expected": "Me ønskjer å høyre kva du meiner. Du treng ikkje sende søknaden før måndag.",
+    "actual": "Me ønskjer å høyre kva du meiner. Du treng ikkje sende søknaden før måndag.",
+    "exact": true,
+    "seconds": 0.18275229999562725
+  },
+  {
+    "language": "nn",
+    "mode": "dark",
+    "expected": "Me ønskjer å høyre kva du meiner. Du treng ikkje sende søknaden før måndag.",
+    "actual": "Me ønskjer å høyre kva du meiner. Du treng ikkje sende søknaden før måndag.",
+    "exact": true,
+    "seconds": 0.17988350003724918
+  },
+  {
+    "language": "mixed",
+    "mode": "clean",
+    "expected": "Please open the attachment. Vedlegget inneheld informasjon om møtet.",
+    "actual": "Please open the attachment. Vedlegget inneheld informasjon om møtet.",
+    "exact": true,
+    "seconds": 0.17845499998657033
+  },
+  {
+    "language": "mixed",
+    "mode": "jpeg",
+    "expected": "Please open the attachment. Vedlegget inneheld informasjon om møtet.",
+    "actual": "Please open the attachment. Vedlegget inneheld informasjon om møtet.",
+    "exact": true,
+    "seconds": 0.17907150002429262
+  },
+  {
+    "language": "mixed",
+    "mode": "dark",
+    "expected": "Please open the attachment. Vedlegget inneheld informasjon om møtet.",
+    "actual": "Please open the attachment. Vedlegget inneheld informasjon om møtet.",
+    "exact": true,
+    "seconds": 0.17509380000410601
+  }
+]

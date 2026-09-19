@@ -6,31 +6,31 @@ import sys
 import winreg
 from PySide6.QtCore import QAbstractNativeEventFilter
 
-HOTKEYS={'Ctrl+Alt+Space':(0x0002|0x0001,0x20),'Ctrl+Alt+R':(0x0002|0x0001,0x52),'Ctrl+Shift+F8':(0x0002|0x0004,0x77)}
+HOTKEYS={'Ctrl+Alt+Space':(0x0002|0x0001,0x20),'Ctrl+Alt+R':(0x0002|0x0001,0x52),'Ctrl+Shift+F8':(0x0002|0x0004,0x77),'Ctrl+Alt+Shift+Space':(0x0002|0x0001|0x0004,0x20)}
 user32=ctypes.windll.user32
 user32.GetForegroundWindow.restype=wintypes.HWND
 user32.GetClipboardSequenceNumber.restype=wintypes.DWORD
 
 class Hotkeys(QAbstractNativeEventFilter):
-    def __init__(self,callback):
-        super().__init__();self.callback=callback;self.current=None
+    def __init__(self,callback,identifier=0x5311):
+        super().__init__();self.callback=callback;self.current=None;self.identifier=identifier
     def register(self,choice):
         if choice not in HOTKEYS: raise ValueError('Unsupported shortcut.')
         if choice==self.current:return
         mods,key=HOTKEYS[choice]
-        if self.current:user32.UnregisterHotKey(None,0x5311)
-        if not user32.RegisterHotKey(None,0x5311,mods|0x4000,key):
+        if self.current:user32.UnregisterHotKey(None,self.identifier)
+        if not user32.RegisterHotKey(None,self.identifier,mods|0x4000,key):
             if self.current:
-                oldmod,oldkey=HOTKEYS[self.current];user32.RegisterHotKey(None,0x5311,oldmod|0x4000,oldkey)
+                oldmod,oldkey=HOTKEYS[self.current];user32.RegisterHotKey(None,self.identifier,oldmod|0x4000,oldkey)
             raise RuntimeError('That shortcut is already in use. Choose another in Settings.')
         self.current=choice
     def nativeEventFilter(self,event_type,message):
         msg=wintypes.MSG.from_address(int(message))
-        if msg.message==0x0312 and msg.wParam==0x5311:
+        if msg.message==0x0312 and msg.wParam==self.identifier:
             self.callback();return True,0
         return False,0
     def close(self):
-        user32.UnregisterHotKey(None,0x5311);self.current=None
+        user32.UnregisterHotKey(None,self.identifier);self.current=None
 
 def modifiers_released():
     return not any(user32.GetAsyncKeyState(key)&0x8000 for key in (0x10,0x11,0x12,0x5B,0x5C))

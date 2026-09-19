@@ -1,0 +1,11 @@
+{
+  "giflib-COPYING.txt": "https://raw.githubusercontent.com/mirrorer/giflib/master/COPYING",
+  "jpeg-README.txt": "https://www.ijg.org/files/jpegsrc.v10.tar.gz",
+  "libpng-LICENSE.txt": "https://raw.githubusercontent.com/pnggroup/libpng/libpng16/LICENSE",
+  "libtiff-COPYRIGHT.txt": "https://gitlab.com/libtiff/libtiff/-/raw/v4.7.1/LICENSE.md",
+  "zlib-LICENSE.txt": "https://raw.githubusercontent.com/madler/zlib/master/LICENSE",
+  "libwebp-COPYING.txt": "https://raw.githubusercontent.com/webmproject/libwebp/main/COPYING",
+  "libwebp-PATENTS.txt": "https://raw.githubusercontent.com/webmproject/libwebp/main/PATENTS",
+  "openjpeg-LICENSE.txt": "https://raw.githubusercontent.com/uclouvain/openjpeg/v2.5.4/LICENSE",
+  "windows-build-LICENSE.txt": "https://raw.githubusercontent.com/simonflueckiger/tesserocr-windows_build/tesserocr-v2.10.0-tesseract-5.5.2/LICENSE"
+}

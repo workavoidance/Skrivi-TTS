@@ -1,0 +1,322 @@
+{
+  "engine": "tesseract 5.5.2\n leptonica-1.87.0 (Mar 14 2026, 19:43:22) [MSC v.1944 LIB Release x64]\n  libgif 5.2.2 : libjpeg 10 : libpng 1.6.54 : libtiff 4.7.1 : zlib 1.3.2 : libwebp 1.6.0 : libopenjp2 2.5.4",
+  "settings": {
+    "languages": "nor+eng",
+    "psm": 6
+  },
+  "initialization_seconds": 0.038892699987627566,
+  "results": [
+    {
+      "id": "en-arial.ttf-18",
+      "language": "en",
+      "expected": "The train leaves at 14:35. Please arrive ten minutes early. Sarah paid 125.50 kroner for three books and a newspaper. Read the first paragraph, then continue to the next page.",
+      "actual": "The train leaves at 14:35. Please arrive ten minutes early. Sarah paid 125.50 kroner for three books and a newspaper. Read the first paragraph, then continue to the next page.",
+      "character_errors": 0,
+      "word_errors": 0,
+      "seconds": [
+        0.0564445000491105,
+        0.048327700002118945,
+        0.0480295000015758
+      ]
+    },
+    {
+      "id": "en-arial.ttf-30",
+      "language": "en",
+      "expected": "The train leaves at 14:35. Please arrive ten minutes early. Sarah paid 125.50 kroner for three books and a newspaper. Read the first paragraph, then continue to the next page.",
+      "actual": "The train leaves at 14:35. Please arrive ten minutes early. Sarah paid 125.50 kroner for three books and a newspaper. Read the first paragraph, then continue to the next page.",
+      "character_errors": 0,
+      "word_errors": 0,
+      "seconds": [
+        0.07067760004429147,
+        0.06928600004175678,
+        0.06975730002159253
+      ]
+    },
+    {
+      "id": "en-arial.ttf-44",
+      "language": "en",
+      "expected": "The train leaves at 14:35. Please arrive ten minutes early. Sarah paid 125.50 kroner for three books and a newspaper. Read the first paragraph, then continue to the next page.",
+      "actual": "The train leaves at 14:35. Please arrive ten minutes early. Sarah paid 125.50 kroner for three books and a newspaper. Read the first paragraph, then continue to the next page.",
+      "character_errors": 0,
+      "word_errors": 0,
+      "seconds": [
+        0.08709919999819249,
+        0.08592659997520968,
+        0.08581419999245554
+      ]
+    },
+    {
+      "id": "en-times.ttf-18",
+      "language": "en",
+      "expected": "The train leaves at 14:35. Please arrive ten minutes early. Sarah paid 125.50 kroner for three books and a newspaper. Read the first paragraph, then continue to the next page.",
+      "actual": "The train leaves at 14:35. Please arrive ten minutes early. Sarah paid 125.50 kroner for three books and a newspaper. Read the first paragraph, then continue to the next page.",
+      "character_errors": 0,
+      "word_errors": 0,
+      "seconds": [
+        0.0367112000240013,
+        0.036428900028113276,
+        0.03536899999016896
+      ]
+    },
+    {
+      "id": "en-times.ttf-30",
+      "language": "en",
+      "expected": "The train leaves at 14:35. Please arrive ten minutes early. Sarah paid 125.50 kroner for three books and a newspaper. Read the first paragraph, then continue to the next page.",
+      "actual": "The train leaves at 14:35. Please arrive ten minutes early. Sarah paid 125.50 kroner for three books and a newspaper. Read the first paragraph, then continue to the next page.",
+      "character_errors": 0,
+      "word_errors": 0,
+      "seconds": [
+        0.06717000005301088,
+        0.06680490000871941,
+        0.06561019999207929
+      ]
+    },
+    {
+      "id": "en-times.ttf-44",
+      "language": "en",
+      "expected": "The train leaves at 14:35. Please arrive ten minutes early. Sarah paid 125.50 kroner for three books and a newspaper. Read the first paragraph, then continue to the next page.",
+      "actual": "The train leaves at 14:35. Please arrive ten minutes early. Sarah paid 125.50 kroner for three books and a newspaper. Read the first paragraph, then continue to the next page.",
+      "character_errors": 0,
+      "word_errors": 0,
+      "seconds": [
+        0.07991710002534091,
+        0.08094349998282269,
+        0.08222240000031888
+      ]
+    },
+    {
+      "id": "nb-arial.ttf-18",
+      "language": "nb",
+      "expected": "Toget går klokken 14:35. Møt opp ti minutter før avgang. Øyvind kjøpte tre bøker og ei avis for 125,50 kroner. Les det første avsnittet og fortsett på neste side.",
+      "actual": "Toget går klokken 14:35. Møt opp ti minutter før avgang. Øyvind kjøpte tre bøker og ei avis for 125,50 kroner. Les det første avsnittet og fortsett på neste side.",
+      "character_errors": 0,
+      "word_errors": 0,
+      "seconds": [
+        0.045487299968954176,
+        0.04586880002170801,
+        0.04443899996113032
+      ]
+    },
+    {
+      "id": "nb-arial.ttf-30",
+      "language": "nb",
+      "expected": "Toget går klokken 14:35. Møt opp ti minutter før avgang. Øyvind kjøpte tre bøker og ei avis for 125,50 kroner. Les det første avsnittet og fortsett på neste side.",
+      "actual": "Toget går klokken 14:35. Møt opp ti minutter før avgang. Øyvind kjøpte tre bøker og ei avis for 125,50 kroner. Les det første avsnittet og fortsett på neste side.",
+      "character_errors": 0,
+      "word_errors": 0,
+      "seconds": [
+        0.05592869996326044,
+        0.053939900011755526,
+        0.05387529998552054
+      ]
+    },
+    {
+      "id": "nb-arial.ttf-44",
+      "language": "nb",
+      "expected": "Toget går klokken 14:35. Møt opp ti minutter før avgang. Øyvind kjøpte tre bøker og ei avis for 125,50 kroner. Les det første avsnittet og fortsett på neste side.",
+      "actual": "Toget går klokken 14:35. Møt opp ti minutter før avgang. Øyvind kjøpte tre bøker og ei avis for 125,50 kroner. Les det første avsnittet og fortsett på neste side.",
+      "character_errors": 0,
+      "word_errors": 0,
+      "seconds": [
+        0.06083190004574135,
+        0.06137800001306459,
+        0.060782200016546994
+      ]
+    },
+    {
+      "id": "nb-times.ttf-18",
+      "language": "nb",
+      "expected": "Toget går klokken 14:35. Møt opp ti minutter før avgang. Øyvind kjøpte tre bøker og ei avis for 125,50 kroner. Les det første avsnittet og fortsett på neste side.",
+      "actual": "Toget går klokken 14:35. Møt opp ti minutter før avgang. Øyvind kjøpte tre bøker og ei avis for 125,50 kroner. Les det første avsnittet og fortsett på neste side.",
+      "character_errors": 0,
+      "word_errors": 0,
+      "seconds": [
+        0.03561599995009601,
+        0.036476600042078644,
+        0.034818700049072504
+      ]
+    },
+    {
+      "id": "nb-times.ttf-30",
+      "language": "nb",
+      "expected": "Toget går klokken 14:35. Møt opp ti minutter før avgang. Øyvind kjøpte tre bøker og ei avis for 125,50 kroner. Les det første avsnittet og fortsett på neste side.",
+      "actual": "Toget går klokken 14:35. Møt opp ti minutter før avgang. Øyvind kjøpte tre bøker og ei avis for 125,50 kroner. Les det første avsnittet og fortsett på neste side.",
+      "character_errors": 0,
+      "word_errors": 0,
+      "seconds": [
+        0.049650799948722124,
+        0.049369500018656254,
+        0.05078779999166727
+      ]
+    },
+    {
+      "id": "nb-times.ttf-44",
+      "language": "nb",
+      "expected": "Toget går klokken 14:35. Møt opp ti minutter før avgang. Øyvind kjøpte tre bøker og ei avis for 125,50 kroner. Les det første avsnittet og fortsett på neste side.",
+      "actual": "Toget går klokken 14:35. Møt opp ti minutter før avgang. Øyvind kjøpte tre bøker og ei avis for 125,50 kroner. Les det første avsnittet og fortsett på neste side.",
+      "character_errors": 0,
+      "word_errors": 0,
+      "seconds": [
+        0.0592361000017263,
+        0.0594662000075914,
+        0.059793899999931455
+      ]
+    },
+    {
+      "id": "nn-arial.ttf-18",
+      "language": "nn",
+      "expected": "Toget går klokka 14:35. Møt opp ti minutt før avgang. Eg kjøpte tre bøker og ei avis for 125,50 kroner. Ho ønskjer å lese teksten. Dei kjem ikkje før i morgon.",
+      "actual": "Toget går klokka 14:35. Møt opp ti minutt før avgang. Eg kjøpte tre bøker og ei avis for 125,50 kroner. Ho ønskjer å lese teksten. Dei kjem ikkje før i morgon.",
+      "character_errors": 0,
+      "word_errors": 0,
+      "seconds": [
+        0.044928899966180325,
+        0.04417010000906885,
+        0.043933300010394305
+      ]
+    },
+    {
+      "id": "nn-arial.ttf-30",
+      "language": "nn",
+      "expected": "Toget går klokka 14:35. Møt opp ti minutt før avgang. Eg kjøpte tre bøker og ei avis for 125,50 kroner. Ho ønskjer å lese teksten. Dei kjem ikkje før i morgon.",
+      "actual": "Toget går klokka 14:35. Møt opp ti minutt før avgang. Eg kjøpte tre bøker og ei avis for 125,50 kroner. Ho ønskjer å lese teksten. Dei kjem ikkje før i morgon.",
+      "character_errors": 0,
+      "word_errors": 0,
+      "seconds": [
+        0.0556864999816753,
+        0.05405949999112636,
+        0.054420200001914054
+      ]
+    },
+    {
+      "id": "nn-arial.ttf-44",
+      "language": "nn",
+      "expected": "Toget går klokka 14:35. Møt opp ti minutt før avgang. Eg kjøpte tre bøker og ei avis for 125,50 kroner. Ho ønskjer å lese teksten. Dei kjem ikkje før i morgon.",
+      "actual": "Toget går klokka 14:35. Møt opp ti minutt før avgang. Eg kjøpte tre bøker og ei avis for 125,50 kroner. Ho ønskjer å lese teksten. Dei kjem ikkje før i morgon.",
+      "character_errors": 0,
+      "word_errors": 0,
+      "seconds": [
+        0.06101929995929822,
+        0.06103659997461364,
+        0.060814700031187385
+      ]
+    },
+    {
+      "id": "nn-times.ttf-18",
+      "language": "nn",
+      "expected": "Toget går klokka 14:35. Møt opp ti minutt før avgang. Eg kjøpte tre bøker og ei avis for 125,50 kroner. Ho ønskjer å lese teksten. Dei kjem ikkje før i morgon.",
+      "actual": "Toget går klokka 14:35. Mot opp ti minutt for avgang. Eg kjøpte tre bøker og ei avis for 125,50 kroner. Ho ønskjer å lese teksten. Dei kjem ikkje før i morgon.",
+      "character_errors": 2,
+      "word_errors": 2,
+      "seconds": [
+        0.048425599990878254,
+        0.049410699983127415,
+        0.04812099999981001
+      ]
+    },
+    {
+      "id": "nn-times.ttf-30",
+      "language": "nn",
+      "expected": "Toget går klokka 14:35. Møt opp ti minutt før avgang. Eg kjøpte tre bøker og ei avis for 125,50 kroner. Ho ønskjer å lese teksten. Dei kjem ikkje før i morgon.",
+      "actual": "Toget går klokka 14:35. Møt opp ti minutt før avgang. Eg kjøpte tre bøker og ei avis for 125,50 kroner. Ho ønskjer å lese teksten. Dei kjem ikkje før i morgon.",
+      "character_errors": 0,
+      "word_errors": 0,
+      "seconds": [
+        0.05545939999865368,
+        0.05768430000171065,
+        0.060460600012447685
+      ]
+    },
+    {
+      "id": "nn-times.ttf-44",
+      "language": "nn",
+      "expected": "Toget går klokka 14:35. Møt opp ti minutt før avgang. Eg kjøpte tre bøker og ei avis for 125,50 kroner. Ho ønskjer å lese teksten. Dei kjem ikkje før i morgon.",
+      "actual": "Toget går klokka 14:35. Møt opp ti minutt før avgang. Eg kjøpte tre bøker og ei avis for 125,50 kroner. Ho ønskjer å lese teksten. Dei kjem ikkje før i morgon.",
+      "character_errors": 0,
+      "word_errors": 0,
+      "seconds": [
+        0.06705860001966357,
+        0.07135719998041168,
+        0.07004160003270954
+      ]
+    },
+    {
+      "id": "mixed-arial.ttf-18",
+      "language": "mixed",
+      "expected": "Møtet startar klokka 09:30. Please bring your notes. Åse and Øyvind will arrive on Tuesday, 22 September. Dokumentet heiter Annual Report. Les side 12 til 15.",
+      "actual": "Møtet startar klokka 09:30. Please bring your notes. Åse and Øyvind will arrive on Tuesday, 22 September. Dokumentet heiter Annual Report. Les side 12 til 15.",
+      "character_errors": 0,
+      "word_errors": 0,
+      "seconds": [
+        0.05508769996231422,
+        0.052476099983323365,
+        0.04926480003632605
+      ]
+    },
+    {
+      "id": "mixed-arial.ttf-30",
+      "language": "mixed",
+      "expected": "Møtet startar klokka 09:30. Please bring your notes. Åse and Øyvind will arrive on Tuesday, 22 September. Dokumentet heiter Annual Report. Les side 12 til 15.",
+      "actual": "Møtet startar klokka 09:30. Please bring your notes. Åse and Øyvind will arrive on Tuesday, 22 September. Dokumentet heiter Annual Report. Les side 12 til 15.",
+      "character_errors": 0,
+      "word_errors": 0,
+      "seconds": [
+        0.06024339998839423,
+        0.06128199998056516,
+        0.06165719998534769
+      ]
+    },
+    {
+      "id": "mixed-arial.ttf-44",
+      "language": "mixed",
+      "expected": "Møtet startar klokka 09:30. Please bring your notes. Åse and Øyvind will arrive on Tuesday, 22 September. Dokumentet heiter Annual Report. Les side 12 til 15.",
+      "actual": "Møtet startar klokka 09:30. Please bring your notes. Åse and Øyvind will arrive on Tuesday, 22 September. Dokumentet heiter Annual Report. Les side 12 til 15.",
+      "character_errors": 0,
+      "word_errors": 0,
+      "seconds": [
+        0.07237479998730123,
+        0.0697537999949418,
+        0.06904859998030588
+      ]
+    },
+    {
+      "id": "mixed-times.ttf-18",
+      "language": "mixed",
+      "expected": "Møtet startar klokka 09:30. Please bring your notes. Åse and Øyvind will arrive on Tuesday, 22 September. Dokumentet heiter Annual Report. Les side 12 til 15.",
+      "actual": "Motet startar klokka 09:30. Please bring your notes. Åse and Øyvind will arrive on Tuesday, 22 September. Dokumentet heiter Annual Report. Les side 12 til 15.",
+      "character_errors": 1,
+      "word_errors": 1,
+      "seconds": [
+        0.06024829996749759,
+        0.056127100018784404,
+        0.05807269999058917
+      ]
+    },
+    {
+      "id": "mixed-times.ttf-30",
+      "language": "mixed",
+      "expected": "Møtet startar klokka 09:30. Please bring your notes. Åse and Øyvind will arrive on Tuesday, 22 September. Dokumentet heiter Annual Report. Les side 12 til 15.",
+      "actual": "Møtet startar klokka 09:30. Please bring your notes. Åse and Øyvind will arrive on Tuesday, 22 September. Dokumentet heiter Annual Report. Les side 12 til 15.",
+      "character_errors": 0,
+      "word_errors": 0,
+      "seconds": [
+        0.06257879995973781,
+        0.05993640003725886,
+        0.058752500044647604
+      ]
+    },
+    {
+      "id": "mixed-times.ttf-44",
+      "language": "mixed",
+      "expected": "Møtet startar klokka 09:30. Please bring your notes. Åse and Øyvind will arrive on Tuesday, 22 September. Dokumentet heiter Annual Report. Les side 12 til 15.",
+      "actual": "Møtet startar klokka 09:30. Please bring your notes. Åse and Øyvind will arrive on Tuesday, 22 September. Dokumentet heiter Annual Report. Les side 12 til 15.",
+      "character_errors": 0,
+      "word_errors": 0,
+      "seconds": [
+        0.06737750000320375,
+        0.07077340001706034,
+        0.0866698999889195
+      ]
+    }
+  ]
+}
