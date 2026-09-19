@@ -21,6 +21,18 @@ SHA-256 4efdc9256bb025e2c7664c7be304e680b44ef20573b4a38108775887e26f93ad.
 Built application source commit 9d67200. No speech weights are included/redownloaded.
 Keep the 0.2.1 fallback. Prior Smart App Control issue is not resolved by OCR.
 
+## Two-column experiment
+
+User confirmed the installed OCR works on another machine. Tested existing Tesseract
+modes on 30 synthetic column layouts plus 24 single-column controls, with no app or
+model changes. docs/OCR_COLUMNS.md / OCR_COLUMNS.json; tests/ocr_columns.py.
+PSM 3 automatic page: 18/18 simple/narrow/staggered columns exact, 3/6 spanning
+headings exact, footer placed too early in 6/6. Total 21/30 exact, 27/30 correct body
+anchor order. Current PSM 6 interleaved all 30. Single-column accuracy unchanged
+(22/24 exact), similar recognition speed. Next easy feature: optional Automatic
+page layout; retain current single-block fallback. Do not silently claim robust
+whole-page order. No release built or installed for this experiment.
+
 ## Previous release authority
 
 - Repository: https://github.com/workavoidance/Skrivi-TTS, separate from Skrivi STT.
