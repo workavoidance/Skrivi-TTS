@@ -1,4 +1,4 @@
-# Skrivi Lytt — signed 0.4.1 draft ready, 20 September 2026
+# Skrivi Lytt — signed 0.4.1 test release, 20 September 2026
 
 Public name is now Skrivi Lytt, companion Skrivi Snakk. Concurrent PRs #2/#3
 provided the branding and reserved Store identity. Version 0.4.1 integrates these
@@ -8,7 +8,7 @@ Keep SkriviTTS paths, executable, startup/single-instance IDs and installer AppI
 ## Current authority
 
 - Public repo: https://github.com/workavoidance/Skrivi-TTS, branch main.
-- Verified draft release: v0.4.1 (public publication pending explicit approval).
+- Published test release: https://github.com/workavoidance/Skrivi-TTS/releases/tag/v0.4.1.
 - Built source: 410df3850ec32176bc6578d9e0dd12f900d0925a. Main subsequently records
   release evidence and pins immutable signed runtimes for subsequent builds.
 - Successful signed build: https://github.com/workavoidance/Skrivi-STT/actions/runs/35517692394.
@@ -18,7 +18,7 @@ Keep SkriviTTS paths, executable, startup/single-instance IDs and installer AppI
 - Local source: C:/Users/jon/.codex/visualizations/2026/09/08/01a07fdc-16e7-7330-83a6-cbdec9f59c1d/skrivi-tts.
 - Downloaded verified installer and evidence: build/release-0.4.1-signed/.
   Associated Store file: build/release-0.4.1-store/.
-- Existing user installation is 0.3.0; this turn built and uploaded the 0.4.1 draft without
+- Existing user installation is 0.3.0; this turn built and published 0.4.1 without
   installing over their working copy. Quit the tray reader before running setup.
 
 ## Features and decisions
@@ -51,7 +51,7 @@ No automatic update/network/model checks, telemetry or cloud speech/OCR.
   routing was exercised with disposable preferences. Evidence:
   docs/RELEASE_0_4_1_STORE_CHECKS.json; runner tests/check_store_payload.py.
   This is not an installed Store test; Windows App Certification Kit has not run.
-- All 13 draft GitHub assets match local sizes and SHA-256 hashes.
+- All 13 published GitHub assets match local sizes and SHA-256 hashes.
 
 Early candidate runs 35513969249 and 35514688453 were not published: their PowerShell
 preflight passed outside setup but refused reinstall inside setup. Signed native
@@ -90,11 +90,8 @@ Do not install the unassociated package or change certificate trust to force it.
 
 ## Next steps
 
-Automatic approval review rejected public release publication and the final main-branch
-push, interpreting user authorization as preparation only. Approval was requested.
-Do not bypass that rejection; await the user response. Source commit 410df385 is
-already public; subsequent documentation/evidence commits are local pending approval.
-After approval, publish the existing verified draft and push notes; no rebuild is needed.
+User explicitly approved public publication and the final project-notes push.
+The verified v0.4.1 release is now public as a prerelease; no rebuild was required.
 
 User testing of the signed installer/pill on their machines. Upload the associated
 MSIX to the reserved listing, test the Store-delivered package and complete certification.
