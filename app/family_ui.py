@@ -1,6 +1,6 @@
 """Shared Skrivi navigation patterns around Lytt's reading workflow."""
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QKeySequence
 from PySide6.QtWidgets import (
     QDialog,
@@ -19,6 +19,7 @@ from PySide6.QtWidgets import (
     QProgressBar,
     QScrollArea,
     QFrame,
+    QGridLayout,
 )
 import os
 from core import VERSION, STORE_BUILD, DATA, KOKORO_VOICES
@@ -27,6 +28,9 @@ from windows_reader import shortcut_parts
 
 
 class ShortcutButton(QPushButton):
+    capture_started = Signal()
+    capture_finished = Signal()
+
     def __init__(self, value, changed):
         super().__init__(tr("Change shortcut…"))
         self.setProperty("sourceText", "Change shortcut…")
@@ -36,14 +40,34 @@ class ShortcutButton(QPushButton):
         self.clicked.connect(self.capture)
 
     def capture(self):
+        if self.capturing:
+            return
         self.capturing = True
-        self.setText(tr("Press a key or combination…"))
+        self.capture_started.emit()
+        self.dialog = QDialog(self.window())
+        self.dialog.setWindowTitle(tr("Change shortcut…"))
+        self.dialog.setWindowModality(Qt.WindowModality.WindowModal)
+        self.dialog.setMinimumWidth(420)
+        layout = QVBoxLayout(self.dialog)
+        self.prompt = text(tr("Press a key or combination…"))
+        layout.addWidget(self.prompt)
+        cancel = QPushButton(tr("Cancel"))
+        cancel.setAutoDefault(False)
+        cancel.clicked.connect(self.finish)
+        layout.addWidget(cancel)
+        self.dialog.rejected.connect(self.finish)
+        self.dialog.show()
         self.grabKeyboard()
 
     def finish(self):
+        if not self.capturing:
+            return
         self.releaseKeyboard()
         self.capturing = False
+        if hasattr(self, "dialog"):
+            self.dialog.hide()
         self.setText(tr("Change shortcut…"))
+        self.capture_finished.emit()
 
     def hideEvent(self, event):
         if self.capturing:
@@ -69,7 +93,7 @@ class ShortcutButton(QPushButton):
         try:
             shortcut_parts(value)
         except ValueError:
-            self.setText(tr("Use Ctrl or Alt with a letter, Space or F6–F12."))
+            self.prompt.setText(tr("Use Ctrl or Alt with a letter, Space or F6–F12."))
             return
         self.finish()
         self.changed(value)
@@ -95,13 +119,16 @@ def build_reader(self):
     outer = QVBoxLayout(self)
     outer.setContentsMargins(24, 22, 24, 18)
     outer.setSpacing(14)
-    outer.addWidget(text("Skrivi Lytt", "eyebrow"))
-    outer.addWidget(text("Read aloud", "windowTitle"))
+    outer.addWidget(text("Skrivi Lytt", "pageTitle"))
     self.tabs = QTabWidget()
     self.tabs.tabBar().hide()
     outer.addWidget(self.tabs, 1)
     read = QWidget()
-    self.tabs.addTab(read, "Read")
+    read_scroll = QScrollArea()
+    read_scroll.setWidgetResizable(True)
+    read_scroll.setFrameShape(QScrollArea.Shape.NoFrame)
+    read_scroll.setWidget(read)
+    self.tabs.addTab(read_scroll, "Read")
     layout = QVBoxLayout(read)
     row = QHBoxLayout()
     row.addWidget(text("Reading language"))
@@ -113,7 +140,27 @@ def build_reader(self):
     ]:
         self.language.addItem(name, key)
     row.addWidget(self.language)
+    row.addStretch()
     layout.addLayout(row)
+    self.anywhere = text("", "sectionTitle")
+    layout.addWidget(self.anywhere)
+    layout.addWidget(
+        text(
+            "Select text in any app, then use the shortcut. You do not need to copy it here."
+        )
+    )
+    self.screen_hint = text("")
+    layout.addWidget(self.screen_hint)
+    shortcut_actions = QHBoxLayout()
+    self.change_shortcuts_button = QPushButton("Change shortcuts")
+    self.change_shortcuts_button.clicked.connect(self.open_shortcuts)
+    self.how_button = QPushButton("How to use")
+    self.how_button.clicked.connect(lambda: self.introduction(force=True))
+    shortcut_actions.addWidget(self.change_shortcuts_button)
+    shortcut_actions.addWidget(self.how_button)
+    shortcut_actions.addStretch()
+    layout.addLayout(shortcut_actions)
+    layout.addWidget(text("Or paste or type text below", "secondary"))
     voices = QHBoxLayout()
     voices.addWidget(text("English voice"))
     self.voice = QComboBox()
@@ -129,7 +176,7 @@ def build_reader(self):
     voices.addWidget(self.speed)
     layout.addLayout(voices)
     self.route_label = text("")
-    layout.addWidget(self.route_label)
+    self.route_label.hide()
     self.text = QTextEdit()
     self.text.setAcceptRichText(False)
     self.text.setMinimumHeight(120)
@@ -139,28 +186,27 @@ def build_reader(self):
     for attr, label, callback in [
         ("read_button", "Read aloud", self.read_editor),
         ("stop_button", "Stop", self.stop),
-        ("sample_button", "Try a sample", self.sample),
         ("save_button", "Save audio…", self.save_audio),
     ]:
         button = QPushButton(label)
         setattr(self, attr, button)
         button.clicked.connect(callback)
         row.addWidget(button)
-    self.read_button.setProperty("uiRole", "primary")
+
     self.stop_button.setEnabled(False)
     self.save_button.setEnabled(False)
     layout.addLayout(row)
     self.region_button = QPushButton("Read screen region")
     self.region_button.clicked.connect(self.capture_region)
-    layout.addWidget(self.region_button)
+    layout.addWidget(self.region_button, 0, Qt.AlignmentFlag.AlignLeft)
     self.shortcut_hint = text("")
-    layout.addWidget(self.shortcut_hint)
+    self.shortcut_hint.hide()
     layout.addWidget(
         text("Closing this window keeps Skrivi Lytt in the tray. Text is not saved.")
     )
     self.settings_button = QPushButton("Settings")
     self.settings_button.clicked.connect(self.open_settings)
-    outer.addWidget(self.settings_button)
+    outer.addWidget(self.settings_button, 0, Qt.AlignmentFlag.AlignLeft)
     self.status_label = text("Ready.")
     outer.addWidget(self.status_label)
     self.error_actions = QWidget()
@@ -243,6 +289,12 @@ def build_reader(self):
         return box
 
     reading = settings_card("Reading")
+    reading.addWidget(
+        text(
+            "With Automatic reading language, Lytt detects the language of selected or pasted text. Choose a fallback for uncertain text.",
+            "secondary",
+        )
+    )
     self.fallback = QComboBox()
     self.fallback.addItem("Norwegian Bokmål", "no")
     self.fallback.addItem("English", "en")
@@ -282,6 +334,9 @@ def build_reader(self):
     self.region_shortcut_button = ShortcutButton(
         self.preferences["region_hotkey"], self.change_region_shortcut
     )
+    for button in (self.shortcut_button, self.region_shortcut_button):
+        button.capture_started.connect(self.pause_shortcuts)
+        button.capture_finished.connect(self.resume_shortcuts)
     for title, value, button, reset in [
         (
             "Selected-text shortcut",
@@ -296,13 +351,17 @@ def build_reader(self):
             lambda: self.change_region_shortcut("Ctrl+Alt+Shift+Space"),
         ),
     ]:
-        shortcuts.addWidget(text(title, "sectionTitle"))
+        heading = QHBoxLayout()
+        heading.addWidget(text(title, "sectionTitle"))
+        heading.addWidget(value)
+        heading.addStretch()
+        shortcuts.addLayout(heading)
         row = QHBoxLayout()
-        row.addWidget(value)
         row.addWidget(button)
         b = QPushButton("Restore default")
         b.clicked.connect(reset)
         row.addWidget(b)
+        row.addStretch()
         shortcuts.addLayout(row)
     shortcuts.addWidget(
         text(
@@ -330,57 +389,109 @@ def build_reader(self):
     models.addLayout(row)
     self.verify_button = QPushButton("Verify files")
     self.verify_button.clicked.connect(self.verify_models)
-    models.addWidget(self.verify_button)
+    models.addWidget(self.verify_button, 0, Qt.AlignmentFlag.AlignLeft)
     self.download_status = text("Two local models, kept through updates.")
     models.addWidget(self.download_status)
-    self.advanced_button = QPushButton("Advanced model details")
-    models.addWidget(self.advanced_button)
     self.model_folder = link("Open model folder", str(DATA / "models"))
-    self.model_folder.hide()
-    self.advanced_button.clicked.connect(
-        lambda: self.model_folder.setVisible(not self.model_folder.isVisible())
+    models.addWidget(self.model_folder, 0, Qt.AlignmentFlag.AlignLeft)
+
+    def info_card(heading, body, quiet=True):
+        frame = QFrame()
+        frame.setProperty("uiRole", "quietCard" if quiet else "card")
+        contents = QVBoxLayout(frame)
+        contents.setContentsMargins(18, 16, 18, 16)
+        contents.addWidget(text(heading, "sectionTitle"))
+        contents.addWidget(text(body, "secondary"))
+        return frame
+
+    privacy.addWidget(text("Your words stay yours.", "pageTitle"))
+    facts = QGridLayout()
+    for index, (heading, body) in enumerate(
+        [
+            (
+                "Processed on this PC",
+                "Reading and screen recognition happen on this PC. No account, telemetry or cloud speech service.",
+            ),
+            (
+                "Selection and screen capture",
+                "Reading selected text may briefly use and restore the clipboard. Screen-region images are processed in memory and are not saved.",
+            ),
+            (
+                "Audio and saved files",
+                "Temporary speech audio is removed on normal exit. Save audio creates a file only when you choose to save it.",
+            ),
+            (
+                "Works offline after setup",
+                "Installed voices and screen recognition work without an internet connection.",
+            ),
+        ]
+    ):
+        facts.addWidget(info_card(heading, body), index // 2, index % 2)
+    privacy.addLayout(facts)
+    privacy.addWidget(
+        info_card(
+            "One important boundary",
+            "Other apps may save or sync your text according to their own settings.",
+            False,
+        )
     )
-    models.addWidget(self.model_folder)
-    for heading, body in [
-        (
-            "Your words stay yours.",
-            "Reading and screen recognition happen on this PC. No account, telemetry or cloud speech service.",
-        ),
-        (
-            "Selection and screen capture",
-            "Reading selected text may briefly use and restore the clipboard. Screen-region images are processed in memory and are not saved.",
-        ),
-        (
-            "Audio and saved files",
-            "Temporary speech audio is removed on normal exit. Save audio creates a file only when you choose to save it. Other apps may save or sync your text.",
-        ),
-    ]:
-        privacy.addWidget(text(heading, "sectionTitle"))
-        privacy.addWidget(text(body))
     privacy.addWidget(
         link(
             "Read full privacy details",
             "https://github.com/workavoidance/Skrivi-TTS#updates-and-privacy",
-        )
+        ),
+        0,
+        Qt.AlignmentFlag.AlignLeft,
     )
     privacy.addStretch()
-    about.addWidget(text("Skrivi Lytt " + VERSION + " · Test release", "sectionTitle"))
-    about.addWidget(text("Local reading. Part of the Skrivi family."))
+    heading = QHBoxLayout()
+    icon = QLabel()
+    icon.setPixmap(self.windowIcon().pixmap(60, 60))
+    heading.addWidget(icon, 0, Qt.AlignmentFlag.AlignTop)
+    copy = QVBoxLayout()
+    copy.addWidget(text("Skrivi Lytt", "pageTitle"))
+    copy.addWidget(text(VERSION + " · " + tr("Test release"), "secondary"))
+    heading.addLayout(copy, 1)
+    about.addLayout(heading)
+    about.addWidget(
+        info_card(
+            "Free, local and open source",
+            "Local reading. Part of the Skrivi family.",
+            False,
+        )
+    )
+    about.addWidget(
+        text(
+            "Use Skrivi Snakk to turn your speech into text in other apps.", "secondary"
+        )
+    )
+    about.addWidget(
+        link("Explore Skrivi Snakk", "https://skrivi.no/dictation/"),
+        0,
+        Qt.AlignmentFlag.AlignLeft,
+    )
+    links_card = QFrame()
+    links_card.setProperty("uiRole", "quietCard")
+    links_layout = QVBoxLayout(links_card)
+    links_layout.setContentsMargins(18, 16, 18, 16)
+    links_layout.addWidget(text("Learn more", "sectionTitle"))
+    links = QGridLayout()
     self.update_button = QPushButton("Check for updates")
     self.update_button.clicked.connect(self.check_updates)
-    about.addWidget(self.update_button)
-    for label, url in [
-        ("Release notes", "https://github.com/workavoidance/Skrivi-TTS/releases"),
-        ("Help", "https://skrivi.no/help/"),
-        ("Give feedback", "https://github.com/workavoidance/Skrivi-TTS/issues"),
-        ("Source code", "https://github.com/workavoidance/Skrivi-TTS"),
+    links.addWidget(self.update_button, 0, 0, Qt.AlignmentFlag.AlignLeft)
+    for row, column, label, url in [
+        (0, 1, "Website", "https://skrivi.no/read-aloud/"),
+        (1, 0, "Source code", "https://github.com/workavoidance/Skrivi-TTS"),
         (
+            1,
+            1,
             "Third-party licences",
             "https://github.com/workavoidance/Skrivi-TTS/blob/main/THIRD_PARTY_NOTICES.md",
         ),
-        ("Explore Skrivi Snakk", "https://skrivi.no/dictation/"),
     ]:
-        about.addWidget(link(label, url))
+        links.addWidget(link(label, url), row, column, Qt.AlignmentFlag.AlignLeft)
+    links_layout.addLayout(links)
+    about.addWidget(links_card)
     about.addStretch()
     root.addWidget(text("Changes are saved automatically"))
     footer = QHBoxLayout()
@@ -407,3 +518,6 @@ def build_reader(self):
     self.ui_language.currentIndexChanged.connect(self.change_ui_language)
     self.startup.toggled.connect(self.change_startup)
     self.overlay.toggled.connect(self.save_preferences)
+    from ux_helpers import polish
+
+    polish(self)

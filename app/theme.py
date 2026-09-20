@@ -223,7 +223,7 @@ QPushButton:focus, QComboBox:focus {{
     border: 2px solid {colors["accent"]};
     padding: 6px 11px;
 }}
-QPushButton:default, QPushButton[buttonRole="primary"] {{
+QPushButton[buttonRole="primary"] {{
     background: {colors["accent"]};
     border-color: {colors["accent"]};
     color: {colors["accent_text"]};
