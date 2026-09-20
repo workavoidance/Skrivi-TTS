@@ -18,7 +18,7 @@ SignTool=certum
 SignedUninstaller=yes
 #endif
 AppId={{E9E45873-7840-45F2-B17F-7C66496302C9}
-AppName=Skrivi TTS
+AppName=Skrivi Lytt
 AppVersion={#AppVersion}
 AppPublisher=Skrivi
 AppPublisherURL=https://skrivi.no/read-aloud/
@@ -64,11 +64,11 @@ Source: "{#PackageDir}\runtimes\*"; DestDir: "{localappdata}\SkriviTTS\runtimes"
 Source: "{#PackageDir}\models\*"; DestDir: "{localappdata}\SkriviTTS\models"; Flags: onlyifdoesntexist uninsneveruninstall recursesubdirs createallsubdirs
 
 [Icons]
-Name: "{userprograms}\Skrivi TTS"; Filename: "{app}\SkriviTTS.exe"; WorkingDir: "{app}"
-Name: "{userdesktop}\Skrivi TTS"; Filename: "{app}\SkriviTTS.exe"; WorkingDir: "{app}"; Tasks: desktopicon
+Name: "{userprograms}\Skrivi Lytt"; Filename: "{app}\SkriviTTS.exe"; WorkingDir: "{app}"
+Name: "{userdesktop}\Skrivi Lytt"; Filename: "{app}\SkriviTTS.exe"; WorkingDir: "{app}"; Check: WantDesktopShortcut
 
 [Run]
-Filename: "{app}\SkriviTTS.exe"; Description: "{cm:LaunchProgram,Skrivi TTS}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\SkriviTTS.exe"; Description: "{cm:LaunchProgram,Skrivi Lytt}"; Flags: nowait postinstall skipifsilent
 
 [CustomMessages]
 english.PreflightFailed=An existing model or runtime differs from this package, or could not be checked. It has not been overwritten. See the setup log and verify your installation before trying again.
@@ -79,6 +79,53 @@ english.KeepData=Downloaded voices, runtimes, settings and saved audio are kept 
 norwegian.KeepData=Nedlastede stemmer, motorer, innstillinger og lagret lyd beholdes når du avinstallerer.
 
 [Code]
+function WantDesktopShortcut: Boolean;
+var
+  Shell, Link: Variant;
+  OldPath, Target, VersionRoot: String;
+begin
+  Result := WizardIsTaskSelected('desktopicon');
+  OldPath := ExpandConstant('{userdesktop}\Skrivi TTS.lnk');
+  if Result or not FileExists(OldPath) then Exit;
+  try
+    Shell := CreateOleObject('WScript.Shell');
+    Link := Shell.CreateShortcut(OldPath);
+    Target := ExpandFileName(Link.TargetPath);
+    VersionRoot := ExpandConstant('{localappdata}\SkriviTTS\versions\');
+    Result := (CompareText(Copy(Target, 1, Length(VersionRoot)), VersionRoot) = 0) and
+      (CompareText(ExtractFileName(Target), 'SkriviTTS.exe') = 0);
+  except
+    Result := False;
+  end;
+end;
+
+procedure RenameOwnedShortcut(OldPath, NewPath: String);
+var
+  Shell, Link: Variant;
+  Target, VersionRoot: String;
+begin
+  if not FileExists(OldPath) then Exit;
+  try
+    Shell := CreateOleObject('WScript.Shell');
+    Link := Shell.CreateShortcut(OldPath);
+    Target := ExpandFileName(Link.TargetPath);
+    VersionRoot := ExpandConstant('{localappdata}\SkriviTTS\versions\');
+    if (CompareText(Copy(Target, 1, Length(VersionRoot)), VersionRoot) <> 0) or
+      (CompareText(ExtractFileName(Target), 'SkriviTTS.exe') <> 0) then Exit;
+    if not FileExists(NewPath) then begin
+      if not FileCopy(OldPath, NewPath, True) then Exit;
+      Link := Shell.CreateShortcut(NewPath);
+      Link.TargetPath := ExpandConstant('{app}\SkriviTTS.exe');
+      Link.WorkingDirectory := ExpandConstant('{app}');
+      Link.IconLocation := ExpandConstant('{app}\SkriviTTS.exe') + ',0';
+      Link.Save;
+    end;
+    DeleteFile(OldPath);
+  except
+    Log('Could not migrate an old Skrivi TTS shortcut; it was left in place.');
+  end;
+end;
+
 function PrepareToInstall(var NeedsRestart: Boolean): String;
 var
   ResultCode: Integer;
@@ -121,6 +168,10 @@ begin
     'SkriviTTS', ExistingStartup) then
     RegWriteStringValue(HKCU, 'Software\Microsoft\Windows\CurrentVersion\Run',
       'SkriviTTS', '"' + ExpandConstant('{app}\SkriviTTS.exe') + '" --tray');
+  RenameOwnedShortcut(ExpandConstant('{userprograms}\Skrivi TTS.lnk'),
+    ExpandConstant('{userprograms}\Skrivi Lytt.lnk'));
+  RenameOwnedShortcut(ExpandConstant('{userdesktop}\Skrivi TTS.lnk'),
+    ExpandConstant('{userdesktop}\Skrivi Lytt.lnk'));
 end;
 
 procedure InitializeWizard;

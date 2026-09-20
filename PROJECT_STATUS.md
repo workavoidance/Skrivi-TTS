@@ -1,4 +1,9 @@
-# Skrivi TTS — signed 0.4.0 test release, 20 September 2026
+# Skrivi Lytt — 0.4.1 release integration, 20 September 2026
+
+Public name is now Skrivi Lytt, companion Skrivi Snakk. Concurrent PRs #2/#3
+provided the branding and reserved Store identity. Version 0.4.1 integrates these
+with the verified 0.4.0 release and immutable runtime pin. Build pending.
+Keep SkriviTTS paths, executable, startup/single-instance IDs and installer AppId.
 
 ## Current authority
 
@@ -65,13 +70,14 @@ any newly generated installer scripts before distributing an update as signed.
 The full installer is needed once to migrate unsigned 0.3 engines to signed profiles;
 existing matching speech models are reused. Never remove user models, presets or audio.
 
-## Microsoft Store — remaining dependency
+## Microsoft Store — associated build pending
 
-User explicitly said the separate TTS listing is NOT reserved. The generated
-Skrivi-TTS-0.4.0-UNASSOCIATED-validation.msix (package version 1.4.3.0) is NOT FOR UPLOAD.
-Get the public Package/Identity/Name, Package/Identity/Publisher and publisher display
-name from the separate TTS Partner Center listing, create store/identity.json and
-rebuild. Do not reuse the STT identity. Certification has not been run.
+The newer GitHub handoff supersedes the earlier "not reserved" reply. The identity
+in store/identity.json is Skrivi.SkriviLytt, publisher
+CN=EF3D997F-87B2-4AD0-B65B-877EE1632E65, display name Skrivi.
+Build and validate 0.4.1 with this association before delivery. The previous
+0.4.0 UNASSOCIATED package (1.4.3.0) remains NOT FOR UPLOAD.
+Certification has not been run; no Store submission or trust changes are authorized.
 Store models/runtime files are bundled and read-only; user settings are writable;
 startup and updates use Windows/Store controls. No microphone capability is requested.
 Do not install the unassociated package or change certificate trust to force it.
@@ -79,7 +85,7 @@ Do not install the unassociated package or change certificate trust to force it.
 ## Next steps
 
 User testing of the signed installer/pill on their machines. Final Store-associated
-build after reservation, then installed package testing and certification submission.
+build using the recorded identity, then installed package testing and certification submission.
 Keep the two approved models as the normal reader; no broad model research is needed.
 
 ## OCR update 0.3.0 (supersedes OCR future-work notes below)

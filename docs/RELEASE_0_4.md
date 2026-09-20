@@ -1,4 +1,6 @@
-# Signed reader 0.4.0
+# Signed reader 0.4
+
+0.4.1 integrates the Skrivi Lytt name and reserved Store identity; validation pending.
 
 Published as a test release: https://github.com/workavoidance/Skrivi-TTS/releases/tag/v0.4.0.
 Built source 6f27073fff6e83c12c08b2abec7b2e8a0105d451; successful workflow run
@@ -31,9 +33,9 @@ sign-release.ps1 preserves their valid signatures. An intentional frozen depende
 change needs a new runtime profile and pin. Code-only releases can reuse the current
 profiles; model downloads and user data do not belong to application versions.
 
-The TTS Store listing is not reserved. The generated package version is 1.4.3.0,
-labelled UNASSOCIATED and NOT FOR UPLOAD. Use the reserved listing's public identity
-for the submission build. The Store signs the outer package on submission; no
+The reserved Skrivi.SkriviLytt identity is recorded in store/identity.json.
+The associated 0.4.1 build is pending validation. Previous 0.4.0 package 1.4.3.0
+is UNASSOCIATED and NOT FOR UPLOAD. The Store signs the outer package on submission; no
 certificate trust changes or submission were performed here.
 
 Local structure validation used Microsoft-signed MakeAppx from official NuGet

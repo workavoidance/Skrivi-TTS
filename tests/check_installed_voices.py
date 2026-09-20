@@ -11,7 +11,7 @@ if os.environ.get("GITHUB_ACTIONS") != "true":
 library = Path(os.environ["LOCALAPPDATA"]) / "SkriviTTS"
 app = library / "versions" / (sys.argv[1] if len(sys.argv)>1 else "0.2.1")
 sys.path.insert(0, str(app / "app"))
-from core import catalog, defaults, runtime_executable
+from core import catalog, defaults
 import core
 core.ROOT=app;core.DATA=library
 
@@ -25,11 +25,16 @@ for model_id, worker, text, rate in (
 ):
     target = output / (model_id + ".wav")
     model = next(m for m in catalog() if m["id"] == model_id)
+    # The legacy 0.2.1 payload predates signed runtime-profile resolution. Keep
+    # this upgrade test usable for both the published old bundle and new builds.
+    runtime = (core.runtime_executable(*worker.split("/"))
+               if hasattr(core, "runtime_executable")
+               else library / "runtimes" / worker)
     request = dict(model=model, assets=str(library / "models" / model_id),
                    settings=defaults(model["engine"]), text=text,
                    output=str(target), voices=str(library / "voices"))
     result = subprocess.run(
-        [str(runtime_executable(*worker.split("/"))), str(app / "engines/worker.py")],
+        [str(runtime), str(app / "engines/worker.py")],
         input=json.dumps(request) + "\n", capture_output=True, text=True,
         encoding="utf-8", timeout=180, creationflags=subprocess.CREATE_NO_WINDOW,
     )

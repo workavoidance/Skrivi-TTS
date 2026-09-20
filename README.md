@@ -1,8 +1,12 @@
-# Skrivi TTS
+# Skrivi Lytt
 
 An open-source Windows reader for local text and screen-image reading. Separate
-from [Skrivi dictation](https://github.com/workavoidance/Skrivi-STT), with its own
+from [Skrivi Snakk](https://github.com/workavoidance/Skrivi-STT), with its own
 orange speaker tray icon. Speech and OCR work offline.
+
+Public name: **Skrivi Lytt**, part of the Skrivi family alongside Skrivi Snakk.
+Existing SkriviTTS data paths and upgrade identity stay unchanged. Version 0.4.1
+with the new name and reserved Store identity is being validated.
 
 ## Install the signed 0.4.0 test release
 
@@ -95,10 +99,9 @@ The historical 0.2 ZIP/build recipes remain available for provenance.
 
 ## Microsoft Store
 
-The separate TTS listing is not reserved yet. The current **UNASSOCIATED** MSIX is
-for packaging validation only and **must not be uploaded**. Copy the real listing's
-public identity into store/identity.json (see the example), rebuild and test the
-associated package before submission. Certification has not been run.
+The reserved identity **Skrivi.SkriviLytt** is recorded in store/identity.json.
+The associated 0.4.1 package is being validated. Earlier **UNASSOCIATED** MSIX
+files must not be uploaded. Certification has not been run.
 
 ## Licenses
 
