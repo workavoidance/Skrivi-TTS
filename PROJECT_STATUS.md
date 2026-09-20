@@ -16,8 +16,12 @@ synthesis phases, light/dark support, two-model reader, signing and Store packag
 Implemented source changes; release pipeline validation in progress. Details:
 docs/RELEASE_0_4.md. Certum secrets exist in Skrivi-STT only; reusable signing workflow
 is in this repo. Do not expose secret values or re-sign immutable installed profiles.
-User has NOT reserved a TTS Store listing. Final uploadable identity is blocked on
-that reservation; validation-only MSIX must never be described as ready for upload.
+User supplied the reserved Lytt Store identity on 20 September 2026. It is recorded
+in store/identity.json: Skrivi.SkriviLytt, publisher
+CN=EF3D997F-87B2-4AD0-B65B-877EE1632E65, publisher display name Skrivi.
+The next signed workflow must build from the commit containing this association.
+Uploadable package validation and Store certification remain pending;
+validation-only MSIX must never be described as ready for upload.
 Source version 0.4.0; installed version remains 0.3.0 until signed release verification.
 
 Local build dd4721c: frozen GUI starts; both engines pass cold/warm generation with
@@ -30,7 +34,7 @@ contains unrelated icuuc.dll/ucrtbase.dll. The CI build uses a clean hosted runn
 STT signing bridge PR 64 merged through normal protections; signed build run
 35513969249 checks out dd4721c. No release/installation claimed until it passes.
 Store startup extension uses --tray (uap10:Parameters), supported on packaged
-desktop apps; identity-associated build still pending the reserved listing.
+desktop apps; identity-associated build is pending CI verification.
 
 
 ### Signing validation progress
