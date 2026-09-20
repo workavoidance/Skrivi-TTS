@@ -1,0 +1,19 @@
+{
+  "archive": "Skrivi-TTS-0.4.0-signed-runtimes.zip",
+  "sha256": "3f9681e48aefbc2ec4dcc0c72b3ef0d41d163c3eabdf91a22ee37674fa3284a6",
+  "source_commit": "6f27073fff6e83c12c08b2abec7b2e8a0105d451",
+  "profiles": {
+    "python-engine-v1": "python-engine-signed-v1",
+    "kokoro-engine-v1": "kokoro-engine-signed-v1",
+    "tesseract-5.5.2-v2": "tesseract-5.5.2-signed-v2"
+  },
+  "url": "https://github.com/workavoidance/Skrivi-TTS/releases/download/v0.4.0/Skrivi-TTS-0.4.0-signed-runtimes.zip",
+  "source_inputs": {
+    "worker_host.py": "c683afbe68c8cb3c8f9acd9c3c8a4768ff22f10245b47eba625a8544e2d121cc",
+    "kokoro_host.py": "ae54e64d2225e77bf81e9c1920b8f33fff44719adb9dd7403468fa8aac501373",
+    "ocr_host.py": "d16cf99324e0f244947a9d5f6c99c66b0ca19f6e2fbe2d0035af56178d376c2e",
+    "requirements-kokoro.lock": "dbc884e2615d875a865811ed48774aa29ba372ee82188f722a96d9f4e2171e08",
+    "requirements-ocr.lock": "fc46be293424895cb646b3cb9c1e2d49482f8ed09ff6a84ee81384a27369e855"
+  },
+  "source_input_format": "UTF-8 text with normalized LF line endings"
+}

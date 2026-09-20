@@ -15,8 +15,21 @@ models=[m for m in json.loads((root/'models.json').read_text(encoding='utf-8')) 
 for name in ('Selection.exe','VerifyPackage.exe'):shutil.copy2(root/'native'/name,out/'app/native'/name)
 profiles={'python-engine-v1':'python-engine-signed-v1','kokoro-engine-v1':'kokoro-engine-signed-v1','tesseract-5.5.2-v2':'tesseract-5.5.2-signed-v2'}
 (out/'app/runtime-profiles.json').write_text(json.dumps(profiles,indent=2),encoding='utf-8')
-for original in ('python-engine-v1','kokoro-engine-v1'):shutil.copytree(root/'build/release-input/runtimes'/original,out/'runtimes'/profiles[original])
-shutil.copytree(root/'dist/OCRWorker',out/'runtimes'/profiles['tesseract-5.5.2-v2'])
+pin_file=root/'docs/SIGNED_RUNTIME_ARCHIVE.json'
+if pin_file.exists():
+ pin=json.loads(pin_file.read_text(encoding='utf-8'))
+ if pin['profiles']!=profiles:raise ValueError('Signed runtime profile mapping changed; update the release pin explicitly')
+ signed_input=root/'build/signed-runtime-input'
+ manifest=json.loads((signed_input/'runtime-manifest.json').read_text(encoding='utf-8'))
+ for name,digest in manifest['files'].items():
+  f=(signed_input/name).resolve()
+  if not f.is_relative_to(signed_input.resolve()):raise ValueError('Unsafe runtime input path')
+  with f.open('rb') as stream:
+   if hashlib.file_digest(stream,'sha256').hexdigest()!=digest:raise ValueError('Signed input changed after preparation: '+name)
+ for profile in profiles.values():shutil.copytree(signed_input/'runtimes'/profile,out/'runtimes'/profile)
+else:
+ for original in ('python-engine-v1','kokoro-engine-v1'):shutil.copytree(root/'build/release-input/runtimes'/original,out/'runtimes'/profiles[original])
+ shutil.copytree(root/'dist/OCRWorker',out/'runtimes'/profiles['tesseract-5.5.2-v2'])
 shutil.copytree(root/'build/release-input/models',out/'models')
 shutil.copytree(root/'build/ocr-assets',out/'models/ocr-tessdata-fast-v1')
 for name in ('INSTALL.ps1','INSTALL.bat','LICENSE','THIRD_PARTY_NOTICES.md','README.md'):shutil.copy2(root/name,out/name)

@@ -1,47 +1,86 @@
-# Skrivi TTS - reader release work, 19 September 2026
+# Skrivi TTS — signed 0.4.0 test release, 20 September 2026
 
-## Reader 0.4 work — 20 September 2026
+## Current authority
 
-User authorised polished progress pill, active global Escape, true loading vs
-synthesis phases, light/dark support, two-model reader, signing and Store packaging.
-Implemented source changes; release pipeline validation in progress. Details:
-docs/RELEASE_0_4.md. Certum secrets exist in Skrivi-STT only; reusable signing workflow
-is in this repo. Do not expose secret values or re-sign immutable installed profiles.
-User has NOT reserved a TTS Store listing. Final uploadable identity is blocked on
-that reservation; validation-only MSIX must never be described as ready for upload.
-Source version 0.4.0; installed version remains 0.3.0 until signed release verification.
+- Public repo: https://github.com/workavoidance/Skrivi-TTS, branch main.
+- Published test release: https://github.com/workavoidance/Skrivi-TTS/releases/tag/v0.4.0.
+- Built source: 6f27073fff6e83c12c08b2abec7b2e8a0105d451. Main subsequently records
+  release evidence and pins immutable signed runtimes for subsequent builds.
+- Successful signed build: https://github.com/workavoidance/Skrivi-STT/actions/runs/35515703890.
+  STT stores the existing Certum secrets. PRs 64/65 added a manual bridge to a pinned
+  TTS workflow. Invoke tts-signing.yml with an explicit current TTS source_ref.
+- Local source: C:/Users/jon/.codex/visualizations/2026/09/08/01a07fdc-16e7-7330-83a6-cbdec9f59c1d/skrivi-tts.
+- Downloaded verified installer and evidence: build/release-0.4-signed/.
+  Store validation file: build/release-0.4-store/.
+- Existing user installation is 0.3.0; this turn built/published 0.4.0 without
+  installing over their working copy. Quit the tray reader before running setup.
 
-Local build dd4721c: frozen GUI starts; both engines pass cold/warm generation with
-actual progress events, global Escape registers, frozen OCR layouts 3/6 work and
-DPI/stale-result tests pass. docs/READER_0_4_LOCAL_CHECKS.json records evidence.
-Restricted local builds injected unrelated Poppler/libheif DLLs despite PATH
-cleanup and reproduced QtCore failure. Rebuilding with normal Windows access
-restored correct DLL inputs and passed. Do not publish a restricted build that
-contains unrelated icuuc.dll/ucrtbase.dll. The CI build uses a clean hosted runner.
-STT signing bridge PR 64 merged through normal protections; signed build run
-35513969249 checks out dd4721c. No release/installation claimed until it passes.
-Store startup extension uses --tray (uap10:Parameters), supported on packaged
-desktop apps; identity-associated build still pending the reserved listing.
+## Features and decisions
 
+Immediate, non-activating light/dark pill for selected text and OCR; actual engine
+startup/loading/generation/playback events; active global Escape; stale-event
+rejection. Normal reader offers Talesyntese Bokmål and Kokoro English only. The
+historical shootout and prior downloads remain preserved. Native model bytes,
+synthesis settings and output sample rates are unchanged. Optional automatic OCR
+columns remain opt-in; paragraph layout is default. Windows-default/English/Bokmål
+UI controls, opt-in sign-in startup and user-initiated update checks are implemented.
+No automatic update/network/model checks, telemetry or cloud speech/OCR.
 
-### Signing validation progress
+## Validation and signing
 
-STT bridge PR 65 is merged. It pins workflow recipe 26e38f8 and accepts a TTS
-source_ref for manual builds. Current run 35514688453 builds source e02a0b2.
-First run 35513969249 verified 369 payload signatures and signed engine generation,
-then passed first install/startup but refused reinstall (exit 7). It is NOT a
-release candidate. The next run includes precise preflight diagnostics, signed
-uninstaller verification and a reusable signed-runtime archive. Resolve reinstall
-before publishing/installing any candidate.
+- 16 unit tests; actual light/dark Qt rendering, foreground retention and cancellation.
+- Both signed engines generated cold/warm on this machine; real loading event appears
+  on cold reads, warm reads go directly to generation. Signed runtime reuse tested.
+- Frozen OCR paragraph/column and DPI checks; signed OCR column worker passed locally.
+- CI verified 370 payload EXE/DLL/PYD/PS1 signatures plus installer and uninstaller.
+  The final installer signature and timestamp also validate on this machine.
+- Install, conflicting-file refusal, reinstall and uninstall passed on a disposable
+  Windows runner; 4,291 existing data files survived with matching content. Installed
+  English and Bokmål voice tests passed. docs/RELEASE_0_4_INSTALL-CHECKS.json and
+  docs/RELEASE_0_4_RELEASE-ENGINE-CHECKS.json contain the final CI evidence.
+- Microsoft MakeAppx accepted the MSIX. Its native unpacker restored encoded filenames
+  (for example %21v -> !v). All 4,795 included payload hashes match the signed manifest;
+  extracted GUI startup and signed OCR passed. This is not an installed Store test.
+- Every published GitHub asset's size and SHA-256 matched the local verified file.
 
-First artifact downloaded via bounded range requests after gh download timed out;
-ignored build/download-artifact-ranges.py uses existing GitHub CLI authentication
-only for the GitHub API, never forwards that token to artifact storage, verifies
-the artifact digest and extracts validated paths. First test EXE has a valid
-Certum developer signature; all model hashes match unchanged local models.
-Local MakeAppx structure validation passed (unsigned, UNASSOCIATED; not installable
-or certified). SDK/provenance details in docs/RELEASE_0_4.md. --makeappx supports an
-explicit SDK binary path without requiring a system-wide SDK installation.
+Early candidate runs 35513969249 and 35514688453 were not published: their PowerShell
+preflight passed outside setup but refused reinstall inside setup. Signed native
+native/VerifyPackage.cs now performs the checksum/path checks directly; matching,
+missing, conflicting and unsafe paths were tested before the successful full run.
+
+Restricted local builds injected unrelated Poppler/libheif DLLs despite PATH cleanup,
+reproducing the QtCore failure. Clean normal-Windows builds and the hosted CI build
+passed. Do not publish a GUI with unrelated icuuc.dll/ucrtbase.dll in its bundle.
+
+## Immutable runtime reuse
+
+docs/SIGNED_RUNTIME_ARCHIVE.json pins the published 0.4.0 signed-runtime archive,
+profiles, SHA-256 and frozen source inputs. prepare-release.py verifies and reuses
+it; stage-release.py verifies the cached files again. sign-release.ps1 retains valid
+signatures. New code builds therefore keep the exact runtime bytes already installed.
+Changing frozen host inputs/dependencies requires an explicitly new profile and pin;
+never re-sign different bytes into an existing published runtime profile.
+The existing package-update.py remains the model/runtime-free update route. Sign
+any newly generated installer scripts before distributing an update as signed.
+The full installer is needed once to migrate unsigned 0.3 engines to signed profiles;
+existing matching speech models are reused. Never remove user models, presets or audio.
+
+## Microsoft Store — remaining dependency
+
+User explicitly said the separate TTS listing is NOT reserved. The generated
+Skrivi-TTS-0.4.0-UNASSOCIATED-validation.msix (package version 1.4.3.0) is NOT FOR UPLOAD.
+Get the public Package/Identity/Name, Package/Identity/Publisher and publisher display
+name from the separate TTS Partner Center listing, create store/identity.json and
+rebuild. Do not reuse the STT identity. Certification has not been run.
+Store models/runtime files are bundled and read-only; user settings are writable;
+startup and updates use Windows/Store controls. No microphone capability is requested.
+Do not install the unassociated package or change certificate trust to force it.
+
+## Next steps
+
+User testing of the signed installer/pill on their machines. Final Store-associated
+build after reservation, then installed package testing and certification submission.
+Keep the two approved models as the normal reader; no broad model research is needed.
 
 ## OCR update 0.3.0 (supersedes OCR future-work notes below)
 

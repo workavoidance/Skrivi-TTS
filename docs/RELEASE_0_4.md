@@ -1,49 +1,47 @@
-# Reader 0.4 release work
+# Signed reader 0.4.0
 
-Implemented: focus-preserving bottom-of-screen progress pill, light/dark styling,
-explicit capture/OCR/startup/loading/generation/playback phases, global Escape only
-while active, stale-event rejection and persistent error display. Native engine
-progress events distinguish actual loading from synthesis and preserve the old
-worker protocol for comparison tools. Two approved models in the normal reader;
-legacy downloads, settings and shootout are retained. Optional PSM 3 automatic
-column layout, English/Bokmal UI choice with Windows default, manual metadata-only
-GitHub update check. No automatic network checks or app/model downloads.
+Published as a test release: https://github.com/workavoidance/Skrivi-TTS/releases/tag/v0.4.0.
+Built source 6f27073fff6e83c12c08b2abec7b2e8a0105d451; successful workflow run
+https://github.com/workavoidance/Skrivi-STT/actions/runs/35515703890.
 
-Signing: scripts/sign-release.ps1 signs previously unsigned EXE/DLL/PYD/PS1 files,
-preserves valid third-party signatures, timestamps new signatures and fails on
-invalid signatures. New signed runtime profiles avoid changing existing unsigned
-profiles. Final package hashes are generated after signing. The reusable workflow
-can use the existing STT repository's Certum secrets without exporting their values.
+Focus-preserving bottom-screen light/dark pill, real worker progress, active Escape,
+two-model reader, optional OCR columns, interface-language controls and manual
+update checks are implemented. Existing native model quality/defaults are retained.
 
-Store: scripts/build-store.py requires the separately reserved TTS product identity.
-User confirmed the listing is not reserved yet. --validation-only produces a clearly
-UNASSOCIATED package solely to validate structure, not for upload/certification.
-Store build uses bundled read-only models/runtime files, writable per-user settings,
-Windows-managed startup and Store-managed updates. It has no microphone capability.
-No Store submission or certificate-trust changes are performed automatically.
+The workflow verified 370 payload signatures, both speech engines, first install,
+reinstall, conflicting-file preservation, uninstall, 4,291 retained data files and
+the signed uninstaller. Installer signature/timestamp and both signed speech engines
+also passed locally. Microsoft-unpacked Store payload: all 4,795 hashes match;
+GUI startup and signed OCR column recognition passed. These checks do not replace
+user listening or installed Store certification testing.
 
-Validation so far: existing unit tests; live Qt widget render checks in light/dark;
-pill does not steal foreground; stale/cancelled events cannot reopen it; error
-survives worker completion; English/Bokmal switching; two-model list. Engine and
-signed-package validation still required before claiming a signed release.
+Evidence: READER_0_4_LOCAL_CHECKS.json, RELEASE_0_4_INSTALL-CHECKS.json,
+RELEASE_0_4_RELEASE-ENGINE-CHECKS.json, OCR_FROZEN_CHECKS.json and release assets
+SIGNATURES.json / INSTALLER-SIGNATURES.json / SHA256SUMS.txt.
 
-Local frozen checks now pass: GUI startup, cold/warm generation for both native
-speech engines, real Escape registration, OCR modes 3/6, crop DPI mapping and
-stale/cancelled result handling. See READER_0_4_LOCAL_CHECKS.json. These local
-binaries are not the signed release; CI signatures and installer tests are separate.
+The installer uses the signed native/VerifyPackage.cs helper to validate existing
+model/runtime checksums before copying files. It never overwrites conflicting files.
+Valid upstream executable signatures are retained; unsigned components receive
+Certum SHA-256 signatures with RFC3161 timestamps. The generated uninstaller is
+signed through Inno Setup's signing hook.
 
-After a successful signed release, publish and pin its signed runtime archive.
-Later code-only updates must reuse those exact bytes. Rebuilding/re-signing changes
-hashes and requires a new runtime profile; never reuse an installed profile ID for
-new signed bytes.
+SIGNED_RUNTIME_ARCHIVE.json pins the published runtime archive and frozen source
+inputs. prepare-release.py and stage-release.py verify and reuse the exact bytes;
+sign-release.ps1 preserves their valid signatures. An intentional frozen dependency
+change needs a new runtime profile and pin. Code-only releases can reuse the current
+profiles; model downloads and user data do not belong to application versions.
 
-Microsoft references: [Store package requirements](https://learn.microsoft.com/en-us/windows/apps/publish/publish-your-app/msix/app-package-requirements)
-and [startup extension parameters](https://learn.microsoft.com/en-us/uwp/schemas/appxpackage/uapmanifestschema/element-uap5-extension).
-The Store signs the outer MSIX during submission. The validation artifact is not
-associated with a reserved listing and is not a sideload installer.
+The TTS Store listing is not reserved. The generated package version is 1.4.3.0,
+labelled UNASSOCIATED and NOT FOR UPLOAD. Use the reserved listing's public identity
+for the submission build. The Store signs the outer package on submission; no
+certificate trust changes or submission were performed here.
 
-Local Store validation passed with Microsoft-signed MakeAppx from official NuGet
-Microsoft.Windows.SDK.BuildTools 10.0.26100.9169 (archive SHA-256
-6000c971fc9155052a8359779b30b6682c39e091664d83b3852c4702ab6d238e).
-This validates package structure, not installation or Store certification. The
-local validation payload is unsigned and must not be distributed as the signed build.
+Local structure validation used Microsoft-signed MakeAppx from official NuGet
+Microsoft.Windows.SDK.BuildTools 10.0.26100.9169. Archive SHA-256:
+6000c971fc9155052a8359779b30b6682c39e091664d83b3852c4702ab6d238e.
+Use Microsoft MakeAppx to unpack MSIX files: raw ZIP extraction retains URI-encoded
+filenames such as %21v, unlike Windows package deployment.
+
+References: [Store package requirements](https://learn.microsoft.com/en-us/windows/apps/publish/publish-your-app/msix/app-package-requirements),
+[startup extension parameters](https://learn.microsoft.com/en-us/uwp/schemas/appxpackage/uapmanifestschema/element-uap5-extension),
+[Inno signing](https://jrsoftware.org/ishelp/topic_setup_signtool.htm).

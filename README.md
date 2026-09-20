@@ -1,145 +1,108 @@
 # Skrivi TTS
 
-An open-source Windows reader that turns text into speech on your computer.
-A separate application from [Skrivi dictation](https://github.com/workavoidance/Skrivi-STT),
-with a familiar interface and its own orange speaker tray icon.
+An open-source Windows reader for local text and screen-image reading. Separate
+from [Skrivi dictation](https://github.com/workavoidance/Skrivi-STT), with its own
+orange speaker tray icon. Speech and OCR work offline.
 
-## Reader 0.4 (release validation in progress)
+## Install the signed 0.4.0 test release
 
-Version 0.4 adds an immediate, focus-preserving activity pill for selected-text and
-screen-region reading. It distinguishes capture, recognition, engine startup, model
-loading, speech generation and playback. Escape cancels while a reading is active.
-The pill follows Windows light/dark mode. Settings provide interface language
-(Windows default, English or Bokmål), optional automatic column layout and a manual
-update check. No update check runs automatically.
+Download **Skrivi-TTS-0.4.0-windows-x64-setup.exe** from
+[the 0.4.0 release](https://github.com/workavoidance/Skrivi-TTS/releases/tag/v0.4.0).
+Quit Skrivi TTS from its tray menu, run setup, then open it from the Start menu.
+No separate Python installation or administrator account is needed.
 
-The release workflow signs application and runtime components, verifies the
-installer and builds a separate Microsoft Store package. The TTS Store listing is
-not yet reserved: UNASSOCIATED validation packages are **not for Store upload**.
-See [release status and build process](docs/RELEASE_0_4.md).
+The full installer includes two speech models (about 417 MB of weights), OCR and
+signed engines. Use it once when moving from the previous unsigned engines. It
+reuses matching installed model files and refuses to overwrite differing ones.
+Models, settings, presets and saved audio remain outside app versions, including
+when the application is uninstalled. Signing is not a promise of Windows reputation
+or Store certification. This is a test release for real-world feedback.
 
-## Previously delivered screen-region update (0.3.0)
+## Read
 
-The OCR update adds **Read screen region** in the reader and tray, or
-**Ctrl+Alt+Shift+Space**. Put the pointer on the desired monitor, press the shortcut,
-and drag around one paragraph or column. Release to read; Escape cancels selection.
-Recognised text appears in the reader for review. Everything runs offline.
+- Type or paste text and choose **Read aloud**, or press Ctrl+Enter.
+- Select text in another application and press **Ctrl+Alt+Space** for immediate reading.
+- For image text, press **Ctrl+Alt+Shift+Space** and drag around a screen region.
+- A light/dark activity pill shows capture, recognition, voice startup/loading,
+  speech preparation and playback. **Escape** cancels while work is active.
+- Automatic chooses one English or Bokmål voice for the whole passage. Override it
+  in the reader or tray. Short/uncertain text uses the configured fallback.
+- Close the window to keep the tray app running; use **Quit Skrivi TTS** to exit.
 
-Install the full 0.2.1 package first, then extract the 0.3.0 OCR update and run
-INSTALL.bat. Quit the existing tray app and reopen after updating. Speech models
-are reused; the two OCR language files add about 7.7 MB plus the OCR runtime.
-The previous app version is retained. This is a test update, with results and
-limitations in [OCR_SCREENING.md](docs/OCR_SCREENING.md).
+Settings offer Windows-default/English/Bokmål interface language, opt-in startup,
+reading speed, selected-text shortcut and OCR layout. Paragraph/single-column is
+the default. Automatic columns work best when selecting body text without shared
+headings or footers; [the column experiment](docs/OCR_COLUMNS.md) records limitations.
 
-## Install and read
-
-Download **Skrivi-TTS-0.2.1-windows-x64-setup.exe** from
-[Releases](https://github.com/workavoidance/Skrivi-TTS/releases/tag/v0.2.1),
-open it and follow the setup wizard. Quit Skrivi TTS before installing or updating.
-Start **Skrivi TTS** from the Start menu
-or desktop. No administrator account or separately installed Python is needed.
-The 0.2 bundle includes the two default models (about 417 MB of weights), plus
-application and engine dependencies. First installation works offline after downloading.
-The ZIP remains an alternative: extract all files and run **INSTALL.bat**.
-The EXE offers Norwegian/English setup and an optional desktop shortcut. Its
-uninstaller removes the app and shortcuts, but keeps models, reusable runtimes,
-settings and saved audio. No automatic startup is enabled by setup.
-
-- Type or paste text, then choose **Read aloud** (or Ctrl+Enter).
-- Select text in another application and press **Ctrl+Alt+Space** to read immediately.
-  Press the shortcut again to stop. Alternative shortcuts are available in Settings.
-- **Automatic** selects English or Norwegian for the whole passage. Mixed text is
-  read with one voice. Choose a language in the reader or tray menu to override it.
-  Very short or uncertain text uses the configured fallback, Norwegian by default.
-- Close the window to keep the tray app running. Choose **Quit Skrivi TTS** to exit.
-- Save a finished reading as a WAV if wanted. Text is not saved; temporary readings
-  are removed when the app quits normally.
-
-| Included voice | Native output | Model weights |
+| Included model | Voice / native output | Weights |
 | --- | --- | --- |
-| Piper Talesyntese, Norwegian Bokmaal male | 22.05 kHz | 63 MB |
-| Kokoro Heart, American English female | 24 kHz | 354 MB including voice vectors |
+| Piper Talesyntese | Bokmål male, 22.05 kHz | 63 MB |
+| Kokoro | Heart, American English female, 24 kHz | 354 MB including voice vectors |
 
-Heart is the English voice approved in the listening comparison. Michael (American
-male) and Emma (British female) share the same Kokoro download. Original speed and
-untrimmed native speech are the defaults. Language detection is a convenience,
-not a guarantee; these are Bokmaal and English voices, not a claimed Nynorsk model.
-
-The 0.4 reader offers just Talesyntese and Kokoro. Other models remain available
-in the earlier comparison app (`app/shootout.py` and version 0.1.0). Existing
-downloads, presets and history are preserved; they are not deleted by this update.
+Michael (American male) and Emma (British female) share the Kokoro download.
+Native speed and untrimmed speech are the defaults. These are English/Bokmål
+voices, not a claimed Nynorsk speech model. The normal reader is limited to these
+two models. Earlier comparisons remain in app/shootout.py; their downloads and
+user data are preserved.
 
 ## Updates and privacy
 
-For the first installation, choose the **Windows setup EXE** (or full Windows ZIP).
-After the 0.2.1 full
-installation, choose **App-Update-Windows-x64.zip** for code-only releases using
-the same runtimes. The update archive contains no model weights or engine runtimes.
-It checks for the required runtimes and asks for the full package if they are missing.
+**Check for updates** contacts GitHub only when clicked and reads release metadata;
+it does not install anything. There are no automatic update checks or background
+model downloads. Store builds open the Store's update controls instead.
 
-Models, presets, reference voices and settings live in `%LOCALAPPDATA%\SkriviTTS`,
-outside app versions. Reinstalling skips identical model/runtime files and never
-redownloads models. Existing mismatched files are preserved and reported rather
-than silently replaced. No synthesis request uploads text or audio. No telemetry,
-cloud synthesis, microphone capture or automatic model downloads are implemented.
+User data lives in `%LOCALAPPDATA%\SkriviTTS`. Future app-only update packages can
+reuse the installed signed engines and contain no model/runtime downloads. The
+signed-runtimes ZIP in Releases is a developer build input, not a user installer.
 
-Selection capture uses Windows accessibility, with a copy/restore clipboard fallback
-for applications that do not expose selection. Applications with protected content
-or different privilege levels may require pasting text into the reader. Screen-area OCR runs locally using Tesseract and bundled Norwegian/English
-language data. Startup at sign-in is opt-in.
+No telemetry, cloud synthesis, microphone capture or uploads of text/audio/images.
+Selection uses Windows accessibility, with a copy/restore clipboard fallback.
+OCR uses Tesseract with bundled Norwegian/English data. Recognition stays on the
+device; no screenshot files or selected-text logs are created by OCR. Protected
+content or applications at a different privilege level may require pasting text.
 
-All adapters currently run on CPU. Windows x64 is required; optional VoxCPM2 also
-requires AVX2. Earlier releases are unsigned. The 0.4 signing workflow is being validated;
-signing is not a guarantee of Windows reputation or Store certification.
+## Build and continue development
 
-## Build from GitHub
-
-Windows x64, Python 3.12, .NET Framework 4.8. From a clone of this repository:
+Start with **PROJECT_STATUS.md**, [architecture](docs/ARCHITECTURE.md) and
+[0.4 release details](docs/RELEASE_0_4.md). Reuse the existing adapters and evidence.
+Windows x64, Python 3.12 and .NET Framework 4.8 are required.
 
 ```powershell
 python -m venv .build-env
-.\.build-env\Scripts\python.exe -m pip install -r requirements-build.lock
-.\.build-env\Scripts\python.exe -m unittest discover -s tests -p 'test_*.py'
-.\.build-env\Scripts\python.exe scripts/prepare-build.py --models
-python -m venv build/english-env
-.\build\english-env\Scripts\python.exe -m pip install -r requirements-kokoro.lock
-.\scripts\build-kokoro.ps1
-.\scripts\build.ps1
-.\.build-env\Scripts\python.exe tests/check_reader_engines.py
-.\.build-env\Scripts\python.exe scripts/package.py --vox-runtime build/vox-0.8.32
-.\.build-env\Scripts\python.exe scripts/package-update.py build/Skrivi-TTS-0.2.1
+./.build-env/Scripts/python.exe -m pip install -r requirements-build.lock
+python -m venv build/ocr-env
+./build/ocr-env/Scripts/python.exe -m pip install -r requirements-ocr.lock
+./.build-env/Scripts/python.exe scripts/prepare-release.py
+./.build-env/Scripts/python.exe scripts/prepare-ocr.py
+./scripts/build.ps1
+./scripts/build-ocr.ps1
+./.build-env/Scripts/python.exe scripts/stage-release.py
+./.build-env/Scripts/python.exe tests/check_release.py
 ```
 
-`prepare-build.py` retrieves the checksum-pinned 0.1 engine runtime from GitHub;
-`--models` explicitly allows preparing missing default models. Existing caches are
-reused. Packaging reads the verified model cache and needs no private/local-only
-source. Do not change an immutable runtime profile without assigning a new profile
-ID. Later app-only updates should reuse the published runtime rather than rebuild it.
-The full Kokoro environment includes build-only Torch dependencies; the distributed
-English worker excludes Torch and runs the FP32 ONNX model.
+Build preparation reuses checksum-pinned public packages; it does not modify a
+user's installed library. GUI code can change independently of signed runtimes.
+The runtime pin rejects changes to frozen inputs until a new profile is assigned.
+Never rebuild/re-sign different bytes under an installed runtime profile name.
+Local GUI builds are unsigned; official release signing uses the reusable GitHub
+workflow and the maintainer's Certum configuration. Source forks use their own
+signing configuration.
 
-GitHub Actions runs model-preservation and language-routing tests on pushes and PRs.
-Real-model tests are opt-in and require weights. Recorded tests, settings, hardware
-and prior listening results are under `docs/`; start at **PROJECT_STATUS.md** before
-continuing development. Do not restart the old research from conversation memory.
+The signed workflow verifies payload signatures, signs the installer/uninstaller,
+tests installation/reinstallation/uninstallation on a disposable Windows runner,
+and creates the Store package. Tests never install over a developer's real library.
+The historical 0.2 ZIP/build recipes remain available for provenance.
 
-## Build the Windows setup executable
+## Microsoft Store
 
-Install Inno Setup 6, then run `./scripts/build-installer.ps1` on Windows.
-This recipe downloads the published 0.2.1 full ZIP only if missing, verifies its
-pinned SHA-256 and every manifest entry, and packages the exact app/voice/runtime
-bytes without rebuilding them. Existing conflicting model/runtime files cause
-setup to stop without overwriting them. The original ZIP remains unchanged.
-
-`dist/installer/` contains the EXE, its separate checksum file and provenance JSON
-(installer source commit, application source commit, input archive hash and
-compiler version). The `Windows installer` workflow builds and exercises it on a
-disposable GitHub-hosted Windows runner; `tests/check_installer.ps1` deliberately
-refuses to run against a personal computer's installed data.
+The separate TTS listing is not reserved yet. The current **UNASSOCIATED** MSIX is
+for packaging validation only and **must not be uploaded**. Copy the real listing's
+public identity into store/identity.json (see the example), rebuild and test the
+associated package before submission. Certification has not been run.
 
 ## Licenses
 
-Application source and icon: MIT. Bundled Talesyntese weights: CC0. Kokoro weights:
-Apache-2.0. Speech runtimes include GPL components; Qt uses LGPL. These retain their
-own terms. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and
-[corresponding sources and build instructions](docs/SOURCES.md).
+Application source/icon: MIT. Talesyntese weights: CC0. Kokoro: Apache-2.0.
+Speech runtimes include GPL components; Qt uses LGPL. Their licenses and source
+instructions are retained. See [notices](THIRD_PARTY_NOTICES.md) and
+[corresponding sources/build instructions](docs/SOURCES.md).

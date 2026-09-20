@@ -17,7 +17,7 @@ if stage.exists():raise SystemExit('Store staging exists; use a fresh directory.
 source=root/'build/release-payload'
 for name in ('app','models','runtimes'):shutil.copytree(source/name,stage/name)
 (stage/'app/store-build.json').write_text(json.dumps(dict(store=True,associated=not args.validation_only)),encoding='utf-8')
-version=f"1.{VERSION.split('.')[1]}.{args.build}.0"
+version=f"{int(VERSION.split('.')[0])+1}.{VERSION.split('.')[1]}.{args.build}.0"
 s=(root/'store/AppxManifest.xml').read_text(encoding='utf-8')
 for key,value in {'__NAME__':identity['name'],'__PUBLISHER__':identity['publisher'],'__DISPLAY__':identity['publisher_display_name'],'__VERSION__':version}.items():s=s.replace(key,html.escape(value,quote=True))
 (stage/'AppxManifest.xml').write_text(s,encoding='utf-8')
