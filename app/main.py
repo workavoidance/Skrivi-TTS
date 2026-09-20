@@ -71,7 +71,7 @@ class Reader(QDialog):
         self.events.models.connect(self.refresh_models);self.events.library_done.connect(self.library_finished)
         self.events.ocr.connect(self.ocr_received)
         self.events.stage.connect(self.show_stage)
-        self.events.update_result.connect(self.update_received)
+        self._saving_ready=False
         self.update_busy=False;self.activity_failed=False
         self.pill=ActivityPill();self.pill.cancelled.connect(self.stop)
         self.activity_screen=None
@@ -86,9 +86,10 @@ class Reader(QDialog):
         self.region_hotkeys=Hotkeys(self.region_hotkey_pressed,0x5312)
         if not preview:
             app.installNativeEventFilter(self.region_hotkeys)
-            try:self.region_hotkeys.register('Ctrl+Alt+Shift+Space')
+            try:self.region_hotkeys.register(self.preferences['region_hotkey'])
             except Exception:QTimer.singleShot(0,lambda:self.show_error('Screen-region shortcut unavailable. Use Read screen region in the tray.'))
         self.restore_preferences();self.refresh_models();self.update_route();self.change_ui_language()
+        self._saving_ready=True
         if STORE_BUILD:
             self.startup.setEnabled(False);self.download_button.hide();self.import_button.hide();self.cancel_download.hide()
         self.tray.show() if not preview else None
@@ -97,104 +98,46 @@ class Reader(QDialog):
         if not preview:QTimer.singleShot(100,self.adopt_bundled)
 
     def build(self):
-        outer=QVBoxLayout(self);outer.setContentsMargins(24,22,24,18);outer.setSpacing(14)
-        header=QHBoxLayout();brand=QVBoxLayout()
-        brand.addWidget(label('SKRIVI LYTT  /  TEXT TO SPEECH','eyebrow'))
-        brand.addWidget(label('Read aloud','windowTitle'))
-        brand.addWidget(label('A familiar voice for the words in front of you.','secondary'))
-        header.addLayout(brand,1)
-        self.badge=label('On this device','statusBadge');header.addWidget(self.badge,0,Qt.AlignmentFlag.AlignTop)
-        outer.addLayout(header)
-        self.tabs=QTabWidget();outer.addWidget(self.tabs,1)
-        read=QWidget();voices=QWidget();settings=QWidget()
-        for widget,name in ((read,'Read'),(voices,'Voices && models'),(settings,'Settings')):
-            widget.setObjectName('settingsPage');self.tabs.addTab(widget,name)
-        layout=QVBoxLayout(read);layout.setContentsMargins(0,16,0,0);layout.setSpacing(12)
-        box,contents=card(read);layout.addWidget(box)
-        row=QHBoxLayout();row.addWidget(label('Reading language','sectionTitle'));row.addStretch()
-        self.language=QComboBox()
-        for key,name in LANGUAGES.items():self.language.addItem(name,key)
-        self.language.setAccessibleName('Reading language');row.addWidget(self.language)
-        contents.addLayout(row)
-        self.route_label=label('','secondary');contents.addWidget(self.route_label)
-        self.language.currentIndexChanged.connect(self.language_changed)
-        self.text=QTextEdit();self.text.setAcceptRichText(False)
-        self.text.setPlaceholderText('Paste or type something to read…')
-        self.text.setAccessibleName('Text to read');self.text.setMinimumHeight(200)
-        self.text.textChanged.connect(self.update_route);layout.addWidget(self.text,1)
-        buttons=QHBoxLayout()
-        self.read_button=QPushButton('Read aloud');self.read_button.setProperty('uiRole','primary');self.read_button.clicked.connect(self.read_editor)
-        self.stop_button=QPushButton('Stop');self.stop_button.clicked.connect(self.stop);self.stop_button.setEnabled(False)
-        self.sample_button=QPushButton('Try a sample');self.sample_button.clicked.connect(self.sample)
-        self.save_button=QPushButton('Save audio…');self.save_button.clicked.connect(self.save_audio);self.save_button.setEnabled(False)
-        for button in (self.read_button,self.stop_button,self.sample_button):buttons.addWidget(button)
-        buttons.addStretch();buttons.addWidget(self.save_button);layout.addLayout(buttons)
-        self.region_button=QPushButton('Read screen region');self.region_button.clicked.connect(self.capture_region);layout.addWidget(self.region_button)
-        self.shortcut_hint=label('','secondary');layout.addWidget(self.shortcut_hint)
-        layout.addWidget(label('Closing this window keeps Skrivi Lytt in the tray. Text is not saved.','secondary'))
-        layout=QVBoxLayout(voices);layout.setContentsMargins(0,16,0,0);layout.setSpacing(12)
-        box,contents=card(voices);layout.addWidget(box)
-        contents.addWidget(label('Your everyday voices','sectionTitle'))
-        form=QFormLayout();contents.addLayout(form)
-        form.addRow('Norwegian Bokmål',label('Piper Talesyntese · male'))
-        self.voice=QComboBox()
-        for key,name in KOKORO_VOICES.items():self.voice.addItem(name,key)
-        form.addRow('English',self.voice)
-        self.speed=QDoubleSpinBox();self.speed.setRange(.5,2);self.speed.setSingleStep(.1);self.speed.setDecimals(2);self.speed.setSuffix(' ×');self.speed.setValue(1)
-        form.addRow('Reading speed',self.speed)
-        contents.addWidget(label('Both models are included. English voices share one download.','secondary'))
-        self.voice.currentIndexChanged.connect(self.save_preferences);self.speed.valueChanged.connect(self.save_preferences)
-        self.model_table=QTreeWidget();self.model_table.setColumnCount(3);self.model_table.setHeaderLabels(['Model','Size','Availability']);self.model_table.setRootIsDecorated(False)
-        self.model_table.setColumnWidth(0,325);self.model_table.setColumnWidth(1,85);layout.addWidget(self.model_table,1)
-        row=QHBoxLayout();self.download_button=QPushButton('Download / verify');self.download_button.clicked.connect(lambda:self.model_action(False))
-        self.import_button=QPushButton('Import existing…');self.import_button.clicked.connect(lambda:self.model_action(True))
-        self.cancel_download=QPushButton('Cancel download');self.cancel_download.setEnabled(False);self.cancel_download.clicked.connect(self.library_cancel.set)
-        for widget in (self.download_button,self.import_button,self.cancel_download):row.addWidget(widget)
-        layout.addLayout(row)
-        self.download_status=label('Two local models, kept through updates.','secondary');layout.addWidget(self.download_status)
-        layout=QVBoxLayout(settings);layout.setContentsMargins(0,16,0,0);layout.setSpacing(12)
-        box,contents=card(settings);layout.addWidget(box)
-        contents.addWidget(label('Read from any application','sectionTitle'))
-        form=QFormLayout();contents.addLayout(form)
-        self.shortcut=QComboBox();self.shortcut.addItems([key for key in HOTKEYS if key!='Ctrl+Alt+Shift+Space']);form.addRow('Selected-text shortcut',self.shortcut)
-        self.shortcut.currentTextChanged.connect(self.change_shortcut)
-        self.fallback=QComboBox();self.fallback.addItem('Norwegian Bokmål','no');self.fallback.addItem('English','en');form.addRow('When detection is uncertain',self.fallback)
-        self.fallback.currentIndexChanged.connect(self.save_preferences)
-        contents.addWidget(label('Select text, then press the shortcut to read immediately. Press it again to stop. Automatic uses one voice for the whole selection.','secondary'))
-        self.ui_language=QComboBox()
-        for text,key in [('Automatic (Windows display language)','auto'),('English','en'),('Norsk bokmål','nb')]:self.ui_language.addItem(text,key)
-        form.addRow('Interface language',self.ui_language);self.ui_language.currentIndexChanged.connect(self.change_ui_language)
-        self.startup=QCheckBox('Start quietly in the tray when I sign in');self.startup.toggled.connect(self.change_startup);contents.addWidget(self.startup)
-        if STORE_BUILD:
-            manage=QPushButton('Manage startup in Windows Settings');manage.clicked.connect(lambda:os.startfile('ms-settings:startupapps'));contents.addWidget(manage)
-        self.layout_mode=QComboBox();self.layout_mode.addItem('Paragraph / single column',6);self.layout_mode.addItem('Automatic page layout (columns)',3)
-        form.addRow('Image layout',self.layout_mode);self.layout_mode.currentIndexChanged.connect(self.save_preferences)
-        contents.addWidget(label('For columns, select the main text without shared headings or footers.','secondary'))
-        layout.addStretch()
-        layout.addWidget(label('Skrivi Lytt '+VERSION,'secondary'))
-        layout.addWidget(label('Local reading. Part of the Skrivi family.','secondary'))
-        links=QHBoxLayout();source=QPushButton('Project & updates');source.clicked.connect(lambda:os.startfile('https://github.com/workavoidance/Skrivi-TTS/releases'))
-        library=QPushButton('Open model folder');library.clicked.connect(lambda:os.startfile(DATA/'models'))
-        self.update_button=QPushButton('Check for updates');self.update_button.clicked.connect(self.check_updates)
-        links.addWidget(self.update_button);links.addWidget(source);links.addWidget(library);links.addStretch();layout.addLayout(links)
-        self.status_label=label('Ready.','secondary');outer.addWidget(self.status_label)
-        self.progress=QProgressBar();self.progress.setRange(0,0);self.progress.setMaximumHeight(4);self.progress.setTextVisible(False);self.progress.hide();outer.addWidget(self.progress)
+        from family_ui import build_reader
+        build_reader(self)
+
+    def open_settings(self, *_):
+        self.settings_dialog.showNormal();self.settings_dialog.raise_();self.settings_dialog.activateWindow()
+
+    def verify_models(self):
+        if self.library_busy:return
+        self.library_busy=True
+        def work():
+            try:
+                for model in self.models:
+                    from core import sha256
+                    path=self.library.path(model)
+                    for item in model['files']:
+                        if sha256(path/item['path'])!=item['sha256']:
+                            raise ValueError('Model verification failed. Locate existing files or download the model again.')
+                self.events.status.emit('Files verified.')
+            except Exception as error:self.events.failure.emit(str(error))
+            finally:self.events.library_done.emit()
+        threading.Thread(target=work,daemon=True).start()
 
     def build_tray(self):
         self.tray=QSystemTrayIcon(speech_icon(),self);self.tray.setToolTip('Skrivi Lytt · Read aloud')
         self.menu=QMenu();self.menu.addAction('Skrivi Lytt').setEnabled(False)
         self.tray_status=self.menu.addAction('Ready');self.tray_status.setEnabled(False)
-        self.menu.addSeparator();self.menu.addAction('Open reader',self.open_reader)
+        self.menu.addSeparator();self.menu.addAction('Open Skrivi Lytt',self.open_reader)
         self.tray_read=self.menu.addAction('Read selected text',self.capture_selection)
-        self.menu.addAction('Read screen region · Ctrl+Alt+Shift+Space',self.capture_region)
+        self.tray_region=self.menu.addAction('Read screen region',self.capture_region)
         self.tray_stop=self.menu.addAction('Stop reading',self.stop);self.tray_stop.setEnabled(False)
         language=self.menu.addMenu('Reading language');group=QActionGroup(self.menu);group.setExclusive(True);self.language_actions={}
         for key,name in LANGUAGES.items():
             action=language.addAction(name);action.setCheckable(True);group.addAction(action)
             action.triggered.connect(lambda checked,k=key:self.set_language(k));self.language_actions[key]=action
-        self.menu.addAction('Voices & models',lambda:self.open_reader(1))
+        self.menu.addSeparator()
+        self.menu.addAction('Settings',self.open_settings)
+        self.menu.addAction('Help',lambda:os.startfile('https://skrivi.no/help/'))
+        self.menu.addAction('Give feedback',lambda:os.startfile('https://github.com/workavoidance/Skrivi-TTS/issues'))
         self.menu.addAction('Check for updates',self.check_updates)
-        self.menu.addAction('Settings',lambda:self.open_reader(2));self.menu.addSeparator();self.menu.addAction('Quit Skrivi Lytt',self.quit)
+        self.menu.addSeparator();self.menu.addAction('Quit Skrivi Lytt',self.quit)
         self.tray.setContextMenu(self.menu)
         self.tray.activated.connect(lambda reason:self.open_reader() if reason==QSystemTrayIcon.ActivationReason.DoubleClick else None)
 
@@ -204,15 +147,31 @@ class Reader(QDialog):
         for widget,value in pairs:
             with QSignalBlocker(widget):widget.setCurrentIndex(max(0,widget.findData(value)))
         with QSignalBlocker(self.speed):self.speed.setValue(self.preferences['speed'])
-        with QSignalBlocker(self.shortcut):self.shortcut.setCurrentText(self.preferences['hotkey'])
         with QSignalBlocker(self.startup):self.startup.setChecked(self.preferences['startup'])
+        with QSignalBlocker(self.overlay):self.overlay.setChecked(self.preferences['overlay_enabled'])
+        self.pill.enabled=self.preferences['overlay_enabled']
         self.language_actions[self.preferences['language']].setChecked(True);self.update_hint()
 
+    def persist_preferences(self, updated):
+        if not self._saving_ready:return False
+        try:
+            if not self.preview:write_json(DATA/'reader-settings.json',updated)
+        except OSError:
+            self.restore_preferences()
+            self.settings_error.setText(tr('Settings could not be saved. Previous settings remain active.'));self.settings_error.show()
+            self.show_error('Settings could not be saved. Previous settings remain active.')
+            return False
+        self.preferences=updated
+        self.settings_error.hide()
+        return True
+
     def save_preferences(self,*_):
-        if not hasattr(self,'layout_mode'):return
-        self.preferences.update(language=self.language.currentData(),english_voice=self.voice.currentData(),
-            fallback=self.fallback.currentData(),speed=self.speed.value(),ocr_layout=self.layout_mode.currentData())
-        if not self.preview:write_json(DATA/'reader-settings.json',self.preferences)
+        if not self._saving_ready:return
+        updated=dict(self.preferences,language=self.language.currentData(),english_voice=self.voice.currentData(),
+            fallback=self.fallback.currentData(),speed=self.speed.value(),ocr_layout=self.layout_mode.currentData(),overlay_enabled=self.overlay.isChecked())
+        if self.persist_preferences(updated):
+            self.pill.enabled=updated['overlay_enabled']
+            if not self.pill.enabled:self.pill.hide()
         self.update_route()
 
     def language_changed(self,*_):
@@ -223,61 +182,70 @@ class Reader(QDialog):
 
     def change_ui_language(self,*_):
         if not hasattr(self,'ui_language') or not hasattr(self,'tray'):return
-        choice=self.ui_language.currentData();self.preferences['ui_language']=choice;configure(choice)
+        choice=self.ui_language.currentData()
+        if self._saving_ready and not self.persist_preferences(dict(self.preferences,ui_language=choice)):return
+        configure(choice)
         translate_widgets(self);translate_widgets(self.menu)
+        self.settings_dialog.setWindowTitle("Skrivi Lytt · "+tr("Settings"))
         self.text.setPlaceholderText(tr('Paste or type something to read…'));self.update_route();self.update_hint();self.refresh_models()
-        if not self.preview:write_json(DATA/'reader-settings.json',self.preferences)
+        # Preference writes go through persist_preferences for safe rollback.
 
     def check_updates(self):
-        if self.update_busy:return
-        from core import STORE_BUILD
-        if STORE_BUILD:os.startfile('ms-windows-store://downloadsandupdates');return
-        self.update_busy=True;self.update_button.setEnabled(False);self.set_status(tr('Checking for updates…'))
-        def work():
-            try:
-                from updates import latest
-                version,newer=latest(VERSION)
-                message=('Version '+version+' is available. Open Project & updates to download it.') if newer else tr('No newer stable release is available.')
-            except Exception:message='Could not check for updates. Check your connection and try again.'
-            self.events.update_result.emit(message)
-        threading.Thread(target=work,daemon=True).start()
-
-    def update_received(self,message):
-        self.update_busy=False;self.update_button.setEnabled(True);self.set_status(message)
-        if not self.isVisible():self.tray.showMessage('Skrivi Lytt',message)
+        from update_dialog import UpdateDialog
+        if not hasattr(self,'update_dialog'):self.update_dialog=UpdateDialog(self.settings_dialog)
+        self.update_dialog.check()
 
     def change_shortcut(self,value):
-        if not hasattr(self,'hotkeys'):return
+        self.apply_shortcut('hotkey',value,self.hotkeys)
+
+    def change_region_shortcut(self,value):
+        self.apply_shortcut('region_hotkey',value,self.region_hotkeys)
+
+    def apply_shortcut(self,key,value,owner):
+        other='region_hotkey' if key=='hotkey' else 'hotkey'
+        from shortcut_keys import shortcut_parts
+        old=self.preferences[key]
         try:
-            if not self.preview:self.hotkeys.register(value)
-            self.preferences['hotkey']=value;self.save_preferences();self.update_hint()
+            if shortcut_parts(value)==shortcut_parts(self.preferences[other]):raise ValueError('Choose different shortcuts for selected text and screen regions.')
+            if not self.preview:owner.register(value)
+            if not self.persist_preferences(dict(self.preferences,**{key:value})):
+                if not self.preview:owner.register(old)
+            self.update_hint()
         except Exception as error:
-            with QSignalBlocker(self.shortcut):self.shortcut.setCurrentText(self.preferences['hotkey'])
+            self.settings_error.setText(tr(str(error)));self.settings_error.show()
             self.show_error(str(error))
 
     def update_hint(self):
-        self.shortcut_hint.setText('Selected text: '+self.preferences['hotkey']+' · Screen region: Ctrl+Alt+Shift+Space')
+        selected=self.preferences['hotkey'];region=self.preferences['region_hotkey']
+        self.shortcut_hint.setText(tr('Selected-text shortcut')+': '+selected+' · '+tr('Screen-region shortcut')+': '+region)
+        self.shortcut_label.setText(selected);self.region_shortcut_label.setText(region)
+        self.tray_region.setText(tr('Read screen region')+' · '+region)
+        self.tray_read.setText(tr('Read selected text')+' · '+selected)
 
     def change_startup(self,checked):
+        previous=self.preferences['startup']
         try:
             if not self.preview:set_startup(checked)
-            self.preferences['startup']=checked;self.save_preferences()
+            if not self.persist_preferences(dict(self.preferences,startup=checked)):
+                if not self.preview:set_startup(previous)
         except Exception as error:
-            with QSignalBlocker(self.startup):self.startup.setChecked(not checked)
+            with QSignalBlocker(self.startup):self.startup.setChecked(previous)
             self.show_error(str(error))
 
     def update_route(self):
         if not hasattr(self,'text'):return
         language,uncertain=choose_language(self.text.toPlainText(),self.preferences['language'],self.preferences['fallback'])
         voice=KOKORO_VOICES[self.preferences['english_voice']].split(' — ')[0] if language=='en' else 'Talesyntese'
-        hint=' · short or uncertain text uses your fallback' if uncertain else ''
+        hint=' · '+tr('Short or uncertain text uses your fallback.') if uncertain else ''
         self.route_label.setText(tr(LANGUAGES[language])+' · '+voice+hint)
 
     def sample(self):
         if self.text.toPlainText().strip():return
         self.text.setPlainText(SAMPLE)
 
-    def read_editor(self):self.start_reading(self.text.toPlainText(),'Text box')
+    def read_editor(self):
+        self.retry_action=self.read_editor;self.error_actions.hide();self.error_detail.hide()
+        self.start_reading(self.text.toPlainText(),'Text box')
 
     def start_reading(self,text,source):
         if self.busy or self.capturing or self.exiting:return
@@ -287,7 +255,7 @@ class Reader(QDialog):
         language,uncertain=choose_language(text,self.preferences['language'],self.preferences['fallback'])
         mid=model_for_language(language)
         model=next(m for m in self.models if m['id']==mid)
-        if not self.library.ready(model):self.show_error('This model is not ready. Open Voices & models to download or verify it.');return
+        if not self.library.ready(model):self.show_error('This model is not ready. Open Settings → Models to download or verify it.');return
         settings=defaults(model['engine'])
         if model['engine']=='kokoro':settings.update(voice=self.preferences['english_voice'],speed=self.preferences['speed'])
         if model['engine']=='piper':settings['speed']=self.preferences['speed']
@@ -298,7 +266,7 @@ class Reader(QDialog):
         self.begin_activity()
         self.show_stage(epoch,'generating')
         self.read_button.setEnabled(False);self.stop_button.setEnabled(True);self.tray_stop.setEnabled(True);self.progress.show()
-        self.set_status('Preparing '+LANGUAGES[language]+' · '+model['name']+'…')
+        self.set_status(tr('Preparing speech…')+' · '+tr(LANGUAGES[language]))
         target=Path(self.temp.name)/(uuid.uuid4().hex+'.wav')
         def work():
             result=None
@@ -322,7 +290,7 @@ class Reader(QDialog):
         if result:
             if self.last_audio and Path(self.last_audio).exists():Path(self.last_audio).unlink(missing_ok=True)
             self.last_result=result;self.last_audio=result['output'];self.save_button.setEnabled(True)
-            self.set_status('Finished · %.1f seconds of audio · generated in %.2f seconds'%(result['audio_seconds'],result['generation_seconds']))
+            self.set_status('Finished.')
         elif self.cancel.is_set():self.set_status('Stopped.')
         if self.exiting:self.finish_quit()
 
@@ -350,17 +318,18 @@ class Reader(QDialog):
         title,detail=titles[stage];self.pill.present(title,detail,self.activity_screen);self.set_status(title)
 
     def set_status(self,text):
-        self.status_label.setText(tr(text));self.tray_status.setText(text);self.tray.setToolTip('Skrivi Lytt · '+text)
+        self.status_label.setText(tr(text));self.tray_status.setText(tr(text));self.tray.setToolTip('Skrivi Lytt · '+tr(text))
 
     def show_error(self,text):
         self.activity_failed=True
         self.set_status(text)
         self.escape_hotkeys.close()
-        self.pill.present('Could not read',text,self.activity_screen,active=False,error=True)
-        if not self.isVisible() and not self.preview:self.tray.showMessage('Skrivi Lytt',text,QSystemTrayIcon.MessageIcon.Warning,6000)
+        self.error_detail.setText(tr(text));self.error_actions.show();self.retry_button.setEnabled(self.retry_action is not None)
+        self.pill.present('Could not read','Open Skrivi Lytt for details and recovery.',self.activity_screen,active=False,error=True)
 
     def open_reader(self,index=0):
-        if isinstance(index,int):self.tabs.setCurrentIndex(index)
+        if index in (1,2):
+            self.open_settings();self.settings_tabs.setCurrentIndex(2 if index==1 else 0);return
         self.showNormal();self.raise_();self.activateWindow()
 
     def closeEvent(self,event):
@@ -378,6 +347,8 @@ class Reader(QDialog):
         else:self.capture_region()
 
     def capture_region(self):
+        self.retry_action=self.capture_region
+        self.error_actions.hide();self.error_detail.hide()
         if self.busy or self.capturing or self.exiting:return
         runtime=runtime_executable('tesseract-5.5.2-v2','OCRWorker.exe')
         assets=ocr_assets()
@@ -436,6 +407,8 @@ class Reader(QDialog):
         self.text.setPlainText(text);self.start_reading(text,'Screen region')
 
     def capture_selection(self):
+        self.retry_action=self.capture_selection
+        self.error_actions.hide();self.error_detail.hide()
         if self.busy or self.capturing or self.exiting:return
         self.capturing=True;self.capture_generation+=1;epoch=self.capture_generation;self.begin_activity()
         self.pill.present('Getting selected text…','',self.activity_screen);self.set_status('Reading selected text…')
@@ -534,6 +507,7 @@ class Reader(QDialog):
         if name:shutil.copyfile(self.last_audio,name)
 
     def quit(self):
+        self.settings_dialog.hide()
         self.exiting=True;self.library_cancel.set();self.stop();self.hide();self.tray.hide();self.hotkeys.close();self.region_hotkeys.close()
         if not self.busy:self.finish_quit()
 

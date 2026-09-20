@@ -1,5 +1,16 @@
 # Skrivi Lytt — signed 0.4.1 test release, 20 September 2026
 
+## Development interface update — 20 September 2026
+
+The current source implements the [shared Skrivi UX](docs/SHARED_UX.md): a focused
+reader, separate five-section Settings, immediate preferences with rollback,
+configurable OCR shortcut with conflict protection, optional activity indicator,
+persistent error recovery and test-release-aware manual update checks. Model
+maintenance lives in Settings; engines, stored models and saved audio are preserved.
+Local validation: 25 unit tests and the offline GUI check passed. Packaged Windows
+CI is required before merge. The published signed 0.4.1 binaries are unchanged;
+new UI needs a subsequent versioned release and installed acceptance checks.
+
 Public name is now Skrivi Lytt, companion Skrivi Snakk. Concurrent PRs #2/#3
 provided the branding and reserved Store identity. Version 0.4.1 integrates these
 with the verified 0.4.0 release and immutable runtime pin. Signed build passed.

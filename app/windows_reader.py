@@ -11,19 +11,21 @@ user32=ctypes.windll.user32
 user32.GetForegroundWindow.restype=wintypes.HWND
 user32.GetClipboardSequenceNumber.restype=wintypes.DWORD
 
+from shortcut_keys import shortcut_parts
+
 class Hotkeys(QAbstractNativeEventFilter):
     def __init__(self,callback,identifier=0x5311):
         super().__init__();self.callback=callback;self.current=None;self.identifier=identifier
     def register(self,choice):
-        if choice not in {**HOTKEYS,'Escape':(0,0x1B)}: raise ValueError('Unsupported shortcut.')
+        parts=(0,0x1B) if choice=='Escape' else shortcut_parts(choice)
         if choice==self.current:return
-        mods,key=({**HOTKEYS,'Escape':(0,0x1B)})[choice]
-        if self.current:user32.UnregisterHotKey(None,self.identifier)
-        if not user32.RegisterHotKey(None,self.identifier,mods|0x4000,key):
-            if self.current:
-                oldmod,oldkey=({**HOTKEYS,'Escape':(0,0x1B)})[self.current];user32.RegisterHotKey(None,self.identifier,oldmod|0x4000,oldkey)
+        mods,key=parts
+        # Acquire the replacement before releasing the previous shortcut.
+        candidate=self.identifier ^ 0x100 if self.current else self.identifier
+        if not user32.RegisterHotKey(None,candidate,mods|0x4000,key):
             raise RuntimeError('That shortcut is already in use. Choose another in Settings.')
-        self.current=choice
+        if self.current:user32.UnregisterHotKey(None,self.identifier)
+        self.identifier=candidate;self.current=choice
     def nativeEventFilter(self,event_type,message):
         msg=wintypes.MSG.from_address(int(message))
         if msg.message==0x0312 and msg.wParam==self.identifier:

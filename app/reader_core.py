@@ -5,7 +5,7 @@ import re
 from core import DATA, read_json, write_json
 
 PREFERENCES = dict(language='auto', fallback='no', english_voice='af_heart', speed=1.0,
-                   hotkey='Ctrl+Alt+Space', model_override='', startup=False, ocr_layout=6, ui_language='auto')
+                   hotkey='Ctrl+Alt+Space', model_override='', startup=False, ocr_layout=6, ui_language='auto', region_hotkey='Ctrl+Alt+Shift+Space', overlay_enabled=True)
 
 def load_preferences():
     values=PREFERENCES.copy()
@@ -13,7 +13,14 @@ def load_preferences():
     if values['language'] not in ('auto','no','en'): values['language']='auto'
     if values['english_voice'] not in ('af_heart','am_michael','bf_emma'): values['english_voice']='af_heart'
     if values['fallback'] not in ('no','en'): values['fallback']='no'
-    if values['hotkey'] not in ('Ctrl+Alt+Space','Ctrl+Alt+R','Ctrl+Shift+F8'): values['hotkey']=PREFERENCES['hotkey']
+    from shortcut_keys import shortcut_parts
+    for key in ('hotkey','region_hotkey'):
+        try:shortcut_parts(values[key])
+        except ValueError:values[key]=PREFERENCES[key]
+    if shortcut_parts(values['hotkey'])==shortcut_parts(values['region_hotkey']):
+        values['hotkey']=PREFERENCES['hotkey'];values['region_hotkey']=PREFERENCES['region_hotkey']
+    for key in ('startup','overlay_enabled'):
+        if not isinstance(values[key],bool):values[key]=PREFERENCES[key]
     if values['model_override'] not in ('','piper-nvcc','voxcpm-q4','chatterbox-q4'): values['model_override']=''
     if values['ui_language'] not in ('auto','en','nb'):values['ui_language']='auto'
     if values['ocr_layout'] not in (3,6):values['ocr_layout']=6

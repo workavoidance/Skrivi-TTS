@@ -4,6 +4,8 @@ $pythonBuild = Join-Path (Get-Location) '.build-env\Scripts\python.exe'
 if (!(Test-Path -LiteralPath $pythonBuild)) { throw 'Create .build-env and install requirements-build.lock first.' }
 & $pythonBuild scripts/prepare-build.py
 if ($LASTEXITCODE -ne 0) { throw 'Preparing pinned runtime failed' }
+& $pythonBuild tests/check_shared_ui.py
+if ($LASTEXITCODE -ne 0) { throw 'Shared interface checks failed' }
 & "$env:WINDIR\Microsoft.NET\Framework64\v4.0.30319\csc.exe" /nologo /target:exe /platform:x64 /r:System.Net.Http.dll /r:System.Web.Extensions.dll /out:native\VoxHost.exe native\Host.cs native\Engine.cs native\VoiceSettings.cs native\OwnedJob.cs native\Contracts.cs
 if ($LASTEXITCODE -ne 0) { throw 'Native build failed' }
 $framework = "$env:WINDIR\Microsoft.NET\Framework64\v4.0.30319"
