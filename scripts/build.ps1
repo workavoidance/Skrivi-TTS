@@ -15,14 +15,18 @@ if ($LASTEXITCODE -ne 0) { throw 'Selection helper build failed' }
 if ($LASTEXITCODE -ne 0) { throw 'Package verifier build failed' }
 & $pythonBuild tests/check_package_verifier.py
 if ($LASTEXITCODE -ne 0) { throw 'Package verifier tests failed' }
+& $pythonBuild scripts/create-version-info.py
+if ($LASTEXITCODE -ne 0) { throw "Product metadata generation failed" }
 # Resolve Windows SDK/system DLLs, never unrelated tools from an ambient PATH.
 $originalBuildPath = $env:PATH
 $env:PATH = "$env:WINDIR\System32;$env:WINDIR;$env:WINDIR\System32\Wbem;$(Split-Path $pythonBuild)"
 try {
-& $pythonBuild -m PyInstaller --clean --noconfirm --onedir --windowed --name SkriviTTS --icon assets/skrivi-tts.ico --collect-all langdetect --paths app app/main.py
+& $pythonBuild -m PyInstaller --clean --noconfirm --onedir --windowed --name SkriviTTS --version-file build/version-info.txt --icon assets/skrivi-tts.ico --collect-all langdetect --paths app app/main.py
 if ($LASTEXITCODE -ne 0) { throw 'Application build failed' }
 } finally { $env:PATH = $originalBuildPath }
 $check = Start-Process -FilePath 'dist/SkriviTTS/SkriviTTS.exe' -ArgumentList '--check-startup' -WindowStyle Hidden -PassThru
 if (!$check.WaitForExit(30000)) { Stop-Process -Id $check.Id; throw 'Packaged reader startup check timed out' }
 if ($check.ExitCode -ne 0) { throw 'Packaged reader startup check failed' }
+$info = (Get-Item 'dist/SkriviTTS/SkriviTTS.exe').VersionInfo
+if ($info.ProductName -ne 'Skrivi Lytt') { throw 'Application product metadata mismatch' }
 Write-Host 'Compiled desktop app and reusable engine runtime. Run scripts/package.py with the existing CrispASR runtime directory.'

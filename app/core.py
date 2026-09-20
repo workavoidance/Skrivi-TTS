@@ -9,7 +9,7 @@ import urllib.request
 import uuid
 import sys
 
-VERSION = '0.4.1'
+VERSION = '0.4.2'
 KOKORO_VOICES = {'af_heart': 'Heart — American female', 'am_michael': 'Michael — American male', 'bf_emma': 'Emma — British female'}
 ROOT = Path(sys.executable).parent if getattr(sys, 'frozen', False) else Path(__file__).resolve().parent.parent
 STORE_BUILD = (ROOT / 'store-build.json').is_file()
