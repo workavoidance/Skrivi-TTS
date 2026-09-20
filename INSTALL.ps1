@@ -43,18 +43,34 @@ try {
     }
     # Switch shortcuts only after the complete package is verified and copied.
     $shellLink = New-Object -ComObject WScript.Shell
-    $menuPath = Join-Path ([Environment]::GetFolderPath('Programs')) 'Skrivi TTS.lnk'
+    $menuPath = Join-Path ([Environment]::GetFolderPath('Programs')) 'Skrivi Lytt.lnk'
     $shortcut = $shellLink.CreateShortcut($menuPath)
     $shortcut.TargetPath = Join-Path $versionRoot 'SkriviTTS.exe'
     $shortcut.IconLocation = $shortcut.TargetPath + ",0"
     $shortcut.WorkingDirectory = $versionRoot
     $shortcut.Save()
-    $desktopLink = $shellLink.CreateShortcut((Join-Path ([Environment]::GetFolderPath('Desktop')) 'Skrivi TTS.lnk'))
+    $desktopLink = $shellLink.CreateShortcut((Join-Path ([Environment]::GetFolderPath('Desktop')) 'Skrivi Lytt.lnk'))
     $desktopLink.TargetPath = $shortcut.TargetPath
     $desktopLink.IconLocation = $shortcut.TargetPath + ",0"
     $desktopLink.WorkingDirectory = $versionRoot
     $desktopLink.Save()
-    Write-Host "Installed Skrivi TTS $($manifest.version). Existing models, settings, presets and audio were preserved."
+    # Remove only former app shortcuts after their replacements exist. Never
+    # remove a same-named shortcut that points outside this app's version tree.
+    $ownedVersions = [IO.Path]::GetFullPath((Join-Path $libraryRoot 'versions')) + '\'
+    foreach ($shortcutFolder in @([Environment]::GetFolderPath('Programs'), [Environment]::GetFolderPath('Desktop'))) {
+        $oldShortcut = Join-Path $shortcutFolder 'Skrivi TTS.lnk'
+        if (Test-Path -LiteralPath $oldShortcut) {
+            $oldTarget = $shellLink.CreateShortcut($oldShortcut).TargetPath
+            if ($oldTarget) {
+                $oldTarget = [IO.Path]::GetFullPath($oldTarget)
+                if ($oldTarget.StartsWith($ownedVersions, [StringComparison]::OrdinalIgnoreCase) -and
+                    [IO.Path]::GetFileName($oldTarget) -ieq 'SkriviTTS.exe') {
+                    Remove-Item -LiteralPath $oldShortcut
+                }
+            }
+        }
+    }
+    Write-Host "Installed Skrivi Lytt $($manifest.version). Existing models, settings, presets and audio were preserved."
     if (!$NoLaunch) { Start-Process -FilePath $shortcut.TargetPath -WorkingDirectory $versionRoot -WindowStyle Hidden }
 } catch {
     Write-Host "Installation did not complete: $_"

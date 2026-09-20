@@ -33,8 +33,19 @@ Run-Setup 'first-install' $true
 $app = Join-Path $library "versions\$Version\SkriviTTS.exe"
 $check = Start-Process -FilePath $app -ArgumentList '--check-startup' -WindowStyle Hidden -PassThru
 if (!$check.WaitForExit(30000) -or $check.ExitCode -ne 0) { throw 'Installed startup failed.' }
-$shortcut = Join-Path ([Environment]::GetFolderPath('Programs')) 'Skrivi TTS.lnk'
+$shortcut = Join-Path ([Environment]::GetFolderPath('Programs')) 'Skrivi Lytt.lnk'
 if (!(Test-Path -LiteralPath $shortcut)) { throw 'Start-menu shortcut missing.' }
+# Simulate shortcuts left by an older Skrivi TTS installation. The desktop
+# preference must survive even when /TASKS is not supplied on the next install.
+$legacyMenu = Join-Path ([Environment]::GetFolderPath('Programs')) 'Skrivi TTS.lnk'
+$legacyDesktop = Join-Path ([Environment]::GetFolderPath('Desktop')) 'Skrivi TTS.lnk'
+$renamedDesktop = Join-Path ([Environment]::GetFolderPath('Desktop')) 'Skrivi Lytt.lnk'
+$shellLink = New-Object -ComObject WScript.Shell
+foreach ($legacyPath in @($legacyMenu, $legacyDesktop)) {
+    $legacyLink = $shellLink.CreateShortcut($legacyPath)
+    $legacyLink.TargetPath = $app
+    $legacyLink.Save()
+}
 $startup = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run'
 if ((Get-ItemProperty -LiteralPath $startup -Name SkriviTTS -ErrorAction SilentlyContinue)) { throw 'Setup enabled startup without consent.' }
 Set-Content -LiteralPath (Join-Path $library 'reader-settings.json') -Value '{"language":"en","speed":1.25}'
@@ -53,6 +64,9 @@ function Snapshot {
 }
 $original = Snapshot
 Run-Setup 'reinstall' $true
+if ((Test-Path -LiteralPath $legacyMenu) -or (Test-Path -LiteralPath $legacyDesktop)) { throw 'Old owned shortcuts were not migrated.' }
+if (!(Test-Path -LiteralPath $renamedDesktop)) { throw 'Existing desktop preference was lost.' }
+if ($shellLink.CreateShortcut($renamedDesktop).TargetPath -ine $app) { throw 'Renamed desktop shortcut points to the wrong app.' }
 foreach ($path in $original.Keys) {
     if (!(Test-Path -LiteralPath $path) -or (Get-FileHash -LiteralPath $path).Hash -ne $original[$path].hash) { throw "Reinstall changed $path" }
     # Registration may rewrite its index; weights, runtimes and user preferences must keep timestamps.
@@ -66,6 +80,7 @@ $proc = Start-Process -FilePath $uninstaller -ArgumentList @('/VERYSILENT','/SUP
 if (!$proc.WaitForExit(120000) -or $proc.ExitCode -ne 0) { throw 'Uninstall failed.' }
 if (Test-Path -LiteralPath $app) { throw 'Uninstall retained executable.' }
 if (Test-Path -LiteralPath $shortcut) { throw 'Uninstall retained shortcut.' }
+if (Test-Path -LiteralPath $renamedDesktop) { throw 'Uninstall retained migrated desktop shortcut.' }
 foreach ($path in $original.Keys) {
     if (!(Test-Path -LiteralPath $path) -or (Get-FileHash -LiteralPath $path).Hash -ne $original[$path].hash) { throw "Uninstall changed user data: $path" }
 }

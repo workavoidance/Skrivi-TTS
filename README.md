@@ -1,8 +1,17 @@
-# Skrivi TTS
+# Skrivi Lytt
 
 An open-source Windows reader that turns text into speech on your computer.
-A separate application from [Skrivi dictation](https://github.com/workavoidance/Skrivi-STT),
+A separate application from [Skrivi Snakk](https://github.com/workavoidance/Skrivi-STT),
 with a familiar interface and its own orange speaker tray icon.
+
+Both belong to the [Skrivi](https://skrivi.no/) family. Names stay Snakk and Lytt
+in Norwegian and English. **Lytt** means listen: **Få teksten lest høyt** /
+**Have text read aloud**.
+
+**Name transition:** current source uses Skrivi Lytt. The published 0.2.1
+installer and 0.3.0 test update still display **Skrivi TTS**; the instructions
+below describe those downloads. Renamed releases preserve settings, voices,
+model paths, executable names and upgrade identity.
 
 ## Screen-region reading test update (0.3.0)
 

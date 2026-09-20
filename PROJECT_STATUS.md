@@ -1,4 +1,13 @@
-# Skrivi TTS - reader release work, 19 September 2026
+# Skrivi Lytt - reader release work
+
+## Naming update — 20 September 2026
+
+Public name: Skrivi Lytt in both languages; dictation companion: Skrivi Snakk.
+Current UI, installer and Store display labels are being aligned. Published
+0.2.1/0.3.0 artifacts still say Skrivi TTS; do not overwrite old binaries.
+Preserve SkriviTTS paths, executable, startup/single-instance identifiers, AppId
+and all user assets. No model downloads, voice changes or version bump are part
+of this rename. Existing release work and historical records follow unchanged.
 
 ## Reader 0.4 work — 20 September 2026
 

@@ -1,4 +1,10 @@
-# OCR input in 0.3.0
+# Skrivi Lytt architecture
+
+Public name: Skrivi Lytt. Internal `SkriviTTS` identifiers, paths and executable
+names remain stable. The separate dictation app is Skrivi Snakk. Historical
+architecture snapshots below retain their original names.
+
+## OCR input in 0.3.0
 
 app/screen_region.py freezes the pointer monitor before drawing its overlay; crop
 coordinates map Qt logical units to physical pixels. OCR bytes use stdin/stdout of
