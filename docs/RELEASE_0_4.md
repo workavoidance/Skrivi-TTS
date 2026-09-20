@@ -2,7 +2,8 @@
 
 0.4.1 integrates the Skrivi Lytt name and reserved Store identity. All release checks passed.
 
-Published as a test release: https://github.com/workavoidance/Skrivi-TTS/releases/tag/v0.4.1.
+Verified assets are uploaded to the v0.4.1 draft. Public publication awaits user
+approval after automatic approval review blocked publication and the final notes push.
 Built source 410df3850ec32176bc6578d9e0dd12f900d0925a; successful workflow run
 https://github.com/workavoidance/Skrivi-STT/actions/runs/35517692394.
 

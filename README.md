@@ -7,7 +7,7 @@ orange speaker tray icon. Speech and OCR work offline.
 Public name: **Skrivi Lytt**, part of the Skrivi family alongside Skrivi Snakk.
 Existing SkriviTTS data paths and upgrade identity stay unchanged.
 
-## Install the signed 0.4.1 test release
+## Signed 0.4.1 test release (draft ready)
 
 Download **Skrivi-TTS-0.4.1-windows-x64-setup.exe** from
 [the 0.4.1 release](https://github.com/workavoidance/Skrivi-TTS/releases/tag/v0.4.1).
