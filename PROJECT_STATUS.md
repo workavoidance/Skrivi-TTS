@@ -24,6 +24,25 @@ Store startup extension uses --tray (uap10:Parameters), supported on packaged
 desktop apps; identity-associated build still pending the reserved listing.
 
 
+### Signing validation progress
+
+STT bridge PR 65 is merged. It pins workflow recipe 26e38f8 and accepts a TTS
+source_ref for manual builds. Current run 35514688453 builds source e02a0b2.
+First run 35513969249 verified 369 payload signatures and signed engine generation,
+then passed first install/startup but refused reinstall (exit 7). It is NOT a
+release candidate. The next run includes precise preflight diagnostics, signed
+uninstaller verification and a reusable signed-runtime archive. Resolve reinstall
+before publishing/installing any candidate.
+
+First artifact downloaded via bounded range requests after gh download timed out;
+ignored build/download-artifact-ranges.py uses existing GitHub CLI authentication
+only for the GitHub API, never forwards that token to artifact storage, verifies
+the artifact digest and extracts validated paths. First test EXE has a valid
+Certum developer signature; all model hashes match unchanged local models.
+Local MakeAppx structure validation passed (unsigned, UNASSOCIATED; not installable
+or certified). SDK/provenance details in docs/RELEASE_0_4.md. --makeappx supports an
+explicit SDK binary path without requiring a system-wide SDK installation.
+
 ## OCR update 0.3.0 (supersedes OCR future-work notes below)
 
 User authorised testing Tesseract and integrating if suitable. Source and frozen

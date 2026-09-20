@@ -3,7 +3,7 @@ import argparse,json,shutil,subprocess,sys,os,re,html
 from pathlib import Path
 root=Path(__file__).resolve().parents[1];sys.path.insert(0,str(root/'app'))
 from core import VERSION
-p=argparse.ArgumentParser();p.add_argument('--identity',type=Path);p.add_argument('--validation-only',action='store_true');p.add_argument('--build',type=int,default=1);args=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('--identity',type=Path);p.add_argument('--validation-only',action='store_true');p.add_argument('--build',type=int,default=1);p.add_argument('--makeappx',type=Path,help='Optional SDK MakeAppx path');args=p.parse_args()
 if args.identity:
  identity=json.loads(args.identity.read_text(encoding='utf-8'))
  if not re.fullmatch(r'[A-Za-z0-9.-]{3,50}',identity['name']) or not identity['publisher'].startswith('CN=') or not identity['publisher_display_name'].strip():raise ValueError('Invalid Store product identity')
@@ -27,7 +27,7 @@ app=QApplication([]);assets=stage/'Assets';assets.mkdir()
 for name,size in [('StoreLogo',50),('Square44x44Logo',44),('Square150x150Logo',150)]:
  if not speech_icon().pixmap(size,size).save(str(assets/(name+'.png'))):raise RuntimeError('Store logo failed')
 kits=Path(os.environ.get('ProgramFiles(x86)','C:/Program Files (x86)'))/'Windows Kits/10/bin'
-tools=sorted(kits.glob('*/x64/makeappx.exe'))
+tools=[args.makeappx.resolve()] if args.makeappx else sorted(kits.glob('*/x64/makeappx.exe'))
 if not tools:raise SystemExit('Windows SDK MakeAppx is required')
 out=root/'dist/store';out.mkdir(parents=True,exist_ok=True)
 name='Skrivi-TTS-'+VERSION+('-UNASSOCIATED-validation' if args.validation_only else '-Store')+'.msix'

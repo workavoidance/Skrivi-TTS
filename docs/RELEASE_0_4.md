@@ -41,3 +41,9 @@ Microsoft references: [Store package requirements](https://learn.microsoft.com/e
 and [startup extension parameters](https://learn.microsoft.com/en-us/uwp/schemas/appxpackage/uapmanifestschema/element-uap5-extension).
 The Store signs the outer MSIX during submission. The validation artifact is not
 associated with a reserved listing and is not a sideload installer.
+
+Local Store validation passed with Microsoft-signed MakeAppx from official NuGet
+Microsoft.Windows.SDK.BuildTools 10.0.26100.9169 (archive SHA-256
+6000c971fc9155052a8359779b30b6682c39e091664d83b3852c4702ab6d238e).
+This validates package structure, not installation or Store certification. The
+local validation payload is unsigned and must not be distributed as the signed build.
