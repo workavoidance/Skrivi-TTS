@@ -20,6 +20,7 @@ shutil.copytree(root/'build/release-input/models',out/'models')
 shutil.copytree(root/'build/ocr-assets',out/'models/ocr-tessdata-fast-v1')
 for name in ('INSTALL.ps1','INSTALL.bat','LICENSE','THIRD_PARTY_NOTICES.md','README.md'):shutil.copy2(root/name,out/name)
 for name in ('LICENSE','THIRD_PARTY_NOTICES.md'):shutil.copy2(root/name,out/'app'/name)
+shutil.copy2(root/'docs/SOURCES.md',out/'app/SOURCES.md')
 for origin in (root/'build/release-input/app/licenses',root/'licenses'):shutil.copytree(origin,out/'app/licenses',dirs_exist_ok=True)
 shutil.copytree(root/'build/release-input/app/third_party_licenses',out/'app/third_party_licenses')
 for env in (root/'.build-env',root/'build/ocr-env'):

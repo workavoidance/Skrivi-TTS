@@ -4,6 +4,23 @@ Public name: Skrivi Lytt. Internal `SkriviTTS` identifiers, paths and executable
 names remain stable. The separate dictation app is Skrivi Snakk. Historical
 architecture snapshots below retain their original names.
 
+## Reader 0.4 architecture
+
+`app/activity_pill.py` renders status without taking focus. Reader events include a
+capture/generation identifier; cancelled and stale events are ignored. Escape is
+registered only during activity. The screen-selection pill is hidden before the
+screen is captured, so it cannot become part of the selected image.
+
+The worker's opt-in `progress_events` protocol reports real model loading and
+synthesis boundaries. Existing clients still receive only the final JSON result.
+`runtime-profiles.json` maps logical engines to immutable signed runtime copies.
+The model bytes and synthesis defaults are unchanged.
+
+The Store build marker selects package-owned read-only models and runtimes.
+Preferences remain writable user data; updates and startup use Windows controls.
+The conventional installer keeps persistent models outside app versions. No
+background network checks occur in either distribution.
+
 ## OCR input in 0.3.0
 
 app/screen_region.py freezes the pointer monitor before drawing its overlay; crop
@@ -24,7 +41,7 @@ app/reader_core.py owns whole-passage language routing and reader preferences.
 app/windows_reader.py owns global shortcuts, clipboard-copy input and native WAV
 playback. native/Selection.cs reads accessible selected text without recording it.
 Input origin remains separate from synthesis so a future OCR provider can submit
-text through the same boundary. OCR is not implemented.
+text through the same boundary. OCR now uses this boundary (see the update above).
 
 The Qt main thread only handles widgets and Windows clipboard access. Generation,
 accessibility helper and model installation run on background threads. Signals

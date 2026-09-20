@@ -80,17 +80,20 @@ jobs:
           $payload=(Resolve-Path build/release-payload).Path
           $output=Join-Path $PWD 'dist/signed'
           New-Item -ItemType Directory -Force $output | Out-Null
-          & "${env:ProgramFiles(x86)}/Inno Setup 6/ISCC.exe" "/DAppVersion=$version" "/DPackageDir=$payload" "/DOutputDir=$output" installer/SkriviTTS.iss
+          $signTool=Get-ChildItem "${env:ProgramFiles(x86)}/Windows Kits/10/bin/*/x64/signtool.exe" | Sort-Object FullName -Descending | Select-Object -First 1
+          $signCommand='/Scertum=$q'+$signTool.FullName+'$q sign /sha1 '+$env:CERTUM_KEY_ID+' /fd SHA256 /tr http://time.certum.pl /td SHA256 $f'
+          & "${env:ProgramFiles(x86)}/Inno Setup 6/ISCC.exe" /DSignedRelease $signCommand "/DAppVersion=$version" "/DPackageDir=$payload" "/DOutputDir=$output" installer/SkriviTTS.iss
           if ($LASTEXITCODE -ne 0) { throw 'Installer compilation failed' }
           ./scripts/sign-release.ps1 -Root dist/signed -Thumbprint $env:CERTUM_KEY_ID
+          Move-Item "$output/SIGNATURES.json" "$output/INSTALLER-SIGNATURES.json"
           Copy-Item build/RELEASE-ENGINE-CHECKS.json,build/release-payload/package.json,build/release-payload/SIGNATURES.json $output
-          Get-ChildItem $output -File | ForEach-Object { "$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant())  $($_.Name)" } | Set-Content "$output/SHA256SUMS.txt"
       - name: Verify installed app and preserve models through reinstall/uninstall
         shell: pwsh
         run: |
           $version=(Get-Content build/release-payload/package.json -Raw | ConvertFrom-Json).version
-          ./tests/check_installer.ps1 -Version $version -InstallerPath "dist/signed/Skrivi-TTS-$version-windows-x64-setup.exe" -PayloadPath build/release-payload
+          ./tests/check_installer.ps1 -Version $version -InstallerPath "dist/signed/Skrivi-TTS-$version-windows-x64-setup.exe" -PayloadPath build/release-payload -RequireSigned
           Copy-Item build/installer-tests/results.json dist/signed/INSTALL-CHECKS.json
+          Get-ChildItem dist/signed -File | Where-Object Name -ne SHA256SUMS.txt | ForEach-Object { "$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant())  $($_.Name)" } | Set-Content dist/signed/SHA256SUMS.txt
       - name: Validate Microsoft Store package
         shell: pwsh
         run: |

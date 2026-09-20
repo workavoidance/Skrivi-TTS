@@ -1,4 +1,4 @@
-param([string]$Version='0.2.1',[string]$InstallerPath='',[string]$PayloadPath='')
+param([string]$Version='0.2.1',[string]$InstallerPath='',[string]$PayloadPath='',[switch]$RequireSigned)
 # Deliberately CI-only: never install/uninstall or create test fixtures in a user's library.
 $ErrorActionPreference = 'Stop'
 if ($env:GITHUB_ACTIONS -ne 'true' -or $env:RUNNER_ENVIRONMENT -ne 'github-hosted') {
@@ -15,7 +15,7 @@ function Run-Setup([string]$name, [bool]$shouldPass) {
     $log = Join-Path $evidence ($name + '.log')
     $proc = Start-Process -FilePath $installer -ArgumentList @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART',('/LOG="' + $log + '"')) -WindowStyle Hidden -PassThru
     if (!$proc.WaitForExit(300000)) { Stop-Process -Id $proc.Id; throw "Timed out: $name" }
-    if (($proc.ExitCode -eq 0) -ne $shouldPass) { throw "$name returned $($proc.ExitCode)" }
+    if (($proc.ExitCode -eq 0) -ne $shouldPass) { if (Test-Path -LiteralPath $log) { Get-Content -LiteralPath $log -Tail 60 | Write-Host }; throw "$name returned $($proc.ExitCode)" }
 }
 # Check conflict handling before any app files or shortcuts are installed.
 $manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
@@ -63,6 +63,9 @@ function Snapshot {
     return $rows
 }
 $original = Snapshot
+# Diagnose any package-integrity conflict directly before the second install.
+& "$env:WINDIR/System32/WindowsPowerShell/v1.0/powershell.exe" -NoProfile -NonInteractive -ExecutionPolicy Bypass -File (Join-Path $root 'installer/preflight.ps1') -ManifestPath $manifestPath -LibraryRoot $library
+if ($LASTEXITCODE -ne 0) { throw 'Installed data differs from the package manifest before reinstall.' }
 Run-Setup 'reinstall' $true
 if ((Test-Path -LiteralPath $legacyMenu) -or (Test-Path -LiteralPath $legacyDesktop)) { throw 'Old owned shortcuts were not migrated.' }
 if (!(Test-Path -LiteralPath $renamedDesktop)) { throw 'Existing desktop preference was lost.' }
@@ -75,6 +78,7 @@ foreach ($path in $original.Keys) {
 & python (Join-Path $PSScriptRoot 'check_installed_voices.py') $Version
 if ($LASTEXITCODE -ne 0) { throw 'Installed voice smoke tests failed.' }
 $uninstaller = Join-Path $library 'uninstall\unins000.exe'
+if ($RequireSigned -and (Get-AuthenticodeSignature -LiteralPath $uninstaller).Status -ne 'Valid') { throw 'Installed uninstaller must have a valid signature.' }
 $uninstallLog = Join-Path $evidence 'uninstall.log'
 $proc = Start-Process -FilePath $uninstaller -ArgumentList @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART',('/LOG="' + $uninstallLog + '"')) -WindowStyle Hidden -PassThru
 if (!$proc.WaitForExit(120000) -or $proc.ExitCode -ne 0) { throw 'Uninstall failed.' }

@@ -20,6 +20,19 @@ User has NOT reserved a TTS Store listing. Final uploadable identity is blocked 
 that reservation; validation-only MSIX must never be described as ready for upload.
 Source version 0.4.0; installed version remains 0.3.0 until signed release verification.
 
+Local build dd4721c: frozen GUI starts; both engines pass cold/warm generation with
+actual progress events, global Escape registers, frozen OCR layouts 3/6 work and
+DPI/stale-result tests pass. docs/READER_0_4_LOCAL_CHECKS.json records evidence.
+Restricted local builds injected unrelated Poppler/libheif DLLs despite PATH
+cleanup and reproduced QtCore failure. Rebuilding with normal Windows access
+restored correct DLL inputs and passed. Do not publish a restricted build that
+contains unrelated icuuc.dll/ucrtbase.dll. The CI build uses a clean hosted runner.
+STT signing bridge PR 64 merged through normal protections; signed build run
+35513969249 checks out dd4721c. No release/installation claimed until it passes.
+Store startup extension uses --tray (uap10:Parameters), supported on packaged
+desktop apps; identity-associated build still pending the reserved listing.
+
+
 ## OCR update 0.3.0 (supersedes OCR future-work notes below)
 
 User authorised testing Tesseract and integrating if suitable. Source and frozen

@@ -1,0 +1,57 @@
+{
+  "version": "0.4.0",
+  "source_commit": "dd4721c17ec253b6dfcf8c3a86fa675bc03a6a92",
+  "signatures": "Not checked by these local tests; see signed CI evidence",
+  "startup": "Frozen GUI passed after clean build",
+  "hotkey": "Global Escape successfully registered and immediately unregistered",
+  "speech": [
+    {
+      "model": "kokoro-v1.0-onnx",
+      "repeat": 0,
+      "events": [
+        "starting",
+        "loading",
+        "generating"
+      ],
+      "generation_seconds": 0.31531219999305904
+    },
+    {
+      "model": "kokoro-v1.0-onnx",
+      "repeat": 1,
+      "events": [
+        "generating"
+      ],
+      "generation_seconds": 0.3074393999995664
+    },
+    {
+      "model": "piper-talesyntese",
+      "repeat": 0,
+      "events": [
+        "starting",
+        "loading",
+        "generating"
+      ],
+      "generation_seconds": 0.8737485000165179
+    },
+    {
+      "model": "piper-talesyntese",
+      "repeat": 1,
+      "events": [
+        "generating"
+      ],
+      "generation_seconds": 0.040210000006482005
+    }
+  ],
+  "ocr_layouts": [
+    3,
+    6
+  ],
+  "ui": [
+    "Light/dark rendering",
+    "No focus stealing",
+    "Cancelled/stale progress rejected",
+    "Error retained after completion",
+    "English/Bokmal controls",
+    "Two-model library"
+  ]
+}
