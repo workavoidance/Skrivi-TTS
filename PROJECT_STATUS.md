@@ -1,6 +1,6 @@
 # Skrivi Lytt — 0.4.2 acceptance build preparation
 
-0.4.2 is being prepared on `release/test-0.4.2` for local user testing only.
+0.4.2 is signed and verified on `release/test-0.4.2` for local user testing only.
 See [candidate notes](docs/TEST_BUILD_0_4_2.md). Publication, website changes and
 Store submission are waiting for explicit user acceptance. Published 0.4.1 is unchanged.
 
