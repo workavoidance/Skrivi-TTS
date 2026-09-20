@@ -23,8 +23,9 @@ The pill follows Windows light/dark mode. Settings provide interface language
 update check. No update check runs automatically.
 
 The release workflow signs application and runtime components, verifies the
-installer and builds a separate Microsoft Store package. The TTS Store listing is
-not yet reserved: UNASSOCIATED validation packages are **not for Store upload**.
+installer and builds a separate Microsoft Store package. The reserved Lytt identity
+is recorded in `store/identity.json`; its associated build and certification are
+pending. UNASSOCIATED validation packages are **not for Store upload**.
 See [release status and build process](docs/RELEASE_0_4.md).
 
 ## Previously delivered screen-region update (0.3.0)

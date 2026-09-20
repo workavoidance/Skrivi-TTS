@@ -16,7 +16,9 @@ profiles. Final package hashes are generated after signing. The reusable workflo
 can use the existing STT repository's Certum secrets without exporting their values.
 
 Store: scripts/build-store.py requires the separately reserved TTS product identity.
-User confirmed the listing is not reserved yet. --validation-only produces a clearly
+User supplied the reserved Skrivi.SkriviLytt identity, recorded in store/identity.json.
+The associated build must pass CI before delivery; certification remains pending.
+--validation-only produces a clearly
 UNASSOCIATED package solely to validate structure, not for upload/certification.
 Store build uses bundled read-only models/runtime files, writable per-user settings,
 Windows-managed startup and Store-managed updates. It has no microphone capability.

@@ -1,5 +1,6 @@
 """Public names must not change data, startup or single-instance identity."""
 from pathlib import Path
+import json
 import sys
 import unittest
 import xml.etree.ElementTree as ET
@@ -10,6 +11,15 @@ import i18n
 
 
 class ProductNamingTests(unittest.TestCase):
+    def test_reserved_store_identity(self):
+        identity = json.loads((ROOT / 'store/identity.json').read_text(encoding='utf-8'))
+        self.assertEqual(identity, {
+            'name': 'Skrivi.SkriviLytt',
+            'publisher': 'CN=EF3D997F-87B2-4AD0-B65B-877EE1632E65',
+            'publisher_display_name': 'Skrivi',
+        })
+        self.assertNotEqual(identity['name'], 'Skrivi.Skrivi')
+
     def test_reader_names_and_compatibility(self):
         source = (ROOT / 'app/main.py').read_text(encoding='utf-8')
         self.assertIn("setWindowTitle('Skrivi Lytt')", source)
