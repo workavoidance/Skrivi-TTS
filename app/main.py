@@ -1,4 +1,4 @@
-"""Skrivi TTS reader: local text/selection input and a separate Windows tray app."""
+"""Skrivi Lytt reader: local text/selection input and a separate Windows tray app."""
 import ctypes
 import json
 import os
@@ -56,7 +56,7 @@ class Reader(QDialog):
     def __init__(self,app,preview=False):
         super().__init__()
         self.app=app;self.preview=preview
-        self.setWindowTitle('Skrivi TTS');self.setWindowIcon(speech_icon())
+        self.setWindowTitle('Skrivi Lytt');self.setWindowIcon(speech_icon())
         self.resize(820,730);self.setMinimumSize(720,630)
         self.library=Library();self.models=[m for m in catalog() if m['id'] in ('piper-talesyntese','kokoro-v1.0-onnx')];self.preferences=load_preferences()
         self.client=Client();self.cancel=threading.Event();self.busy=False;self.capturing=False
@@ -99,7 +99,7 @@ class Reader(QDialog):
     def build(self):
         outer=QVBoxLayout(self);outer.setContentsMargins(24,22,24,18);outer.setSpacing(14)
         header=QHBoxLayout();brand=QVBoxLayout()
-        brand.addWidget(label('SKRIVI  /  TEXT TO SPEECH','eyebrow'))
+        brand.addWidget(label('SKRIVI LYTT  /  TEXT TO SPEECH','eyebrow'))
         brand.addWidget(label('Read aloud','windowTitle'))
         brand.addWidget(label('A familiar voice for the words in front of you.','secondary'))
         header.addLayout(brand,1)
@@ -131,7 +131,7 @@ class Reader(QDialog):
         buttons.addStretch();buttons.addWidget(self.save_button);layout.addLayout(buttons)
         self.region_button=QPushButton('Read screen region');self.region_button.clicked.connect(self.capture_region);layout.addWidget(self.region_button)
         self.shortcut_hint=label('','secondary');layout.addWidget(self.shortcut_hint)
-        layout.addWidget(label('Closing this window keeps Skrivi TTS in the tray. Text is not saved.','secondary'))
+        layout.addWidget(label('Closing this window keeps Skrivi Lytt in the tray. Text is not saved.','secondary'))
         layout=QVBoxLayout(voices);layout.setContentsMargins(0,16,0,0);layout.setSpacing(12)
         box,contents=card(voices);layout.addWidget(box)
         contents.addWidget(label('Your everyday voices','sectionTitle'))
@@ -171,7 +171,8 @@ class Reader(QDialog):
         form.addRow('Image layout',self.layout_mode);self.layout_mode.currentIndexChanged.connect(self.save_preferences)
         contents.addWidget(label('For columns, select the main text without shared headings or footers.','secondary'))
         layout.addStretch()
-        layout.addWidget(label('Skrivi TTS '+VERSION+' · Local speech, separate from Skrivi dictation.','secondary'))
+        layout.addWidget(label('Skrivi Lytt '+VERSION,'secondary'))
+        layout.addWidget(label('Local reading. Part of the Skrivi family.','secondary'))
         links=QHBoxLayout();source=QPushButton('Project & updates');source.clicked.connect(lambda:os.startfile('https://github.com/workavoidance/Skrivi-TTS/releases'))
         library=QPushButton('Open model folder');library.clicked.connect(lambda:os.startfile(DATA/'models'))
         self.update_button=QPushButton('Check for updates');self.update_button.clicked.connect(self.check_updates)
@@ -180,8 +181,8 @@ class Reader(QDialog):
         self.progress=QProgressBar();self.progress.setRange(0,0);self.progress.setMaximumHeight(4);self.progress.setTextVisible(False);self.progress.hide();outer.addWidget(self.progress)
 
     def build_tray(self):
-        self.tray=QSystemTrayIcon(speech_icon(),self);self.tray.setToolTip('Skrivi TTS · Read aloud')
-        self.menu=QMenu();self.menu.addAction('Skrivi TTS').setEnabled(False)
+        self.tray=QSystemTrayIcon(speech_icon(),self);self.tray.setToolTip('Skrivi Lytt · Read aloud')
+        self.menu=QMenu();self.menu.addAction('Skrivi Lytt').setEnabled(False)
         self.tray_status=self.menu.addAction('Ready');self.tray_status.setEnabled(False)
         self.menu.addSeparator();self.menu.addAction('Open reader',self.open_reader)
         self.tray_read=self.menu.addAction('Read selected text',self.capture_selection)
@@ -193,7 +194,7 @@ class Reader(QDialog):
             action.triggered.connect(lambda checked,k=key:self.set_language(k));self.language_actions[key]=action
         self.menu.addAction('Voices & models',lambda:self.open_reader(1))
         self.menu.addAction('Check for updates',self.check_updates)
-        self.menu.addAction('Settings',lambda:self.open_reader(2));self.menu.addSeparator();self.menu.addAction('Quit Skrivi TTS',self.quit)
+        self.menu.addAction('Settings',lambda:self.open_reader(2));self.menu.addSeparator();self.menu.addAction('Quit Skrivi Lytt',self.quit)
         self.tray.setContextMenu(self.menu)
         self.tray.activated.connect(lambda reason:self.open_reader() if reason==QSystemTrayIcon.ActivationReason.DoubleClick else None)
 
@@ -243,7 +244,7 @@ class Reader(QDialog):
 
     def update_received(self,message):
         self.update_busy=False;self.update_button.setEnabled(True);self.set_status(message)
-        if not self.isVisible():self.tray.showMessage('Skrivi TTS',message)
+        if not self.isVisible():self.tray.showMessage('Skrivi Lytt',message)
 
     def change_shortcut(self,value):
         if not hasattr(self,'hotkeys'):return
@@ -349,14 +350,14 @@ class Reader(QDialog):
         title,detail=titles[stage];self.pill.present(title,detail,self.activity_screen);self.set_status(title)
 
     def set_status(self,text):
-        self.status_label.setText(tr(text));self.tray_status.setText(text);self.tray.setToolTip('Skrivi TTS · '+text)
+        self.status_label.setText(tr(text));self.tray_status.setText(text);self.tray.setToolTip('Skrivi Lytt · '+text)
 
     def show_error(self,text):
         self.activity_failed=True
         self.set_status(text)
         self.escape_hotkeys.close()
         self.pill.present('Could not read',text,self.activity_screen,active=False,error=True)
-        if not self.isVisible() and not self.preview:self.tray.showMessage('Skrivi TTS',text,QSystemTrayIcon.MessageIcon.Warning,6000)
+        if not self.isVisible() and not self.preview:self.tray.showMessage('Skrivi Lytt',text,QSystemTrayIcon.MessageIcon.Warning,6000)
 
     def open_reader(self,index=0):
         if isinstance(index,int):self.tabs.setCurrentIndex(index)
@@ -529,7 +530,7 @@ class Reader(QDialog):
 
     def save_audio(self):
         if not self.last_audio:return
-        name,_=QFileDialog.getSaveFileName(self,'Save audio','Skrivi reading.wav','WAV audio (*.wav)')
+        name,_=QFileDialog.getSaveFileName(self,'Save audio','Skrivi Lytt reading.wav','WAV audio (*.wav)')
         if name:shutil.copyfile(self.last_audio,name)
 
     def quit(self):
@@ -560,13 +561,13 @@ def main():
         return
     # A second launch asks the existing reader to show itself rather than taking its hotkey.
     from PySide6.QtNetwork import QLocalServer,QLocalSocket
-    app=QApplication(sys.argv);app.setApplicationName('Skrivi TTS');app.setOrganizationName('Skrivi')
+    app=QApplication(sys.argv);app.setApplicationName('Skrivi TTS');app.setApplicationDisplayName('Skrivi Lytt');app.setOrganizationName('Skrivi')
     app.setQuitOnLastWindowClosed(False);app.setWindowIcon(speech_icon())
     socket=QLocalSocket();socket.connectToServer('SkriviTTS-reader-v1')
     if socket.waitForConnected(200):
         socket.write(b'open');socket.flush();socket.waitForBytesWritten(200);return
     server=QLocalServer();server.setSocketOptions(QLocalServer.SocketOption.UserAccessOption)
-    if not server.listen('SkriviTTS-reader-v1'):raise RuntimeError('Skrivi TTS is already starting.')
+    if not server.listen('SkriviTTS-reader-v1'):raise RuntimeError('Skrivi Lytt is already starting.')
     app.setStyleSheet(application_stylesheet(app.palette()))
     app.paletteChanged.connect(lambda palette:app.setStyleSheet(application_stylesheet(palette)))
     window=Reader(app)

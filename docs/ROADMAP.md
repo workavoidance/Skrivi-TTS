@@ -1,5 +1,9 @@
 # Next reader update
 
+Product name: **Skrivi Lytt**, alongside **Skrivi Snakk** in the Skrivi family.
+Use the same names in both UI languages. Ship the new display names in the next
+verified release, preserving installed data and technical identities.
+
 Add **Check for updates** to Settings and the tray, contacting GitHub only when
 clicked. No startup, background, scheduled or periodic checks. Show installed and
 available versions; prefer the app-only download when runtime requirements match.

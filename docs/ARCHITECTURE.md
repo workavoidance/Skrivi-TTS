@@ -1,4 +1,10 @@
-# Reader 0.4 architecture
+# Skrivi Lytt architecture
+
+Public name: Skrivi Lytt. Internal `SkriviTTS` identifiers, paths and executable
+names remain stable. The separate dictation app is Skrivi Snakk. Historical
+architecture snapshots below retain their original names.
+
+## Reader 0.4 architecture
 
 `app/activity_pill.py` renders status without taking focus. Reader events include a
 capture/generation identifier; cancelled and stale events are ignored. Escape is
@@ -15,7 +21,7 @@ Preferences remain writable user data; updates and startup use Windows controls.
 The conventional installer keeps persistent models outside app versions. No
 background network checks occur in either distribution.
 
-# OCR input in 0.3.0
+## OCR input in 0.3.0
 
 app/screen_region.py freezes the pointer monitor before drawing its overlay; crop
 coordinates map Qt logical units to physical pixels. OCR bytes use stdin/stdout of

@@ -1,13 +1,13 @@
-Skrivi TTS / Skrivi Opplesing 0.2.1
+Skrivi Lytt
 
 Norsk
 Dette installerer appen og de inkluderte norske og engelske stemmene for din Windows-bruker. Du trenger ikke administratorrettigheter eller nett etter nedlasting.
-Eksisterende modeller og innstillinger beholdes. Lukk Skrivi TTS før installasjon.
+Eksisterende modeller og innstillinger beholdes. Lukk Skrivi Lytt (tidligere Skrivi TTS) før installasjon.
 Avinstallasjon fjerner appen og snarveiene, men beholder stemmer, motorer, innstillinger og lagret lyd.
-Appen er ikke kodesignert. Følg skolens IT-rutiner på en skole-PC.
+Følg skolens IT-rutiner på en skole-PC.
 
 English
 This installs the app and included Norwegian and English voices for your Windows user. No administrator rights or internet connection are needed after download.
-Existing models and settings are preserved. Quit Skrivi TTS before installation.
+Existing models and settings are preserved. Quit Skrivi Lytt (previously Skrivi TTS) before installation.
 Uninstall removes the app and shortcuts, but keeps voices, runtimes, settings and saved audio.
-The app is unsigned. Follow your school's IT procedures on a school PC.
+Follow your school's IT procedures on a school PC.
