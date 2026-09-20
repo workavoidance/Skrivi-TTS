@@ -15,7 +15,7 @@ function Run-Setup([string]$name, [bool]$shouldPass) {
     $log = Join-Path $evidence ($name + '.log')
     $proc = Start-Process -FilePath $installer -ArgumentList @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART',('/LOG="' + $log + '"')) -WindowStyle Hidden -PassThru
     if (!$proc.WaitForExit(300000)) { Stop-Process -Id $proc.Id; throw "Timed out: $name" }
-    if (($proc.ExitCode -eq 0) -ne $shouldPass) { throw "$name returned $($proc.ExitCode)" }
+    if (($proc.ExitCode -eq 0) -ne $shouldPass) { if (Test-Path -LiteralPath $log) { Get-Content -LiteralPath $log -Tail 60 | Write-Host }; throw "$name returned $($proc.ExitCode)" }
 }
 # Check conflict handling before any app files or shortcuts are installed.
 $manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
@@ -52,6 +52,9 @@ function Snapshot {
     return $rows
 }
 $original = Snapshot
+# Diagnose any package-integrity conflict directly before the second install.
+& "$env:WINDIR/System32/WindowsPowerShell/v1.0/powershell.exe" -NoProfile -NonInteractive -ExecutionPolicy Bypass -File (Join-Path $root 'installer/preflight.ps1') -ManifestPath $manifestPath -LibraryRoot $library
+if ($LASTEXITCODE -ne 0) { throw 'Installed data differs from the package manifest before reinstall.' }
 Run-Setup 'reinstall' $true
 foreach ($path in $original.Keys) {
     if (!(Test-Path -LiteralPath $path) -or (Get-FileHash -LiteralPath $path).Hash -ne $original[$path].hash) { throw "Reinstall changed $path" }
