@@ -65,7 +65,9 @@ assert not reader.pill.enabled
 reader.ui_language.setCurrentIndex(reader.ui_language.findData("nb"))
 assert reader.settings_tabs.tabText(1) == "Hurtigtaster"
 assert reader.settings_tabs.tabText(3) == "Personvern"
+assert reader.speed.accessibleName() == "Lesehastighet"
 reader.ui_language.setCurrentIndex(reader.ui_language.findData("en"))
+assert reader.speed.accessibleName() == "Reading speed"
 reader.open_settings()
 reader.set_status("Ready.")
 reader.error_actions.hide()

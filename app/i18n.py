@@ -35,8 +35,13 @@ def tr(text):return NB.get(text,text) if LANGUAGE=='nb' else text
 
 def translate_widgets(root):
  from PySide6.QtCore import QSignalBlocker,Qt
- from PySide6.QtWidgets import QLabel,QAbstractButton,QComboBox,QTabWidget
+ from PySide6.QtWidgets import QLabel,QAbstractButton,QComboBox,QTabWidget,QWidget
  from PySide6.QtGui import QAction
+ for obj in root.findChildren(QWidget):
+  source=obj.property('sourceAccessibleName')
+  if source is None:
+   source=obj.accessibleName();obj.setProperty('sourceAccessibleName',source)
+  if source:obj.setAccessibleName(tr(source))
  for obj in root.findChildren(QLabel)+root.findChildren(QAbstractButton)+root.findChildren(QAction):
   source=obj.property('sourceText')
   if source is None:source=obj.text();obj.setProperty('sourceText',source)

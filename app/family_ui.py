@@ -29,6 +29,7 @@ from windows_reader import shortcut_parts
 class ShortcutButton(QPushButton):
     def __init__(self, value, changed):
         super().__init__(tr("Change shortcut…"))
+        self.setProperty("sourceText", "Change shortcut…")
         self.value = value
         self.changed = changed
         self.capturing = False
