@@ -61,3 +61,14 @@ before broad release, including tray startup, both hotkeys and both voices.
 Microsoft references:
 - [Package formats, identity and Store signing](https://learn.microsoft.com/en-us/windows/apps/publish/publish-your-app/msix/app-package-requirements)
 - [Windows App Certification Kit](https://learn.microsoft.com/en-us/windows/uwp/debug-test-perf/windows-app-certification-kit)
+
+## Automation
+
+Run the `Skrivi Lytt Microsoft Store` bridge in the Skrivi-STT repository. It passes
+that repository's existing four Microsoft secrets to Lytt's reusable workflow;
+GitHub never reveals those values. Default runs only check Store access/status.
+To submit an existing release, select submit and provide a tag such as v0.4.3.
+The workflow verifies the MSIX checksum and embedded package identity, then
+submits through Microsoft CLI 0.4.2. Certification remains Microsoft's decision.
+A published submission is required; any existing draft/review stops submission.
+After a failed upload, inspect Partner Center rather than deleting a draft blindly.

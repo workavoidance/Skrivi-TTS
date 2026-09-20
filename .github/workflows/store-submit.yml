@@ -1,0 +1,109 @@
+name: Microsoft Store submission
+
+on:
+  workflow_call:
+    inputs:
+      submit:
+        type: boolean
+        default: false
+      release_tag:
+        type: string
+        default: ''
+    secrets:
+      AZURE_AD_APPLICATION_CLIENT_ID:
+        required: true
+      AZURE_AD_APPLICATION_SECRET:
+        required: true
+      AZURE_AD_TENANT_ID:
+        required: true
+      SELLER_ID:
+        required: true
+  workflow_dispatch:
+    inputs:
+      submit:
+        description: Submit an existing release to Microsoft (main only)
+        type: boolean
+        default: false
+      release_tag:
+        description: Existing release tag, required when submitting
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lytt-store-${{ (inputs.submit) && 'submission' || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  store:
+    if: github.ref == 'refs/heads/main'
+    runs-on: windows-latest
+    timeout-minutes: 40
+    env:
+      STORE_SUBMIT: ${{ inputs.submit }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: workavoidance/Skrivi-TTS
+          ref: main
+      - name: Check Store access and submission state
+        id: check
+        shell: pwsh
+        env:
+          AZURE_AD_APPLICATION_CLIENT_ID: ${{ secrets.AZURE_AD_APPLICATION_CLIENT_ID }}
+          AZURE_AD_APPLICATION_SECRET: ${{ secrets.AZURE_AD_APPLICATION_SECRET }}
+          AZURE_AD_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+          SELLER_ID: ${{ secrets.SELLER_ID }}
+        run: ./scripts/check-store-access.ps1
+      - name: Download and verify release package
+        if: env.STORE_SUBMIT == 'true'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          if ($env:RELEASE_TAG -notmatch '^v[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?$') {
+            throw 'Specify an existing release tag, such as v0.4.3.'
+          }
+          gh release download $env:RELEASE_TAG --repo workavoidance/Skrivi-TTS --pattern '*.msix' --pattern '*.msix.sha256' --dir store-release
+          if ($LASTEXITCODE -ne 0) { throw 'Could not download the release MSIX and checksum. Retry when both release assets are available.' }
+          $packages = @(Get-ChildItem store-release -Filter '*.msix' -File)
+          if ($packages.Count -ne 1) { throw 'Expected exactly one Store package.' }
+          $expected = (Get-Content "$($packages[0].FullName).sha256" -Raw).Trim().Split(' ')[0]
+          if ($expected -notmatch '^[0-9a-fA-F]{64}$' -or (Get-FileHash $packages[0].FullName -Algorithm SHA256).Hash -ne $expected) {
+            throw 'Store package checksum verification failed.'
+          }
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          $zip = [IO.Compression.ZipFile]::OpenRead($packages[0].FullName)
+          try {
+            $reader = [IO.StreamReader]::new($zip.GetEntry('AppxManifest.xml').Open())
+            try { [xml]$manifest = $reader.ReadToEnd() } finally { $reader.Dispose() }
+            if ($manifest.Package.Identity.Name -ne 'Skrivi.SkriviLytt' -or $manifest.Package.Identity.Publisher -ne 'CN=EF3D997F-87B2-4AD0-B65B-877EE1632E65') {
+              throw 'Release MSIX is not the associated Skrivi Lytt package.'
+            }
+          } finally { $zip.Dispose() }
+      - name: Install Microsoft Store CLI
+        if: env.STORE_SUBMIT == 'true'
+        uses: microsoft/microsoft-store-apppublisher@15abd1c50fcc164b19cb240fb04ef3c49bf715a2 # v1.1
+        with:
+          version: v0.4.2
+      - name: Submit package for Microsoft certification
+        if: env.STORE_SUBMIT == 'true'
+        shell: pwsh
+        env:
+          AZURE_AD_APPLICATION_CLIENT_ID: ${{ secrets.AZURE_AD_APPLICATION_CLIENT_ID }}
+          AZURE_AD_APPLICATION_SECRET: ${{ secrets.AZURE_AD_APPLICATION_SECRET }}
+          AZURE_AD_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+          SELLER_ID: ${{ secrets.SELLER_ID }}
+          STORE_PRODUCT_ID: ${{ steps.check.outputs.product_id }}
+        run: |
+          $packages = @(Get-ChildItem store-release -Filter '*.msix' -File)
+          if ($packages.Count -ne 1) { throw 'Expected exactly one Store package.' }
+          ./scripts/check-store-access.ps1
+          msstore reconfigure --tenantId $env:AZURE_AD_TENANT_ID --sellerId $env:SELLER_ID --clientId $env:AZURE_AD_APPLICATION_CLIENT_ID --clientSecret $env:AZURE_AD_APPLICATION_SECRET
+          if ($LASTEXITCODE -ne 0) { throw 'Store CLI configuration failed.' }
+          msstore publish $packages[0].FullName --appId $env:STORE_PRODUCT_ID --uploadTimeout 900
+          if ($LASTEXITCODE -ne 0) { throw 'Store submission failed. Inspect Partner Center before retrying.' }
+          'Lytt package submitted to Microsoft. Certification is still required.' >> $env:GITHUB_STEP_SUMMARY
