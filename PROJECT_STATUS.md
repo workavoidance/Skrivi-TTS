@@ -1,4 +1,14 @@
-# Skrivi Lytt — signed 0.4.1 test release, 20 September 2026
+# Skrivi Lytt — 0.4.3 UX acceptance candidate
+
+0.4.3 implements the user feedback and one-screen introduction in both languages.
+See [implementation and validation](docs/UX_FEEDBACK_IMPLEMENTED.md).
+All publication remains on hold pending the next PC test.
+
+## Previous 0.4.2 candidate
+
+0.4.2 is signed and verified on `release/test-0.4.2` for local user testing only.
+See [candidate notes](docs/TEST_BUILD_0_4_2.md). Publication, website changes and
+Store submission are waiting for explicit user acceptance. Published 0.4.1 is unchanged.
 
 ## Development interface update — 20 September 2026
 

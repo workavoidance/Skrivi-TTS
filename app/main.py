@@ -101,6 +101,25 @@ class Reader(QDialog):
         from family_ui import build_reader
         build_reader(self)
 
+    def open_shortcuts(self):
+        self.open_settings();self.settings_tabs.setCurrentIndex(1)
+
+    def pause_shortcuts(self):
+        if not self.preview:
+            self.hotkeys.close();self.region_hotkeys.close()
+
+    def resume_shortcuts(self):
+        if self.preview or self.exiting:return
+        for owner,key in [(self.hotkeys,'hotkey'),(self.region_hotkeys,'region_hotkey')]:
+            try:owner.register(self.preferences[key])
+            except Exception as error:self.show_error(str(error))
+
+    def introduction(self, *, force=False):
+        from ux_helpers import show_welcome
+        show_welcome(self, 'Skrivi Lytt', DATA/'welcome-v1.done',
+            [self.preferences['hotkey'], self.preferences['region_hotkey']],
+            self.open_shortcuts, tr, force=force)
+
     def open_settings(self, *_):
         self.settings_dialog.showNormal();self.settings_dialog.raise_();self.settings_dialog.activateWindow()
 
@@ -134,7 +153,9 @@ class Reader(QDialog):
             action.triggered.connect(lambda checked,k=key:self.set_language(k));self.language_actions[key]=action
         self.menu.addSeparator()
         self.menu.addAction('Settings',self.open_settings)
-        self.menu.addAction('Help',lambda:os.startfile('https://skrivi.no/help/'))
+        help_menu=self.menu.addMenu('Help')
+        help_menu.addAction('How to use',lambda:self.introduction(force=True))
+        help_menu.addAction('Online help',lambda:os.startfile('https://skrivi.no/help/'))
         self.menu.addAction('Give feedback',lambda:os.startfile('https://github.com/workavoidance/Skrivi-TTS/issues'))
         self.menu.addAction('Check for updates',self.check_updates)
         self.menu.addSeparator();self.menu.addAction('Quit Skrivi Lytt',self.quit)
@@ -217,6 +238,8 @@ class Reader(QDialog):
 
     def update_hint(self):
         selected=self.preferences['hotkey'];region=self.preferences['region_hotkey']
+        self.anywhere.setText(tr('Listen to text anywhere')+' · '+selected)
+        self.screen_hint.setText(tr('Read screen region')+' · '+region)
         self.shortcut_hint.setText(tr('Selected-text shortcut')+': '+selected+' · '+tr('Screen-region shortcut')+': '+region)
         self.shortcut_label.setText(selected);self.region_shortcut_label.setText(region)
         self.tray_region.setText(tr('Read screen region')+' · '+region)
@@ -331,6 +354,7 @@ class Reader(QDialog):
         if index in (1,2):
             self.open_settings();self.settings_tabs.setCurrentIndex(2 if index==1 else 0);return
         self.showNormal();self.raise_();self.activateWindow()
+        if not self.preview:self.introduction()
 
     def closeEvent(self,event):
         if self.preview:event.accept();return
@@ -550,7 +574,7 @@ def main():
         if connection:connection.disconnectFromServer();connection.deleteLater()
         window.open_reader()
     server.newConnection.connect(activate)
-    if '--tray' not in sys.argv:window.show()
+    if '--tray' not in sys.argv:window.open_reader()
     app.aboutToQuit.connect(window.hotkeys.close)
     sys.exit(app.exec())
 

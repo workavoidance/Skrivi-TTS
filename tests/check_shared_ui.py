@@ -80,6 +80,68 @@ reader.open_reader()
 app.processEvents()
 reader.grab().save(str(output / "lytt-reader.png"))
 reader.settings_dialog.hide()
+from PySide6.QtCore import QPoint, QPointF, Qt
+from PySide6.QtGui import QWheelEvent
+from PySide6.QtWidgets import QScrollArea, QLabel
+from ux_helpers import show_welcome
+
+before_speed = reader.speed.value()
+reader.speed.setFocus()
+app.sendEvent(
+    reader.speed,
+    QWheelEvent(
+        QPointF(2, 2),
+        QPointF(2, 2),
+        QPoint(),
+        QPoint(0, -120),
+        Qt.MouseButton.NoButton,
+        Qt.KeyboardModifier.NoModifier,
+        Qt.ScrollPhase.NoScrollPhase,
+        False,
+    ),
+)
+assert reader.speed.value() == before_speed
+for language in ("en", "nb"):
+    reader.ui_language.setCurrentIndex(reader.ui_language.findData(language))
+    for window in (reader, reader.settings_dialog):
+        window.resize(640, 520)
+        window.show()
+        app.processEvents()
+        assert window.size().width() == 640 and window.size().height() == 520
+        for index in range(reader.settings_tabs.count()):
+            reader.settings_tabs.setCurrentIndex(index)
+            app.processEvents()
+            for scroll in window.findChildren(QScrollArea):
+                if scroll.isVisibleTo(window):
+                    assert scroll.horizontalScrollBar().maximum() == 0
+        window.hide()
+marker = Path(temporary.name) / "welcome-test.done"
+show_welcome(
+    reader,
+    "Skrivi Lytt",
+    marker,
+    ["Ctrl+Alt+R", "Ctrl+Shift+F9"],
+    reader.open_shortcuts,
+    lambda s: s,
+)
+assert any(
+    "Ctrl+Alt+R" in label.text() for label in reader._welcome.findChildren(QLabel)
+)
+reader._welcome.reject()
+assert marker.exists()
+show_welcome(
+    reader,
+    "Skrivi Lytt",
+    marker,
+    ["Ctrl+Alt+R", "Ctrl+Shift+F9"],
+    reader.open_shortcuts,
+    lambda s: s,
+)
+assert not reader._welcome.isVisible()
+reader.shortcut_button.capture()
+assert reader.shortcut_button.dialog.isVisible()
+reader.shortcut_button.finish()
+assert not reader.shortcut_button.dialog.isVisible()
 reader.hide()
 reader.pill.hide()
 reader.temp.cleanup()

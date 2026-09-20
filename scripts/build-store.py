@@ -30,7 +30,7 @@ kits=Path(os.environ.get('ProgramFiles(x86)','C:/Program Files (x86)'))/'Windows
 tools=[args.makeappx.resolve()] if args.makeappx else sorted(kits.glob('*/x64/makeappx.exe'))
 if not tools:raise SystemExit('Windows SDK MakeAppx is required')
 out=root/'dist/store';out.mkdir(parents=True,exist_ok=True)
-name='Skrivi-TTS-'+VERSION+('-UNASSOCIATED-validation' if args.validation_only else '-Store')+'.msix'
+name='Skrivi-Lytt-'+VERSION+'-windows-x64'+('-UNASSOCIATED-validation' if args.validation_only else '')+'.msix'
 subprocess.run([str(tools[-1]),'pack','/d',str(stage),'/p',str(out/name),'/o'],check=True)
 (out/'PACKAGE-STATUS.txt').write_text(('NOT FOR UPLOAD: reserve the separate TTS listing, provide its identity, and rebuild.\n' if args.validation_only else 'Store-associated package. Upload through Partner Center; the Store signs the MSIX.\n')+'Built package version: '+version+'\nCertification has not been run.\n',encoding='utf-8')
 print(out/name)

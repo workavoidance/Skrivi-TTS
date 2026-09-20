@@ -11,3 +11,7 @@ This installs the app and included Norwegian and English voices for your Windows
 Existing models and settings are preserved. Quit Skrivi Lytt (previously Skrivi TTS) before installation.
 Uninstall removes the app and shortcuts, but keeps voices, runtimes, settings and saved audio.
 Follow your school's IT procedures on a school PC.
+
+Licences / Lisenser
+The app uses the MIT licence; the licence and third-party notices are included.
+Appen har MIT-lisens; lisensen og tredjepartsmerknader følger med appen.

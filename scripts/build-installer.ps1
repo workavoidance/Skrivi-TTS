@@ -33,7 +33,9 @@ foreach ($item in $manifest.files.PSObject.Properties) {
 $output = Join-Path $root 'dist\installer'
 New-Item -ItemType Directory -Force -Path $output | Out-Null
 Write-Host 'Compiling Windows setup...'
-& $Compiler "/DPackageDir=$payload" "/DOutputDir=$output" (Join-Path $root 'installer\SkriviTTS.iss')
+# This historical 0.2.1 regression fixture retains its published asset name.
+# Current signed builds use the Skrivi-Lytt filename from the installer source.
+& $Compiler '/FSkrivi-TTS-0.2.1-windows-x64-setup' "/DPackageDir=$payload" "/DOutputDir=$output" (Join-Path $root 'installer\SkriviTTS.iss')
 if ($LASTEXITCODE -ne 0) { throw 'Installer compilation failed.' }
 $exe = Join-Path $output 'Skrivi-TTS-0.2.1-windows-x64-setup.exe'
 $hash = (Get-FileHash -LiteralPath $exe -Algorithm SHA256).Hash.ToLowerInvariant()
