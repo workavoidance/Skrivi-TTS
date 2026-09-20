@@ -7,9 +7,14 @@ orange speaker tray icon. Speech and OCR work offline.
 Public name: **Skrivi Lytt**, part of the Skrivi family alongside Skrivi Snakk.
 Existing SkriviTTS data paths and upgrade identity stay unchanged.
 
+Both apps use **Test release** while real-world testing continues. Their version
+numbers advance independently; GitHub marks these releases as prereleases.
+Use the signed `.exe` installer on a PC. The separate Store `.msix` package is
+for submission through Partner Center; its presence does not mean Store approval.
+
 ## Install the signed 0.4.1 test release
 
-Download **Skrivi-TTS-0.4.1-windows-x64-setup.exe** from
+Download the [signed Windows installer](https://github.com/workavoidance/Skrivi-TTS/releases/download/v0.4.1/Skrivi-TTS-0.4.1-windows-x64-setup.exe) or see
 [the 0.4.1 release](https://github.com/workavoidance/Skrivi-TTS/releases/tag/v0.4.1).
 Quit the existing reader from its tray menu, run setup, then open it from the Start menu.
 No separate Python installation or administrator account is needed.

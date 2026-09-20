@@ -7,6 +7,11 @@ Keep SkriviTTS paths, executable, startup/single-instance IDs and installer AppI
 
 ## Current authority
 
+The shared Skrivi release convention is **Test release**, with independent Snakk
+and Lytt versions and GitHub prerelease status. README now links directly to the
+verified 0.4.1 installer and distinguishes Store submission from certification.
+This documentation update does not rebuild or alter published application bytes.
+
 - Public repo: https://github.com/workavoidance/Skrivi-TTS, branch main.
 - Published test release: https://github.com/workavoidance/Skrivi-TTS/releases/tag/v0.4.1.
 - Built source: 410df3850ec32176bc6578d9e0dd12f900d0925a. Main subsequently records
