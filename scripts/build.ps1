@@ -16,6 +16,7 @@ try {
 & $pythonBuild -m PyInstaller --clean --noconfirm --onedir --windowed --name SkriviTTS --icon assets/skrivi-tts.ico --collect-all langdetect --paths app app/main.py
 if ($LASTEXITCODE -ne 0) { throw 'Application build failed' }
 } finally { $env:PATH = $originalBuildPath }
-$check = Start-Process -FilePath 'dist/SkriviTTS/SkriviTTS.exe' -ArgumentList '--check-startup' -WindowStyle Hidden -PassThru -Wait
+$check = Start-Process -FilePath 'dist/SkriviTTS/SkriviTTS.exe' -ArgumentList '--check-startup' -WindowStyle Hidden -PassThru
+if (!$check.WaitForExit(30000)) { Stop-Process -Id $check.Id; throw 'Packaged reader startup check timed out' }
 if ($check.ExitCode -ne 0) { throw 'Packaged reader startup check failed' }
 Write-Host 'Compiled desktop app and reusable engine runtime. Run scripts/package.py with the existing CrispASR runtime directory.'

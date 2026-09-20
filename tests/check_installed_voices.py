@@ -9,9 +9,11 @@ import wave
 if os.environ.get("GITHUB_ACTIONS") != "true":
     raise SystemExit("Run only in the disposable installer CI job.")
 library = Path(os.environ["LOCALAPPDATA"]) / "SkriviTTS"
-app = library / "versions/0.2.1"
+app = library / "versions" / (sys.argv[1] if len(sys.argv)>1 else "0.2.1")
 sys.path.insert(0, str(app / "app"))
-from core import catalog, defaults
+from core import catalog, defaults, runtime_executable
+import core
+core.ROOT=app;core.DATA=library
 
 output = Path(__file__).resolve().parents[1] / "build/installer-tests"
 rows = []
@@ -27,7 +29,7 @@ for model_id, worker, text, rate in (
                    settings=defaults(model["engine"]), text=text,
                    output=str(target), voices=str(library / "voices"))
     result = subprocess.run(
-        [str(library / "runtimes" / worker), str(app / "engines/worker.py")],
+        [str(runtime_executable(*worker.split("/"))), str(app / "engines/worker.py")],
         input=json.dumps(request) + "\n", capture_output=True, text=True,
         encoding="utf-8", timeout=180, creationflags=subprocess.CREATE_NO_WINDOW,
     )

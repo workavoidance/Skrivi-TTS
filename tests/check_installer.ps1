@@ -1,3 +1,4 @@
+param([string]$Version='0.2.1',[string]$InstallerPath='',[string]$PayloadPath='')
 # Deliberately CI-only: never install/uninstall or create test fixtures in a user's library.
 $ErrorActionPreference = 'Stop'
 if ($env:GITHUB_ACTIONS -ne 'true' -or $env:RUNNER_ENVIRONMENT -ne 'github-hosted') {
@@ -8,7 +9,8 @@ $library = Join-Path $env:LOCALAPPDATA 'SkriviTTS'
 if (Test-Path -LiteralPath $library) { throw 'Test requires an empty disposable library.' }
 $evidence = Join-Path $root 'build\installer-tests'
 New-Item -ItemType Directory -Force -Path $evidence | Out-Null
-$installer = Join-Path $root 'dist\installer\Skrivi-TTS-0.2.1-windows-x64-setup.exe'
+$installer = if ($InstallerPath) { (Resolve-Path $InstallerPath).Path } else { Join-Path $root 'dist\installer\Skrivi-TTS-0.2.1-windows-x64-setup.exe' }
+$manifestPath = if ($PayloadPath) { Join-Path (Resolve-Path $PayloadPath).Path 'package.json' } else { Join-Path $root 'build\exe-installer\payload\package.json' }
 function Run-Setup([string]$name, [bool]$shouldPass) {
     $log = Join-Path $evidence ($name + '.log')
     $proc = Start-Process -FilePath $installer -ArgumentList @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART',('/LOG="' + $log + '"')) -WindowStyle Hidden -PassThru
@@ -16,7 +18,7 @@ function Run-Setup([string]$name, [bool]$shouldPass) {
     if (($proc.ExitCode -eq 0) -ne $shouldPass) { throw "$name returned $($proc.ExitCode)" }
 }
 # Check conflict handling before any app files or shortcuts are installed.
-$manifest = Get-Content -LiteralPath (Join-Path $root 'build\exe-installer\payload\package.json') -Raw | ConvertFrom-Json
+$manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
 $modelEntry = $manifest.files.PSObject.Properties | Where-Object { $_.Name.StartsWith('models/') } | Select-Object -First 1
 $conflict = Join-Path $library $modelEntry.Name
 New-Item -ItemType Directory -Force -Path (Split-Path $conflict) | Out-Null
@@ -24,11 +26,11 @@ Set-Content -LiteralPath $conflict -Value 'CI conflict fixture'
 $before = (Get-FileHash -LiteralPath $conflict).Hash
 Run-Setup 'conflict' $false
 if ((Get-FileHash -LiteralPath $conflict).Hash -ne $before) { throw 'Conflicting model was overwritten.' }
-if (Test-Path -LiteralPath (Join-Path $library 'versions\0.2.1\SkriviTTS.exe')) { throw 'Conflict installed app anyway.' }
+if (Test-Path -LiteralPath (Join-Path $library "versions\$Version\SkriviTTS.exe")) { throw 'Conflict installed app anyway.' }
 # Remove only this known disposable fixture, not a directory or model collection.
 Remove-Item -LiteralPath $conflict
 Run-Setup 'first-install' $true
-$app = Join-Path $library 'versions\0.2.1\SkriviTTS.exe'
+$app = Join-Path $library "versions\$Version\SkriviTTS.exe"
 $check = Start-Process -FilePath $app -ArgumentList '--check-startup' -WindowStyle Hidden -PassThru
 if (!$check.WaitForExit(30000) -or $check.ExitCode -ne 0) { throw 'Installed startup failed.' }
 $shortcut = Join-Path ([Environment]::GetFolderPath('Programs')) 'Skrivi TTS.lnk'
@@ -56,7 +58,7 @@ foreach ($path in $original.Keys) {
     # Registration may rewrite its index; weights, runtimes and user preferences must keep timestamps.
     if ([IO.Path]::GetFileName($path) -ne 'library.json' -and (Get-Item -LiteralPath $path).LastWriteTimeUtc.Ticks -ne $original[$path].ticks) { throw "Reinstall rewrote $path" }
 }
-& python (Join-Path $PSScriptRoot 'check_installed_voices.py')
+& python (Join-Path $PSScriptRoot 'check_installed_voices.py') $Version
 if ($LASTEXITCODE -ne 0) { throw 'Installed voice smoke tests failed.' }
 $uninstaller = Join-Path $library 'uninstall\unins000.exe'
 $uninstallLog = Join-Path $evidence 'uninstall.log'

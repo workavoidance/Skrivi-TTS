@@ -20,4 +20,4 @@ for model in [m for m in core.catalog() if m['id'] in ('piper-talesyntese','koko
    results.append(dict(model=model['id'],repeat=repeat,events=events,generation_seconds=r['generation_seconds']))
  finally:c.stop()
 (root/'build/RELEASE-ENGINE-CHECKS.json').write_text(json.dumps(results,indent=2),encoding='utf-8')
-print('Both signed engines passed cold/warm generation and actual progress events.')
+print('Both staged engines passed cold/warm generation and actual progress events.')

@@ -85,6 +85,12 @@ jobs:
           ./scripts/sign-release.ps1 -Root dist/signed -Thumbprint $env:CERTUM_KEY_ID
           Copy-Item build/RELEASE-ENGINE-CHECKS.json,build/release-payload/package.json,build/release-payload/SIGNATURES.json $output
           Get-ChildItem $output -File | ForEach-Object { "$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant())  $($_.Name)" } | Set-Content "$output/SHA256SUMS.txt"
+      - name: Verify installed app and preserve models through reinstall/uninstall
+        shell: pwsh
+        run: |
+          $version=(Get-Content build/release-payload/package.json -Raw | ConvertFrom-Json).version
+          ./tests/check_installer.ps1 -Version $version -InstallerPath "dist/signed/Skrivi-TTS-$version-windows-x64-setup.exe" -PayloadPath build/release-payload
+          Copy-Item build/installer-tests/results.json dist/signed/INSTALL-CHECKS.json
       - name: Validate Microsoft Store package
         shell: pwsh
         run: |
