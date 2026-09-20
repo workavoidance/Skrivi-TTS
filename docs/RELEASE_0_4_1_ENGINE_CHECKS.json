@@ -1,0 +1,38 @@
+[
+  {
+    "model": "kokoro-v1.0-onnx",
+    "repeat": 0,
+    "events": [
+      "starting",
+      "loading",
+      "generating"
+    ],
+    "generation_seconds": 3.2599050000000034
+  },
+  {
+    "model": "kokoro-v1.0-onnx",
+    "repeat": 1,
+    "events": [
+      "generating"
+    ],
+    "generation_seconds": 2.669895600000018
+  },
+  {
+    "model": "piper-talesyntese",
+    "repeat": 0,
+    "events": [
+      "starting",
+      "loading",
+      "generating"
+    ],
+    "generation_seconds": 0.12705510000000686
+  },
+  {
+    "model": "piper-talesyntese",
+    "repeat": 1,
+    "events": [
+      "generating"
+    ],
+    "generation_seconds": 0.09437509999997928
+  }
+]

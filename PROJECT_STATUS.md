@@ -1,23 +1,24 @@
-# Skrivi Lytt — 0.4.1 release integration, 20 September 2026
+# Skrivi Lytt — signed 0.4.1 test release, 20 September 2026
 
 Public name is now Skrivi Lytt, companion Skrivi Snakk. Concurrent PRs #2/#3
 provided the branding and reserved Store identity. Version 0.4.1 integrates these
-with the verified 0.4.0 release and immutable runtime pin. Build pending.
+with the verified 0.4.0 release and immutable runtime pin. Signed build passed.
 Keep SkriviTTS paths, executable, startup/single-instance IDs and installer AppId.
 
 ## Current authority
 
 - Public repo: https://github.com/workavoidance/Skrivi-TTS, branch main.
-- Published test release: https://github.com/workavoidance/Skrivi-TTS/releases/tag/v0.4.0.
-- Built source: 6f27073fff6e83c12c08b2abec7b2e8a0105d451. Main subsequently records
+- Published test release: https://github.com/workavoidance/Skrivi-TTS/releases/tag/v0.4.1.
+- Built source: 410df3850ec32176bc6578d9e0dd12f900d0925a. Main subsequently records
   release evidence and pins immutable signed runtimes for subsequent builds.
-- Successful signed build: https://github.com/workavoidance/Skrivi-STT/actions/runs/35515703890.
+- Successful signed build: https://github.com/workavoidance/Skrivi-STT/actions/runs/35517692394.
   STT stores the existing Certum secrets. PRs 64/65 added a manual bridge to a pinned
-  TTS workflow. Invoke tts-signing.yml with an explicit current TTS source_ref.
+  TTS workflow. PR 68 changed its default source_ref to main. For reproducibility,
+  invoke tts-signing.yml with the full 40-character source commit, not a short SHA.
 - Local source: C:/Users/jon/.codex/visualizations/2026/09/08/01a07fdc-16e7-7330-83a6-cbdec9f59c1d/skrivi-tts.
-- Downloaded verified installer and evidence: build/release-0.4-signed/.
-  Store validation file: build/release-0.4-store/.
-- Existing user installation is 0.3.0; this turn built/published 0.4.0 without
+- Downloaded verified installer and evidence: build/release-0.4.1-signed/.
+  Associated Store file: build/release-0.4.1-store/.
+- Existing user installation is 0.3.0; this turn built/published 0.4.1 without
   installing over their working copy. Quit the tray reader before running setup.
 
 ## Features and decisions
@@ -33,7 +34,7 @@ No automatic update/network/model checks, telemetry or cloud speech/OCR.
 
 ## Validation and signing
 
-- 16 unit tests; actual light/dark Qt rendering, foreground retention and cancellation.
+- 21 unit tests; actual light/dark Qt rendering, foreground retention and cancellation.
 - Both signed engines generated cold/warm on this machine; real loading event appears
   on cold reads, warm reads go directly to generation. Signed runtime reuse tested.
 - Frozen OCR paragraph/column and DPI checks; signed OCR column worker passed locally.
@@ -41,11 +42,15 @@ No automatic update/network/model checks, telemetry or cloud speech/OCR.
   The final installer signature and timestamp also validate on this machine.
 - Install, conflicting-file refusal, reinstall and uninstall passed on a disposable
   Windows runner; 4,291 existing data files survived with matching content. Installed
-  English and Bokmål voice tests passed. docs/RELEASE_0_4_INSTALL-CHECKS.json and
-  docs/RELEASE_0_4_RELEASE-ENGINE-CHECKS.json contain the final CI evidence.
+  English and Bokmål voice tests passed. docs/RELEASE_0_4_1_INSTALL_CHECKS.json and
+  docs/RELEASE_0_4_1_ENGINE_CHECKS.json contain the final CI evidence.
 - Microsoft MakeAppx accepted the MSIX. Its native unpacker restored encoded filenames
   (for example %21v -> !v). All 4,795 included payload hashes match the signed manifest;
-  extracted GUI startup and signed OCR passed. This is not an installed Store test.
+  extracted GUI startup, signed OCR and both speech engines (cold/warm) passed.
+  All 4,280 runtime file hashes equal the pinned 0.4.0 inputs. Store edition asset
+  routing was exercised with disposable preferences. Evidence:
+  docs/RELEASE_0_4_1_STORE_CHECKS.json; runner tests/check_store_payload.py.
+  This is not an installed Store test; Windows App Certification Kit has not run.
 - Every published GitHub asset's size and SHA-256 matched the local verified file.
 
 Early candidate runs 35513969249 and 35514688453 were not published: their PowerShell
@@ -70,12 +75,13 @@ any newly generated installer scripts before distributing an update as signed.
 The full installer is needed once to migrate unsigned 0.3 engines to signed profiles;
 existing matching speech models are reused. Never remove user models, presets or audio.
 
-## Microsoft Store — associated build pending
+## Microsoft Store — associated package built
 
 The newer GitHub handoff supersedes the earlier "not reserved" reply. The identity
 in store/identity.json is Skrivi.SkriviLytt, publisher
 CN=EF3D997F-87B2-4AD0-B65B-877EE1632E65, display name Skrivi.
-Build and validate 0.4.1 with this association before delivery. The previous
+Skrivi-TTS-0.4.1-Store.msix is associated and validated, package version 1.4.6.0.
+See docs/STORE_SUBMISSION.md for upload steps and certification notes. The previous
 0.4.0 UNASSOCIATED package (1.4.3.0) remains NOT FOR UPLOAD.
 Certification has not been run; no Store submission or trust changes are authorized.
 Store models/runtime files are bundled and read-only; user settings are writable;
@@ -84,8 +90,8 @@ Do not install the unassociated package or change certificate trust to force it.
 
 ## Next steps
 
-User testing of the signed installer/pill on their machines. Final Store-associated
-build using the recorded identity, then installed package testing and certification submission.
+User testing of the signed installer/pill on their machines. Upload the associated
+MSIX to the reserved listing, test the Store-delivered package and complete certification.
 Keep the two approved models as the normal reader; no broad model research is needed.
 
 ## OCR update 0.3.0 (supersedes OCR future-work notes below)

@@ -1,0 +1,51 @@
+{
+  "voice_results": [
+    {
+      "model": "kokoro-v1.0-onnx",
+      "repeat": 0,
+      "events": [
+        "starting",
+        "loading",
+        "generating"
+      ],
+      "generation_seconds": 0.3673457999830134
+    },
+    {
+      "model": "kokoro-v1.0-onnx",
+      "repeat": 1,
+      "events": [
+        "generating"
+      ],
+      "generation_seconds": 0.36279019998619333
+    },
+    {
+      "model": "piper-talesyntese",
+      "repeat": 0,
+      "events": [
+        "starting",
+        "loading",
+        "generating"
+      ],
+      "generation_seconds": 0.0736073000007309
+    },
+    {
+      "model": "piper-talesyntese",
+      "repeat": 1,
+      "events": [
+        "generating"
+      ],
+      "generation_seconds": 0.03920030000153929
+    }
+  ],
+  "version": "0.4.1",
+  "source_commit": "410df3850ec32176bc6578d9e0dd12f900d0925a",
+  "package_name": "Skrivi.SkriviLytt",
+  "publisher": "CN=EF3D997F-87B2-4AD0-B65B-877EE1632E65",
+  "package_version": "1.4.6.0",
+  "payload_hashes_verified": 4795,
+  "immutable_runtime_hashes_verified": 4280,
+  "gui_startup": true,
+  "signed_ocr_columns": true,
+  "packaged_installation_tested": false,
+  "windows_app_certification_kit_run": false
+}

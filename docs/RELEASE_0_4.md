@@ -1,10 +1,10 @@
 # Signed reader 0.4
 
-0.4.1 integrates the Skrivi Lytt name and reserved Store identity; validation pending.
+0.4.1 integrates the Skrivi Lytt name and reserved Store identity. All release checks passed.
 
-Published as a test release: https://github.com/workavoidance/Skrivi-TTS/releases/tag/v0.4.0.
-Built source 6f27073fff6e83c12c08b2abec7b2e8a0105d451; successful workflow run
-https://github.com/workavoidance/Skrivi-STT/actions/runs/35515703890.
+Published as a test release: https://github.com/workavoidance/Skrivi-TTS/releases/tag/v0.4.1.
+Built source 410df3850ec32176bc6578d9e0dd12f900d0925a; successful workflow run
+https://github.com/workavoidance/Skrivi-STT/actions/runs/35517692394.
 
 Focus-preserving bottom-screen light/dark pill, real worker progress, active Escape,
 two-model reader, optional OCR columns, interface-language controls and manual
@@ -17,8 +17,9 @@ also passed locally. Microsoft-unpacked Store payload: all 4,795 hashes match;
 GUI startup and signed OCR column recognition passed. These checks do not replace
 user listening or installed Store certification testing.
 
-Evidence: READER_0_4_LOCAL_CHECKS.json, RELEASE_0_4_INSTALL-CHECKS.json,
-RELEASE_0_4_RELEASE-ENGINE-CHECKS.json, OCR_FROZEN_CHECKS.json and release assets
+Evidence: READER_0_4_LOCAL_CHECKS.json, RELEASE_0_4_1_INSTALL_CHECKS.json,
+RELEASE_0_4_1_ENGINE_CHECKS.json, RELEASE_0_4_1_STORE_CHECKS.json,
+OCR_FROZEN_CHECKS.json and release assets
 SIGNATURES.json / INSTALLER-SIGNATURES.json / SHA256SUMS.txt.
 
 The installer uses the signed native/VerifyPackage.cs helper to validate existing
@@ -34,7 +35,10 @@ change needs a new runtime profile and pin. Code-only releases can reuse the cur
 profiles; model downloads and user data do not belong to application versions.
 
 The reserved Skrivi.SkriviLytt identity is recorded in store/identity.json.
-The associated 0.4.1 build is pending validation. Previous 0.4.0 package 1.4.3.0
+The associated 0.4.1 package (1.4.6.0) passed MakeAppx validation, payload hash checks,
+GUI startup, offline OCR and both voices cold/warm. All 4,280 runtime files match
+the immutable 0.4.0 pin. Windows App Certification Kit and Store-deployed testing
+have not run. See STORE_SUBMISSION.md. Previous 0.4.0 package 1.4.3.0
 is UNASSOCIATED and NOT FOR UPLOAD. The Store signs the outer package on submission; no
 certificate trust changes or submission were performed here.
 

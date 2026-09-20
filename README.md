@@ -5,14 +5,13 @@ from [Skrivi Snakk](https://github.com/workavoidance/Skrivi-STT), with its own
 orange speaker tray icon. Speech and OCR work offline.
 
 Public name: **Skrivi Lytt**, part of the Skrivi family alongside Skrivi Snakk.
-Existing SkriviTTS data paths and upgrade identity stay unchanged. Version 0.4.1
-with the new name and reserved Store identity is being validated.
+Existing SkriviTTS data paths and upgrade identity stay unchanged.
 
-## Install the signed 0.4.0 test release
+## Install the signed 0.4.1 test release
 
-Download **Skrivi-TTS-0.4.0-windows-x64-setup.exe** from
-[the 0.4.0 release](https://github.com/workavoidance/Skrivi-TTS/releases/tag/v0.4.0).
-Quit Skrivi TTS from its tray menu, run setup, then open it from the Start menu.
+Download **Skrivi-TTS-0.4.1-windows-x64-setup.exe** from
+[the 0.4.1 release](https://github.com/workavoidance/Skrivi-TTS/releases/tag/v0.4.1).
+Quit the existing reader from its tray menu, run setup, then open it from the Start menu.
 No separate Python installation or administrator account is needed.
 
 The full installer includes two speech models (about 417 MB of weights), OCR and
@@ -31,7 +30,7 @@ or Store certification. This is a test release for real-world feedback.
   speech preparation and playback. **Escape** cancels while work is active.
 - Automatic chooses one English or Bokmål voice for the whole passage. Override it
   in the reader or tray. Short/uncertain text uses the configured fallback.
-- Close the window to keep the tray app running; use **Quit Skrivi TTS** to exit.
+- Close the window to keep the tray app running; use **Quit Skrivi Lytt** to exit.
 
 Settings offer Windows-default/English/Bokmål interface language, opt-in startup,
 reading speed, selected-text shortcut and OCR layout. Paragraph/single-column is
@@ -100,8 +99,10 @@ The historical 0.2 ZIP/build recipes remain available for provenance.
 ## Microsoft Store
 
 The reserved identity **Skrivi.SkriviLytt** is recorded in store/identity.json.
-The associated 0.4.1 package is being validated. Earlier **UNASSOCIATED** MSIX
-files must not be uploaded. Certification has not been run.
+The associated **Skrivi-TTS-0.4.1-Store.msix** (package version 1.4.6.0) is available
+in the release for Partner Center upload. Earlier **UNASSOCIATED** files must not
+be uploaded. [Upload instructions and validation limits](docs/STORE_SUBMISSION.md).
+Microsoft Store certification and installed Store-package testing remain pending.
 
 ## Licenses
 
