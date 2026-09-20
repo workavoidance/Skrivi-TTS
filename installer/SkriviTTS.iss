@@ -8,6 +8,10 @@
   #error OutputDir is required
 #endif
 
+#if FileExists(PackageDir + "\app\native\VerifyPackage.exe")
+#define NativePreflight
+#endif
+
 [Setup]
 #ifdef SignedRelease
 SignTool=certum
@@ -50,7 +54,11 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; Flags: unchecked
 
 [Files]
 Source: "{#PackageDir}\package.json"; Flags: dontcopy
+#ifdef NativePreflight
+Source: "{#PackageDir}\app\native\VerifyPackage.exe"; Flags: dontcopy
+#else
 Source: "preflight.ps1"; Flags: dontcopy
+#endif
 Source: "{#PackageDir}\app\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{#PackageDir}\runtimes\*"; DestDir: "{localappdata}\SkriviTTS\runtimes"; Flags: onlyifdoesntexist uninsneveruninstall recursesubdirs createallsubdirs
 Source: "{#PackageDir}\models\*"; DestDir: "{localappdata}\SkriviTTS\models"; Flags: onlyifdoesntexist uninsneveruninstall recursesubdirs createallsubdirs
@@ -77,6 +85,16 @@ var
   Arguments: String;
 begin
   ExtractTemporaryFile('package.json');
+#ifdef NativePreflight
+  ExtractTemporaryFile('VerifyPackage.exe');
+  Arguments := '"' + ExpandConstant('{tmp}\package.json') + '" "' +
+    ExpandConstant('{localappdata}\SkriviTTS') + '"';
+  if not ExecAndLogOutput(ExpandConstant('{tmp}\VerifyPackage.exe'),
+    Arguments, '', SW_HIDE, ewWaitUntilTerminated, ResultCode, nil) or (ResultCode <> 0) then
+    Result := CustomMessage('PreflightFailed')
+  else
+    Result := '';
+#else
   ExtractTemporaryFile('preflight.ps1');
   Arguments := '-NoProfile -NonInteractive -ExecutionPolicy Bypass -File "' +
     ExpandConstant('{tmp}\preflight.ps1') + '" -ManifestPath "' +
@@ -87,6 +105,7 @@ begin
     Result := CustomMessage('PreflightFailed')
   else
     Result := '';
+#endif
 end;
 
 procedure CurStepChanged(CurStep: TSetupStep);

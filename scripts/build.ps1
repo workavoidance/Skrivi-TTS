@@ -9,6 +9,10 @@ if ($LASTEXITCODE -ne 0) { throw 'Native build failed' }
 $framework = "$env:WINDIR\Microsoft.NET\Framework64\v4.0.30319"
 & "$framework\csc.exe" /nologo /target:exe /platform:x64 "/r:$framework\WPF\UIAutomationClient.dll" "/r:$framework\WPF\UIAutomationTypes.dll" "/r:$framework\WPF\WindowsBase.dll" /out:native\Selection.exe native\Selection.cs
 if ($LASTEXITCODE -ne 0) { throw 'Selection helper build failed' }
+& "$framework\csc.exe" /nologo /target:exe /platform:x64 /r:System.Web.Extensions.dll /out:native\VerifyPackage.exe native\VerifyPackage.cs
+if ($LASTEXITCODE -ne 0) { throw 'Package verifier build failed' }
+& $pythonBuild tests/check_package_verifier.py
+if ($LASTEXITCODE -ne 0) { throw 'Package verifier tests failed' }
 # Resolve Windows SDK/system DLLs, never unrelated tools from an ambient PATH.
 $originalBuildPath = $env:PATH
 $env:PATH = "$env:WINDIR\System32;$env:WINDIR;$env:WINDIR\System32\Wbem;$(Split-Path $pythonBuild)"

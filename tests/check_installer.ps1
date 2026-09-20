@@ -52,9 +52,6 @@ function Snapshot {
     return $rows
 }
 $original = Snapshot
-# Diagnose any package-integrity conflict directly before the second install.
-& "$env:WINDIR/System32/WindowsPowerShell/v1.0/powershell.exe" -NoProfile -NonInteractive -ExecutionPolicy Bypass -File (Join-Path $root 'installer/preflight.ps1') -ManifestPath $manifestPath -LibraryRoot $library
-if ($LASTEXITCODE -ne 0) { throw 'Installed data differs from the package manifest before reinstall.' }
 Run-Setup 'reinstall' $true
 foreach ($path in $original.Keys) {
     if (!(Test-Path -LiteralPath $path) -or (Get-FileHash -LiteralPath $path).Hash -ne $original[$path].hash) { throw "Reinstall changed $path" }

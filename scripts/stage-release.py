@@ -11,7 +11,8 @@ shutil.copytree(root/'app',out/'app/app',ignore=shutil.ignore_patterns('__pycach
 for file in ('worker.py','kokoro_engine.py'):shutil.copy2(root/'engines'/file,out/'app/engines'/file)
 models=[m for m in json.loads((root/'models.json').read_text(encoding='utf-8')) if m['id'] in ('piper-talesyntese','kokoro-v1.0-onnx')]
 (out/'app/models.json').write_text(json.dumps(models,indent=2),encoding='utf-8')
-(out/'app/native').mkdir();shutil.copy2(root/'native/Selection.exe',out/'app/native/Selection.exe')
+(out/'app/native').mkdir()
+for name in ('Selection.exe','VerifyPackage.exe'):shutil.copy2(root/'native'/name,out/'app/native'/name)
 profiles={'python-engine-v1':'python-engine-signed-v1','kokoro-engine-v1':'kokoro-engine-signed-v1','tesseract-5.5.2-v2':'tesseract-5.5.2-signed-v2'}
 (out/'app/runtime-profiles.json').write_text(json.dumps(profiles,indent=2),encoding='utf-8')
 for original in ('python-engine-v1','kokoro-engine-v1'):shutil.copytree(root/'build/release-input/runtimes'/original,out/'runtimes'/profiles[original])
