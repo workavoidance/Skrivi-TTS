@@ -1,3 +1,10 @@
+## Acceptance update
+
+The user approved Snakk 0.3.2 and Lytt 0.4.3 after PC testing and authorized
+publication. The acceptance hold below records the earlier stage and is now
+lifted. Publish the exact verified assets, preserving their hashes. Store
+certification remains separate from GitHub publication.
+
 # UX feedback implementation and acceptance hold
 
 The main windows now explain the anywhere workflow and show current shortcuts.

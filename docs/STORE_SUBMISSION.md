@@ -1,7 +1,7 @@
 # Skrivi Lytt: Microsoft Store submission
 
-Use the **Skrivi-TTS-0.4.1-Store.msix** from the verified 0.4.1 GitHub release.
-The technical filename and internal SkriviTTS identifiers are intentionally stable;
+Use the **Skrivi-Lytt-0.4.3-windows-x64.msix** from the verified 0.4.3 GitHub release.
+The public filename now uses Skrivi Lytt; internal SkriviTTS identifiers remain stable;
 the product displayed to users is Skrivi Lytt.
 
 ## Reserved identity
@@ -9,7 +9,7 @@ the product displayed to users is Skrivi Lytt.
 - Package name: `Skrivi.SkriviLytt`
 - Publisher: `CN=EF3D997F-87B2-4AD0-B65B-877EE1632E65`
 - Publisher display name: `Skrivi`
-- Package version: `1.4.6.0` (app version 0.4.1)
+- Package version: `1.4.8.0` (app version 0.4.3)
 - Target: Windows 11 desktop, x64
 
 The authoritative public values are in `store/identity.json`. Never reuse the
