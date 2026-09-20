@@ -1,4 +1,4 @@
-param([string]$Version='0.2.1',[string]$InstallerPath='',[string]$PayloadPath='')
+param([string]$Version='0.2.1',[string]$InstallerPath='',[string]$PayloadPath='',[switch]$RequireSigned)
 # Deliberately CI-only: never install/uninstall or create test fixtures in a user's library.
 $ErrorActionPreference = 'Stop'
 if ($env:GITHUB_ACTIONS -ne 'true' -or $env:RUNNER_ENVIRONMENT -ne 'github-hosted') {
@@ -61,6 +61,7 @@ foreach ($path in $original.Keys) {
 & python (Join-Path $PSScriptRoot 'check_installed_voices.py') $Version
 if ($LASTEXITCODE -ne 0) { throw 'Installed voice smoke tests failed.' }
 $uninstaller = Join-Path $library 'uninstall\unins000.exe'
+if ($RequireSigned -and (Get-AuthenticodeSignature -LiteralPath $uninstaller).Status -ne 'Valid') { throw 'Installed uninstaller must have a valid signature.' }
 $uninstallLog = Join-Path $evidence 'uninstall.log'
 $proc = Start-Process -FilePath $uninstaller -ArgumentList @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART',('/LOG="' + $uninstallLog + '"')) -WindowStyle Hidden -PassThru
 if (!$proc.WaitForExit(120000) -or $proc.ExitCode -ne 0) { throw 'Uninstall failed.' }

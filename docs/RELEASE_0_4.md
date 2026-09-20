@@ -26,3 +26,18 @@ Validation so far: existing unit tests; live Qt widget render checks in light/da
 pill does not steal foreground; stale/cancelled events cannot reopen it; error
 survives worker completion; English/Bokmal switching; two-model list. Engine and
 signed-package validation still required before claiming a signed release.
+
+Local frozen checks now pass: GUI startup, cold/warm generation for both native
+speech engines, real Escape registration, OCR modes 3/6, crop DPI mapping and
+stale/cancelled result handling. See READER_0_4_LOCAL_CHECKS.json. These local
+binaries are not the signed release; CI signatures and installer tests are separate.
+
+After a successful signed release, publish and pin its signed runtime archive.
+Later code-only updates must reuse those exact bytes. Rebuilding/re-signing changes
+hashes and requires a new runtime profile; never reuse an installed profile ID for
+new signed bytes.
+
+Microsoft references: [Store package requirements](https://learn.microsoft.com/en-us/windows/apps/publish/publish-your-app/msix/app-package-requirements)
+and [startup extension parameters](https://learn.microsoft.com/en-us/uwp/schemas/appxpackage/uapmanifestschema/element-uap5-extension).
+The Store signs the outer MSIX during submission. The validation artifact is not
+associated with a reserved listing and is not a sideload installer.

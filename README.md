@@ -4,7 +4,21 @@ An open-source Windows reader that turns text into speech on your computer.
 A separate application from [Skrivi dictation](https://github.com/workavoidance/Skrivi-STT),
 with a familiar interface and its own orange speaker tray icon.
 
-## Screen-region reading test update (0.3.0)
+## Reader 0.4 (release validation in progress)
+
+Version 0.4 adds an immediate, focus-preserving activity pill for selected-text and
+screen-region reading. It distinguishes capture, recognition, engine startup, model
+loading, speech generation and playback. Escape cancels while a reading is active.
+The pill follows Windows light/dark mode. Settings provide interface language
+(Windows default, English or Bokmål), optional automatic column layout and a manual
+update check. No update check runs automatically.
+
+The release workflow signs application and runtime components, verifies the
+installer and builds a separate Microsoft Store package. The TTS Store listing is
+not yet reserved: UNASSOCIATED validation packages are **not for Store upload**.
+See [release status and build process](docs/RELEASE_0_4.md).
+
+## Previously delivered screen-region update (0.3.0)
 
 The OCR update adds **Read screen region** in the reader and tray, or
 **Ctrl+Alt+Shift+Space**. Put the pointer on the desired monitor, press the shortcut,
@@ -51,10 +65,9 @@ male) and Emma (British female) share the same Kokoro download. Original speed a
 untrimmed native speech are the defaults. Language detection is a convenience,
 not a guarantee; these are Bokmaal and English voices, not a claimed Nynorsk model.
 
-**Voices & models** retains optional Piper NVCC, VoxCPM2 and Chatterbox downloads.
-These use the existing tested CPU adapters. Optional models can be selected in
-Settings. The earlier comparison UI, presets and history are preserved in
-`app/shootout.py` and version 0.1.0; the reader does not delete their stored data.
+The 0.4 reader offers just Talesyntese and Kokoro. Other models remain available
+in the earlier comparison app (`app/shootout.py` and version 0.1.0). Existing
+downloads, presets and history are preserved; they are not deleted by this update.
 
 ## Updates and privacy
 
@@ -72,11 +85,12 @@ cloud synthesis, microphone capture or automatic model downloads are implemented
 
 Selection capture uses Windows accessibility, with a copy/restore clipboard fallback
 for applications that do not expose selection. Applications with protected content
-or different privilege levels may require pasting text into the reader. Image text
-and screen-area OCR are planned, not implemented. Startup at sign-in is opt-in.
+or different privilege levels may require pasting text into the reader. Screen-area OCR runs locally using Tesseract and bundled Norwegian/English
+language data. Startup at sign-in is opt-in.
 
 All adapters currently run on CPU. Windows x64 is required; optional VoxCPM2 also
-requires AVX2. The application is unsigned, so Windows may show a reputation warning.
+requires AVX2. Earlier releases are unsigned. The 0.4 signing workflow is being validated;
+signing is not a guarantee of Windows reputation or Store certification.
 
 ## Build from GitHub
 

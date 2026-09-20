@@ -9,6 +9,10 @@
 #endif
 
 [Setup]
+#ifdef SignedRelease
+SignTool=certum
+SignedUninstaller=yes
+#endif
 AppId={{E9E45873-7840-45F2-B17F-7C66496302C9}
 AppName=Skrivi TTS
 AppVersion={#AppVersion}
