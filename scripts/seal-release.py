@@ -11,7 +11,7 @@ p.write_text(json.dumps(m,indent=2),encoding='utf-8')
 # Preserve these exact signed runtimes for subsequent code-only releases.
 output=root/'dist/signed';output.mkdir(parents=True,exist_ok=True)
 archive=output/('Skrivi-TTS-'+m['version']+'-signed-runtimes.zip')
-paths=[f for f in m['files'] if f.startswith(('runtimes/','app/licenses/','app/third_party_licenses/')) or f in ('app/LICENSE','app/THIRD_PARTY_NOTICES.md')]
+paths=[f for f in m['files'] if f.startswith(('runtimes/','app/licenses/','app/third_party_licenses/')) or f in ('app/LICENSE','app/THIRD_PARTY_NOTICES.md','app/SOURCES.md')]
 files={f:m['files'][f] for f in paths}
 with zipfile.ZipFile(archive,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=6) as z:
  for name in sorted(paths):z.write(payload/name,name)
