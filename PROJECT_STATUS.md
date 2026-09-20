@@ -1,8 +1,15 @@
-# Skrivi Lytt — 0.4.3 UX acceptance candidate
+# Skrivi Lytt — approved 0.4.3 test release
 
 0.4.3 implements the user feedback and one-screen introduction in both languages.
 See [implementation and validation](docs/UX_FEEDBACK_IMPLEMENTED.md).
-All publication remains on hold pending the next PC test.
+The user approved PC testing and authorized publication of the exact signed files.
+Built source: bc84d5fdd687ed745df37799775f1a8bd319350c.
+Signed run: https://github.com/workavoidance/Skrivi-STT/actions/runs/35537490895.
+Local files and checks: output/test-builds/round-2/ in the shared Skrivi Local workspace.
+Release: https://github.com/workavoidance/Skrivi-TTS/releases/tag/v0.4.3.
+Store package: Skrivi-Lytt-0.4.3-windows-x64.msix, identity Skrivi.SkriviLytt,
+version 1.4.8.0. Microsoft Store submission/certification remains pending.
+Older sections below are historical handover records.
 
 ## Previous 0.4.2 candidate
 

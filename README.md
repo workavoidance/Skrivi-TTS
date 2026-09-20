@@ -1,8 +1,7 @@
 # Skrivi Lytt
 
 Development source includes the [shared Skrivi interface](docs/SHARED_UX.md), with
-separate Settings and configurable reading shortcuts. These changes are awaiting
-the next signed release; the 0.4.1 downloads below retain their released interface.
+separate Settings and configurable reading shortcuts. These changes are included in the signed 0.4.3 test release below.
 
 An open-source Windows reader for local text and screen-image reading. Separate
 from [Skrivi Snakk](https://github.com/workavoidance/Skrivi-STT), with its own
@@ -16,10 +15,10 @@ numbers advance independently; GitHub marks these releases as prereleases.
 Use the signed `.exe` installer on a PC. The separate Store `.msix` package is
 for submission through Partner Center; its presence does not mean Store approval.
 
-## Install the signed 0.4.1 test release
+## Install the signed 0.4.3 test release
 
-Download the [signed Windows installer](https://github.com/workavoidance/Skrivi-TTS/releases/download/v0.4.1/Skrivi-TTS-0.4.1-windows-x64-setup.exe) or see
-[the 0.4.1 release](https://github.com/workavoidance/Skrivi-TTS/releases/tag/v0.4.1).
+Download the [signed Windows installer](https://github.com/workavoidance/Skrivi-TTS/releases/download/v0.4.3/Skrivi-Lytt-0.4.3-windows-x64-setup.exe) or see
+[the 0.4.3 release](https://github.com/workavoidance/Skrivi-TTS/releases/tag/v0.4.3).
 Quit the existing reader from its tray menu, run setup, then open it from the Start menu.
 No separate Python installation or administrator account is needed.
 
@@ -108,7 +107,7 @@ The historical 0.2 ZIP/build recipes remain available for provenance.
 ## Microsoft Store
 
 The reserved identity **Skrivi.SkriviLytt** is recorded in store/identity.json.
-The associated **Skrivi-TTS-0.4.1-Store.msix** (package version 1.4.6.0) is available
+The associated **Skrivi-TTS-0.4.3-Store.msix** (package version 1.4.6.0) is available
 in the release for Partner Center upload. Earlier **UNASSOCIATED** files must not
 be uploaded. [Upload instructions and validation limits](docs/STORE_SUBMISSION.md).
 Microsoft Store certification and installed Store-package testing remain pending.
