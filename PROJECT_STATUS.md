@@ -1,3 +1,18 @@
+## Store submission automation — 21 September 2026
+
+The user authorized the same Store automation and a current-release submission
+as Skrivi Snakk. `.github/workflows/store-submit.yml` is reusable from the STT
+repository so its existing Microsoft credentials can be passed securely without
+copying secret values. `scripts/check-store-access.ps1` discovers Lytt by its
+reserved identity and publisher, and refuses ambiguous or mismatched listings.
+
+Manual checks are read-only by default. Submission downloads an existing release
+MSIX, verifies its checksum and embedded identity, then uses the tested Microsoft
+CLI 0.4.2 standalone-MSIX command. It requires a previously published submission
+and refuses to overwrite any draft or review. First-time Store setup remains a
+Partner Center step. Validation: actionlint and PowerShell parsing passed; seven
+mocked access cases passed. Live Store eligibility and submission remain to check.
+No application, engine, model, user-data or release binary changes are included.
 # Skrivi Lytt — approved 0.4.3 test release
 
 0.4.3 implements the user feedback and one-screen introduction in both languages.
