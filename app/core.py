@@ -9,9 +9,10 @@ import urllib.request
 import uuid
 import sys
 
-VERSION = '0.3.0'
+VERSION = '0.4.0'
 KOKORO_VOICES = {'af_heart': 'Heart — American female', 'am_michael': 'Michael — American male', 'bf_emma': 'Emma — British female'}
 ROOT = Path(sys.executable).parent if getattr(sys, 'frozen', False) else Path(__file__).resolve().parent.parent
+STORE_BUILD = (ROOT / 'store-build.json').is_file()
 DATA = Path(os.environ.get('SKRIVI_TTS_DATA', str(Path(os.environ.get('LOCALAPPDATA', Path.home())) / 'SkriviTTS')))
 
 def read_json(path, default=None):
@@ -29,6 +30,17 @@ def sha256(path):
     with path.open('rb') as stream:
         return hashlib.file_digest(stream, 'sha256').hexdigest()
 
+def runtime_executable(profile, name):
+    profiles=read_json(ROOT/'runtime-profiles.json',{})
+    resolved=profiles.get(profile,profile)
+    if not isinstance(resolved,str) or Path(resolved).name!=resolved:
+        raise ValueError('Invalid runtime profile')
+    if STORE_BUILD:return ROOT.parent/'runtimes'/resolved/name
+    return DATA/'runtimes'/resolved/name
+
+def ocr_assets():
+    return (ROOT.parent if STORE_BUILD else DATA)/'models/ocr-tessdata-fast-v1'
+
 def catalog():
     return read_json(ROOT / 'models.json')
 
@@ -43,13 +55,15 @@ class Library:
             raise ValueError('This library needs a newer application version. Its files were preserved.')
 
     def path(self, model):
+        if STORE_BUILD and model['id'] in ('piper-talesyntese','kokoro-v1.0-onnx'):
+            return ROOT.parent/'models'/model['id']
         entry = self.registry['models'].get(model['id'])
         return Path(entry['path']) if entry else self.root / 'models' / model['id']
 
     def ready(self, model):
         entry = self.registry['models'].get(model['id'])
         root = self.path(model)
-        return bool(entry and entry.get('revision') == model['revision'] and all(
+        return bool(((STORE_BUILD and model['id'] in ('piper-talesyntese','kokoro-v1.0-onnx')) or (entry and entry.get('revision') == model['revision'])) and all(
             (root / f['path']).is_file() and (root / f['path']).stat().st_size == f['bytes']
             for f in model['files']))
 

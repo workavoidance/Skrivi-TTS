@@ -6,6 +6,8 @@ import tesserocr
 
 def main():
     root=Path(sys.argv[1])
+    mode=int(sys.argv[2]) if len(sys.argv)>2 else 6
+    if mode not in (3,6):raise ValueError('Unsupported image layout.')
     for lang in ('nor','eng'):
         if not (root/(lang+'.traineddata')).is_file():raise RuntimeError('OCR language files are missing. Reinstall the OCR update.')
     payload=sys.stdin.buffer.read(32*1024*1024+1)
@@ -17,7 +19,7 @@ def main():
     gray=ImageOps.grayscale(im)
     if gray.resize((1,1)).getpixel((0,0))<110:im=ImageOps.invert(im)
     im=ImageOps.expand(im,border=16,fill='white')
-    with tesserocr.PyTessBaseAPI(path=str(root),lang='nor+eng',psm=6) as api:
+    with tesserocr.PyTessBaseAPI(path=str(root),lang='nor+eng',psm=mode) as api:
         api.SetImage(im)
         text=api.GetUTF8Text().strip()
     sys.stdout.buffer.write(json.dumps({'text':text},ensure_ascii=False).encode('utf-8'))

@@ -15,13 +15,13 @@ class Hotkeys(QAbstractNativeEventFilter):
     def __init__(self,callback,identifier=0x5311):
         super().__init__();self.callback=callback;self.current=None;self.identifier=identifier
     def register(self,choice):
-        if choice not in HOTKEYS: raise ValueError('Unsupported shortcut.')
+        if choice not in {**HOTKEYS,'Escape':(0,0x1B)}: raise ValueError('Unsupported shortcut.')
         if choice==self.current:return
-        mods,key=HOTKEYS[choice]
+        mods,key=({**HOTKEYS,'Escape':(0,0x1B)})[choice]
         if self.current:user32.UnregisterHotKey(None,self.identifier)
         if not user32.RegisterHotKey(None,self.identifier,mods|0x4000,key):
             if self.current:
-                oldmod,oldkey=HOTKEYS[self.current];user32.RegisterHotKey(None,self.identifier,oldmod|0x4000,oldkey)
+                oldmod,oldkey=({**HOTKEYS,'Escape':(0,0x1B)})[self.current];user32.RegisterHotKey(None,self.identifier,oldmod|0x4000,oldkey)
             raise RuntimeError('That shortcut is already in use. Choose another in Settings.')
         self.current=choice
     def nativeEventFilter(self,event_type,message):

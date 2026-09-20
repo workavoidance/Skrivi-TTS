@@ -5,7 +5,7 @@ import re
 from core import DATA, read_json, write_json
 
 PREFERENCES = dict(language='auto', fallback='no', english_voice='af_heart', speed=1.0,
-                   hotkey='Ctrl+Alt+Space', model_override='', startup=False)
+                   hotkey='Ctrl+Alt+Space', model_override='', startup=False, ocr_layout=6, ui_language='auto')
 
 def load_preferences():
     values=PREFERENCES.copy()
@@ -15,6 +15,8 @@ def load_preferences():
     if values['fallback'] not in ('no','en'): values['fallback']='no'
     if values['hotkey'] not in ('Ctrl+Alt+Space','Ctrl+Alt+R','Ctrl+Shift+F8'): values['hotkey']=PREFERENCES['hotkey']
     if values['model_override'] not in ('','piper-nvcc','voxcpm-q4','chatterbox-q4'): values['model_override']=''
+    if values['ui_language'] not in ('auto','en','nb'):values['ui_language']='auto'
+    if values['ocr_layout'] not in (3,6):values['ocr_layout']=6
     try: values['speed']=max(.5,min(2.,float(values['speed'])))
     except (TypeError,ValueError): values['speed']=1.
     return values

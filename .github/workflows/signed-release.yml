@@ -1,0 +1,108 @@
+name: Signed TTS release and Store package
+on:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      source_ref:
+        required: true
+        type: string
+    secrets:
+      CERTUM_USERNAME:
+        required: true
+      CERTUM_OTP_URI:
+        required: true
+      CERTUM_KEY_ID:
+        required: true
+permissions:
+  contents: read
+concurrency:
+  group: certum-release-signing
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: windows-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: workavoidance/Skrivi-TTS
+          ref: ${{ inputs.source_ref || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Prepare isolated build tools
+        shell: pwsh
+        run: |
+          python -m venv .build-env
+          ./.build-env/Scripts/python.exe -m pip install -r requirements-build.lock
+          if ($LASTEXITCODE -ne 0) { throw 'GUI dependencies failed' }
+          python -m venv build/ocr-env
+          ./build/ocr-env/Scripts/python.exe -m pip install -r requirements-ocr.lock
+          if ($LASTEXITCODE -ne 0) { throw 'OCR dependencies failed' }
+          choco install innosetup --no-progress -y
+      - name: Build and verify payload
+        shell: pwsh
+        run: |
+          ./.build-env/Scripts/python.exe -m unittest discover -s tests -p 'test_*.py'
+          if ($LASTEXITCODE -ne 0) { throw 'Tests failed' }
+          ./.build-env/Scripts/python.exe scripts/prepare-release.py
+          if ($LASTEXITCODE -ne 0) { throw 'Speech inputs failed' }
+          ./.build-env/Scripts/python.exe scripts/prepare-ocr.py
+          if ($LASTEXITCODE -ne 0) { throw 'OCR inputs failed' }
+          ./scripts/build.ps1
+          ./scripts/build-ocr.ps1
+          ./.build-env/Scripts/python.exe scripts/stage-release.py
+          if ($LASTEXITCODE -ne 0) { throw 'Staging failed' }
+      - name: Connect to existing Certum publisher
+        uses: dismine/windows-app-signing-setup-action@89ae3b032d4bc7a5b98d1a42a34e61ecb6faad64
+        with:
+          certum-username: ${{ secrets.CERTUM_USERNAME }}
+          certum-otp-uri: ${{ secrets.CERTUM_OTP_URI }}
+          certum-key-id: ${{ secrets.CERTUM_KEY_ID }}
+          capture-diagnostics: 'false'
+      - name: Sign all untrusted executable components and verify existing signatures
+        shell: pwsh
+        env:
+          CERTUM_KEY_ID: ${{ secrets.CERTUM_KEY_ID }}
+        run: |
+          ./scripts/sign-release.ps1 -Root build/release-payload -Thumbprint $env:CERTUM_KEY_ID
+          ./scripts/sign-release.ps1 -Root installer -Thumbprint $env:CERTUM_KEY_ID
+          ./.build-env/Scripts/python.exe scripts/seal-release.py
+          if ($LASTEXITCODE -ne 0) { throw 'Payload seal failed' }
+      - name: Test signed engines, build and sign installer
+        shell: pwsh
+        env:
+          CERTUM_KEY_ID: ${{ secrets.CERTUM_KEY_ID }}
+        run: |
+          ./.build-env/Scripts/python.exe tests/check_release.py
+          if ($LASTEXITCODE -ne 0) { throw 'Signed engine tests failed' }
+          $version=(Get-Content build/release-payload/package.json -Raw | ConvertFrom-Json).version
+          $payload=(Resolve-Path build/release-payload).Path
+          $output=Join-Path $PWD 'dist/signed'
+          New-Item -ItemType Directory -Force $output | Out-Null
+          & "${env:ProgramFiles(x86)}/Inno Setup 6/ISCC.exe" "/DAppVersion=$version" "/DPackageDir=$payload" "/DOutputDir=$output" installer/SkriviTTS.iss
+          if ($LASTEXITCODE -ne 0) { throw 'Installer compilation failed' }
+          ./scripts/sign-release.ps1 -Root dist/signed -Thumbprint $env:CERTUM_KEY_ID
+          Copy-Item build/RELEASE-ENGINE-CHECKS.json,build/release-payload/package.json,build/release-payload/SIGNATURES.json $output
+          Get-ChildItem $output -File | ForEach-Object { "$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant())  $($_.Name)" } | Set-Content "$output/SHA256SUMS.txt"
+      - name: Validate Microsoft Store package
+        shell: pwsh
+        run: |
+          if (Test-Path store/identity.json) {
+            ./.build-env/Scripts/python.exe scripts/build-store.py --identity store/identity.json --build ${{ github.run_number }}
+          } else {
+            ./.build-env/Scripts/python.exe scripts/build-store.py --validation-only --build ${{ github.run_number }}
+          }
+          if ($LASTEXITCODE -ne 0) { throw 'Store packaging failed' }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Skrivi-TTS-signed-release
+          path: dist/signed/*
+          if-no-files-found: warn
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Skrivi-TTS-Store-package
+          path: dist/store/*
+          if-no-files-found: warn

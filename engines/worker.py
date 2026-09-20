@@ -33,7 +33,7 @@ class Session:
         self.engine = None
         self.key = None
 
-    def run(self, request):
+    def run(self, request, progress=lambda stage: None):
         import psutil
         model = request['model']
         settings = validate(model['engine'], request['settings'])
@@ -43,6 +43,7 @@ class Session:
         warm = key == self.key
         if not warm:
             self.close()
+        if not warm: progress('loading')
         load = time.perf_counter()
         if model['engine'] == 'voxcpm':
             if not self.vox:
@@ -84,6 +85,7 @@ class Session:
                 else:
                     raise ValueError('Unknown engine adapter: ' + model['engine'])
             load_seconds = time.perf_counter() - load
+            progress('generating')
             started = time.perf_counter()
             if model['engine'] == 'kokoro':
                 import soundfile as sf
@@ -118,13 +120,17 @@ class Session:
 
 def main():
     session = Session()
+    protocol = sys.stdout
     try:
         for line in sys.stdin:
             try:
                 request = json.loads(line)
                 # Upstream progress messages must not corrupt the protocol or expose input.
                 with open(os.devnull, 'w') as sink, contextlib.redirect_stdout(sink), contextlib.redirect_stderr(sink):
-                    result = session.run(request)
+                    def progress(stage):
+                        if request.get('progress_events'):
+                            protocol.write(json.dumps({'event':stage})+'\n');protocol.flush()
+                    result = session.run(request, progress)
                 response = {'ok': True, 'result': result}
             except Exception as error:
                 session.close()

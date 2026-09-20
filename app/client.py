@@ -6,7 +6,7 @@ import subprocess
 import sys
 import threading
 import time
-from core import ROOT, DATA
+from core import ROOT, DATA, runtime_executable
 
 class Client:
     def __init__(self):
@@ -30,7 +30,7 @@ class Client:
             self.stop()
         self.runtime_profile = profile
         self.responses = queue.Queue()
-        runtime = DATA / 'runtimes' / profile / ('KokoroWorker.exe' if engine == 'kokoro' else 'SkriviWorker.exe')
+        runtime = runtime_executable(profile, 'KokoroWorker.exe' if engine == 'kokoro' else 'SkriviWorker.exe')
         if runtime.exists():
             command = [str(runtime), str(ROOT / 'engines' / 'worker.py')]
         elif not getattr(sys, 'frozen', False):
@@ -52,7 +52,10 @@ class Client:
                 responses.put({'ok': False, 'error': 'Engine stopped before completing the audio.'})
         threading.Thread(target=read, daemon=True).start()
 
-    def generate(self, request, cancel):
+    def generate(self, request, cancel, progress=None):
+        profile = 'kokoro-engine-v1' if request['model']['engine']=='kokoro' else 'python-engine-v1'
+        if progress and not (self.process and self.process.poll() is None and self.runtime_profile==profile):progress('starting')
+        if progress:request=dict(request,progress_events=True)
         self.start(request['model']['engine'])
         self.process.stdin.write(json.dumps(request) + '\n')
         self.process.stdin.flush()
@@ -67,6 +70,9 @@ class Client:
             try:
                 response = self.responses.get(timeout=0.1)
             except queue.Empty:
+                continue
+            if 'event' in response:
+                if progress:progress(response['event'])
                 continue
             if not response['ok']:
                 raise RuntimeError(response['error'])

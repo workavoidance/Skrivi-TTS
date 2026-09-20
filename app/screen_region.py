@@ -1,4 +1,5 @@
 """Frozen monitor selection; images stay in memory and never touch the clipboard."""
+from i18n import tr
 from PySide6.QtCore import Qt,QRect,QPoint,QBuffer,QIODevice,Signal
 from PySide6.QtGui import QPainter,QPen,QColor,QCursor
 from PySide6.QtWidgets import QWidget,QApplication
@@ -19,7 +20,7 @@ class RegionOverlay(QWidget):
         if not self.area.isNull():
             p.save();p.setClipRect(self.area);p.drawPixmap(self.rect(),self.image);p.restore()
             p.setPen(QPen(QColor('#ff9d42'),2));p.drawRect(self.area)
-        p.setPen(QColor('white'));p.drawText(24,32,'Drag around one paragraph or column. Escape cancels.')
+        p.setPen(QColor('white'));p.drawText(24,32,tr('Drag around one paragraph or column. Escape cancels.'))
     def mousePressEvent(self,event):
         if event.button()==Qt.MouseButton.LeftButton:self.anchor=event.position().toPoint()
         elif event.button()==Qt.MouseButton.RightButton:self.abort()

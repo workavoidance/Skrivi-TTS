@@ -1,5 +1,16 @@
 # Skrivi TTS - reader release work, 19 September 2026
 
+## Reader 0.4 work — 20 September 2026
+
+User authorised polished progress pill, active global Escape, true loading vs
+synthesis phases, light/dark support, two-model reader, signing and Store packaging.
+Implemented source changes; release pipeline validation in progress. Details:
+docs/RELEASE_0_4.md. Certum secrets exist in Skrivi-STT only; reusable signing workflow
+is in this repo. Do not expose secret values or re-sign immutable installed profiles.
+User has NOT reserved a TTS Store listing. Final uploadable identity is blocked on
+that reservation; validation-only MSIX must never be described as ready for upload.
+Source version 0.4.0; installed version remains 0.3.0 until signed release verification.
+
 ## OCR update 0.3.0 (supersedes OCR future-work notes below)
 
 User authorised testing Tesseract and integrating if suitable. Source and frozen
