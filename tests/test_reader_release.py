@@ -24,7 +24,7 @@ class ReleaseTests(unittest.TestCase):
    with self.assertRaises(InterruptedError):c.generate({'model':{'engine':'piper'}},event)
    stop.assert_called_once()
  def test_update_check_only_reads_metadata(self):
-  response=Mock();response.__enter__=Mock(return_value=response);response.__exit__=Mock(return_value=False);response.read.return_value=b'{"tag_name":"v0.5.0"}'
+  response=Mock();response.__enter__=Mock(return_value=response);response.__exit__=Mock(return_value=False);response.read.return_value=b'[{"tag_name":"v0.5.0","prerelease":true}]'
   with patch('urllib.request.urlopen',return_value=response) as call:
    self.assertEqual(latest('0.4.0'),('0.5.0',True));self.assertEqual(call.call_count,1)
  def test_store_has_no_microphone_capability(self):

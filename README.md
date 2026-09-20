@@ -1,5 +1,9 @@
 # Skrivi Lytt
 
+Development source includes the [shared Skrivi interface](docs/SHARED_UX.md), with
+separate Settings and configurable reading shortcuts. These changes are awaiting
+the next signed release; the 0.4.1 downloads below retain their released interface.
+
 An open-source Windows reader for local text and screen-image reading. Separate
 from [Skrivi Snakk](https://github.com/workavoidance/Skrivi-STT), with its own
 orange speaker tray icon. Speech and OCR work offline.

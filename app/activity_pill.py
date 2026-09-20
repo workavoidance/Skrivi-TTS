@@ -13,8 +13,9 @@ class ActivityPill(QWidget):
         self.setAttribute(Qt.WidgetAttribute.WA_ShowWithoutActivating)
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.setAccessibleName('Reading progress')
+        self.enabled=True
         self.screen_target=None;self.angle=0;self.animating=True
-        self.setFixedWidth(490)
+        self.setMinimumWidth(300);self.setMaximumWidth(480)
         row=QHBoxLayout(self);row.setContentsMargins(56,17,18,17);row.setSpacing(18)
         copy=QVBoxLayout();copy.setSpacing(4)
         self.title=QLabel();self.title.setFont(QFont('Segoe UI',11,QFont.Weight.DemiBold))
@@ -34,13 +35,14 @@ class ActivityPill(QWidget):
         self.cancel_button.setStyleSheet('QPushButton {background:'+c['surface_muted']+';color:'+c['text']+';border:1px solid '+c['border']+';border-radius:10px;padding:7px 10px;} QPushButton:hover {border-color:'+c['accent']+';}')
         self.update()
     def present(self,title,subtitle='',screen=None,active=True,error=False):
+        if not self.enabled:return
         self.dismiss.stop();self.screen_target=screen or self.screen_target or QApplication.primaryScreen()
         self.title.setText(tr(title));self.subtitle.setText(tr(subtitle));self.subtitle.setVisible(bool(subtitle))
         self.cancel_button.setText(tr('Esc · Stop' if title=='Reading aloud' else 'Esc · Cancel' if active else 'Dismiss'))
         self.animating=active and title!='Reading aloud';self.error=error
         self.adjustSize()
         area=self.screen_target.availableGeometry()
-        self.move(area.center().x()-self.width()//2,area.bottom()-self.height()-24)
+        self.move(max(area.left(),area.center().x()-self.width()//2),max(area.top(),area.bottom()-self.height()-64))
         opening=not self.isVisible()
         self.show()
         if opening:
